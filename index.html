@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM_UI Project Navigator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-container {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-input {
+            padding: 15px 25px;
+            border: 2px solid #e0e6ed;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.2);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn-expand {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+
+        .btn-collapse {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .btn-refresh {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .tree-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .tree-item {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .tree-item:last-child {
+            border-bottom: none;
+        }
+
+        .tree-node {
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tree-node:hover {
+            background: linear-gradient(90deg, rgba(52, 152, 219, 0.1), transparent);
+            transform: translateX(3px);
+        }
+
+        .tree-node.folder {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .tree-node.folder:hover {
+            background: linear-gradient(90deg, rgba(52, 152, 219, 0.15), rgba(52, 152, 219, 0.05));
+        }
+
+        .tree-node.file {
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .tree-node.file:hover {
+            color: #3498db;
+            background: linear-gradient(90deg, rgba(52, 152, 219, 0.1), transparent);
+        }
+
+        .tree-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .tree-indent {
+            width: 20px;
+            height: 1px;
+            display: inline-block;
+        }
+
+        .tree-toggle {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tree-toggle:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: scale(1.1);
+        }
+
+        .tree-toggle.expanded {
+            transform: rotate(90deg);
+        }
+
+        .tree-toggle.expanded:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .tree-children {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .tree-children.expanded {
+            max-height: 2000px;
+        }
+
+        .tree-path {
+            font-size: 0.9rem;
+            color: #666;
+            margin-left: auto;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tree-node:hover .tree-path {
+            opacity: 1;
+        }
+
+        .breadcrumb {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #2c3e50;
+        }
+
+        .breadcrumb-item {
+            display: inline;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: ' / ';
+            color: #3498db;
+            margin: 0 5px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-container {
+                min-width: auto;
+            }
+            
+            .action-buttons {
+                justify-content: center;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 CHAM_UI Project Navigator</h1>
+            <p>Điều hướng dự án tự động - Tự động phát hiện cấu trúc thư mục</p>
+        </div>
+
+        <div class="content">
+            <div class="controls">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="🔍 Tìm kiếm file hoặc thư mục..." id="searchInput">
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-expand" onclick="expandAll()">📂 Mở tất cả</button>
+                    <button class="btn btn-collapse" onclick="collapseAll()">📁 Đóng tất cả</button>
+                    <button class="btn btn-refresh" onclick="refreshTree()">🔄 Làm mới</button>
+                </div>
+            </div>
+
+            <div class="breadcrumb">
+                <span class="breadcrumb-item">🏠 CHAM_UI</span>
+                <span class="breadcrumb-item" id="currentPath"></span>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalFiles">0</div>
+                    <div class="stat-label">Tổng Files</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #27ae60, #229954);">
+                    <div class="stat-number" id="htmlFiles">0</div>
+                    <div class="stat-label">HTML Files</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                    <div class="stat-number" id="folders">0</div>
+                    <div class="stat-label">Thư mục</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f39c12, #e67e22);">
+                    <div class="stat-number" id="depth">0</div>
+                    <div class="stat-label">Độ sâu tối đa</div>
+                </div>
+            </div>
+
+            <div class="tree-container">
+                <div id="fileTree"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CẤU HÌNH DỰ ÁN - Chỉ cần cập nhật object này khi thêm file/folder mới
+        const PROJECT_STRUCTURE = {
+            'admin': {
+                type: 'folder',
+                children: {
+                    'class_management': {
+                        type: 'folder',
+                        children: {
+                            'create_class.html': { type: 'file' },
+                            'manage_classes.html': { type: 'file' },
+                            'class_settings.html': { type: 'file' }
+                        }
+                    },
+                    'question_bank_service': {
+                        type: 'folder',
+                        children: {
+                            'question_bank.html': { type: 'file' },
+                            'add_questions.html': { type: 'file' }
+                        }
+                    },
+                    'side_bar': {
+                        type: 'folder',
+                        children: {
+                            'admin_sidebar.html': { type: 'file' }
+                        }
+                    },
+                    'dashboard.html': { type: 'file' },
+                    'admin_login.html': { type: 'file' }
+                }
+            },
+            'client': {
+                type: 'folder',
+                children: {
+                    'student': {
+                        type: 'folder',
+                        children: {
+                            'student_dashboard.html': { type: 'file' },
+                            'take_exam.html': { type: 'file' },
+                            'results.html': { type: 'file' }
+                        }
+                    },
+                    'teacher': {
+                        type: 'folder',
+                        children: {
+                            'teacher_dashboard.html': { type: 'file' },
+                            'create_exam.html': { type: 'file' }
+                        }
+                    },
+                    'client_login.html': { type: 'file' }
+                }
+            },
+            'utils': {
+                type: 'folder',
+                children: {
+                    'brand_kit.html': { type: 'file' },
+                    'color_palette.html': { type: 'file' },
+                    'grid_spacing_system.html': { type: 'file' },
+                    'typography_system.html': { type: 'file' }
+                }
+            },
+            'assets': {
+                type: 'folder',
+                children: {
+                    'css': {
+                        type: 'folder',
+                        children: {
+                            'main.css': { type: 'file' },
+                            'responsive.css': { type: 'file' }
+                        }
+                    },
+                    'js': {
+                        type: 'folder',
+                        children: {
+                            'app.js': { type: 'file' },
+                            'utils.js': { type: 'file' }
+                        }
+                    },
+                    'images': {
+                        type: 'folder',
+                        children: {
+                            'logo.png': { type: 'file' },
+                            'background.jpg': { type: 'file' }
+                        }
+                    }
+                }
+            },
+            'config': {
+                type: 'folder',
+                children: {
+                    'database.json': { type: 'file' },
+                    'settings.json': { type: 'file' }
+                }
+            },
+            'README.md': { type: 'file' },
+            'package.json': { type: 'file' }
+        };
+
+        // Icon mapping
+        const ICONS = {
+            folder: '📁',
+            'html': '🌐',
+            'css': '🎨',
+            'js': '⚡',
+            'json': '📋',
+            'md': '📝',
+            'png': '🖼️',
+            'jpg': '🖼️',
+            'jpeg': '🖼️',
+            'gif': '🖼️',
+            'default': '📄'
+        };
+
+        function getFileIcon(fileName) {
+            if (!fileName.includes('.')) return ICONS.default;
+            const extension = fileName.split('.').pop().toLowerCase();
+            return ICONS[extension] || ICONS.default;
+        }
+
+        function buildTree(structure, basePath = '', level = 0) {
+            let html = '';
+            let stats = { files: 0, folders: 0, htmlFiles: 0, maxDepth: level };
+
+            for (const [name, item] of Object.entries(structure)) {
+                const currentPath = basePath ? `${basePath}/${name}` : name;
+                const indent = '    '.repeat(level);
+                
+                if (item.type === 'folder') {
+                    stats.folders++;
+                    const hasChildren = item.children && Object.keys(item.children).length > 0;
+                    
+                    html += `
+                        <div class="tree-item" data-path="${currentPath}" data-type="folder">
+                            <div class="tree-node folder" onclick="toggleFolder('${currentPath}')" style="padding-left: ${20 + level * 30}px;">
+                                ${hasChildren ? `<div class="tree-toggle" id="toggle-${currentPath.replace(/[^a-zA-Z0-9]/g, '-')}">▶</div>` : '<div style="width: 20px;"></div>'}
+                                <span class="tree-icon">${ICONS.folder}</span>
+                                <span>${name}</span>
+                                <span class="tree-path">${currentPath}</span>
+                            </div>
+                            <div class="tree-children" id="children-${currentPath.replace(/[^a-zA-Z0-9]/g, '-')}">
+                    `;
+                    
+                    if (hasChildren) {
+                        const childResult = buildTree(item.children, currentPath, level + 1);
+                        html += childResult.html;
+                        stats.files += childResult.stats.files;
+                        stats.folders += childResult.stats.folders;
+                        stats.htmlFiles += childResult.stats.htmlFiles;
+                        stats.maxDepth = Math.max(stats.maxDepth, childResult.stats.maxDepth);
+                    }
+                    
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    stats.files++;
+                    if (name.endsWith('.html')) stats.htmlFiles++;
+                    
+                    html += `
+                        <div class="tree-item" data-path="${currentPath}" data-type="file">
+                            <a href="${currentPath}" class="tree-node file" style="padding-left: ${20 + level * 30}px;">
+                                <div style="width: 20px;"></div>
+                                <span class="tree-icon">${getFileIcon(name)}</span>
+                                <span>${name}</span>
+                                <span class="tree-path">${currentPath}</span>
+                            </a>
+                        </div>
+                    `;
+                }
+            }
+
+            return { html, stats };
+        }
+
+        function renderTree() {
+            const result = buildTree(PROJECT_STRUCTURE);
+            document.getElementById('fileTree').innerHTML = result.html;
+            
+            // Update stats
+            document.getElementById('totalFiles').textContent = result.stats.files;
+            document.getElementById('htmlFiles').textContent = result.stats.htmlFiles;
+            document.getElementById('folders').textContent = result.stats.folders;
+            document.getElementById('depth').textContent = result.stats.maxDepth + 1;
+        }
+
+        function toggleFolder(path) {
+            const toggleId = `toggle-${path.replace(/[^a-zA-Z0-9]/g, '-')}`;
+            const childrenId = `children-${path.replace(/[^a-zA-Z0-9]/g, '-')}`;
+            
+            const toggle = document.getElementById(toggleId);
+            const children = document.getElementById(childrenId);
+            
+            if (!toggle || !children) return;
+
+            const isExpanded = children.classList.contains('expanded');
+            
+            if (isExpanded) {
+                children.classList.remove('expanded');
+                toggle.classList.remove('expanded');
+                toggle.textContent = '▶';
+            } else {
+                children.classList.add('expanded');
+                toggle.classList.add('expanded');
+                toggle.textContent = '▼';
+            }
+        }
+
+        function expandAll() {
+            document.querySelectorAll('.tree-children').forEach(el => {
+                el.classList.add('expanded');
+            });
+            document.querySelectorAll('.tree-toggle').forEach(el => {
+                el.classList.add('expanded');
+                el.textContent = '▼';
+            });
+        }
+
+        function collapseAll() {
+            document.querySelectorAll('.tree-children').forEach(el => {
+                el.classList.remove('expanded');
+            });
+            document.querySelectorAll('.tree-toggle').forEach(el => {
+                el.classList.remove('expanded');
+                el.textContent = '▶';
+            });
+        }
+
+        function refreshTree() {
+            renderTree();
+            // Add animation effect
+            document.querySelector('.tree-container').style.opacity = '0.5';
+            setTimeout(() => {
+                document.querySelector('.tree-container').style.opacity = '1';
+            }, 200);
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const allItems = document.querySelectorAll('.tree-item');
+            
+            if (!searchTerm) {
+                allItems.forEach(item => item.classList.remove('hidden'));
+                return;
+            }
+
+            allItems.forEach(item => {
+                const path = item.dataset.path.toLowerCase();
+                const name = item.querySelector('.tree-node span:last-of-type').textContent.toLowerCase();
+                
+                if (path.includes(searchTerm) || name.includes(searchTerm)) {
+                    item.classList.remove('hidden');
+                    // Expand parent folders
+                    let parent = item.parentElement;
+                    while (parent && parent.classList.contains('tree-children')) {
+                        parent.classList.add('expanded');
+                        const parentItem = parent.previousElementSibling;
+                        if (parentItem) {
+                            const toggle = parentItem.querySelector('.tree-toggle');
+                            if (toggle) {
+                                toggle.classList.add('expanded');
+                                toggle.textContent = '▼';
+                            }
+                        }
+                        parent = parent.parentElement.parentElement;
+                    }
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        });
+
+        // Initialize
+        renderTree();
+
+        // Add some initial expanded state for better UX
+        setTimeout(() => {
+            toggleFolder('admin');
+            toggleFolder('utils');
+        }, 500);
+    </script>
+</body>
+</html>

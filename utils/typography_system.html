@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC Typography System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-roboto { font-family: 'Roboto', sans-serif; }
+        
+        /* Typography Scale */
+        .text-h1 { font-size: 48px; line-height: 56px; letter-spacing: -0.01em; }
+        .text-h2 { font-size: 36px; line-height: 44px; letter-spacing: -0.01em; }
+        .text-h3 { font-size: 24px; line-height: 32px; letter-spacing: -0.01em; }
+        .text-h4 { font-size: 20px; line-height: 28px; letter-spacing: -0.01em; }
+        .text-body-large { font-size: 18px; line-height: 28px; }
+        .text-body-regular { font-size: 16px; line-height: 24px; }
+        .text-body-small { font-size: 14px; line-height: 20px; }
+        .text-caption { font-size: 12px; line-height: 16px; }
+        
+        /* Vietnamese Text Adjustments */
+        .text-vietnamese.text-h1 { line-height: 60px; }
+        .text-vietnamese.text-h2 { line-height: 48px; }
+        .text-vietnamese.text-h3 { line-height: 36px; }
+        .text-vietnamese.text-h4 { line-height: 32px; }
+        .text-vietnamese.text-body-large { line-height: 32px; }
+        .text-vietnamese.text-body-regular { line-height: 28px; }
+        .text-vietnamese.text-body-small { line-height: 24px; }
+        .text-vietnamese.text-caption { line-height: 20px; }
+        
+        /* Font Weights */
+        .font-regular { font-weight: 400; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        
+        /* Interactive Elements */
+        .typography-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .typography-card:hover {
+            border-color: #B91C1C;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(185, 28, 28, 0.1);
+        }
+        
+        .copy-button {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .typography-card:hover .copy-button {
+            opacity: 1;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10B981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .copy-notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-inter">
+    <div class="copy-notification" id="copyNotification">
+        Typography specs copied! 📝
+    </div>
+
+    <div class="container mx-auto px-6 py-12">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-h1 font-bold text-gray-900 mb-4 font-inter">CHAM TOEIC Typography System</h1>
+            <p class="text-body-large text-gray-600 max-w-3xl mx-auto font-inter">
+                Comprehensive typography system using Inter and Roboto fonts with Vietnamese text support. 
+                Hover over any example to copy its CSS specifications.
+            </p>
+        </div>
+
+        <!-- Font Information -->
+        <section class="mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-h3 font-semibold text-gray-900 mb-4 font-inter">Primary Font: Inter</h2>
+                    <p class="text-body-regular text-gray-600 mb-4 font-inter">Modern, highly readable font optimized for user interfaces and body text.</p>
+                    <div class="space-y-2">
+                        <p class="font-inter font-regular">Regular (400) - The quick brown fox</p>
+                        <p class="font-inter font-medium">Medium (500) - The quick brown fox</p>
+                        <p class="font-inter font-semibold">Semibold (600) - The quick brown fox</p>
+                        <p class="font-inter font-bold">Bold (700) - The quick brown fox</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-h3 font-semibold text-gray-900 mb-4 font-inter">Secondary Font: Roboto</h2>
+                    <p class="text-body-regular text-gray-600 mb-4 font-inter">Clean, geometric font perfect for UI elements and interface components.</p>
+                    <div class="space-y-2">
+                        <p class="font-roboto font-regular">Regular (400) - The quick brown fox</p>
+                        <p class="font-roboto font-medium">Medium (500) - The quick brown fox</p>
+                        <p class="font-roboto font-semibold">Semibold (600) - The quick brown fox</p>
+                        <p class="font-roboto font-bold">Bold (700) - The quick brown fox</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography Scale -->
+        <section class="mb-12">
+            <h2 class="text-h2 font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-red-600 mr-3 rounded"></span>
+                Typography Scale
+            </h2>
+            
+            <div class="space-y-6">
+                <!-- Heading 1 -->
+                <div class="typography-card bg-white rounded-xl shadow-md p-8 relative" onclick="copyTypographySpecs('font-family: Inter; font-size: 48px; line-height: 56px; font-weight: 700; letter-spacing: -0.01em;')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-body-regular font-medium text-gray-500 mb-1 font-roboto">HEADING 1</h3>
+                            <p class="text-body-small text-gray-400 font-roboto">48px/56px • Bold • Inter</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto">Copy CSS</button>
+                    </div>
+                    <h1 class="text-h1 font-bold text-gray-900 font-inter">Hero Title Example</h1>
+                    <h1 class="text-h1 font-bold text-gray-900 font-inter text-vietnamese mt-2">Tiêu đề chính của trang</h1>
+                </div>
+
+                <!-- Heading 2 -->
+                <div class="typography-card bg-white rounded-xl shadow-md p-8 relative" onclick="copyTypographySpecs('font-family: Inter; font-size: 36px; line-height: 44px; font-weight: 600; letter-spacing: -0.01em;')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-body-regular font-medium text-gray-500 mb-1 font-roboto">HEADING 2</h3>
+                            <p class="text-body-small text-gray-400 font-roboto">36px/44px • Semibold • Inter</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto">Copy CSS</button>
+                    </div>
+                    <h2 class="text-h2 font-semibold text-gray-900 font-inter">Section Title Example</h2>
+                    <h2 class="text-h2 font-semibold text-gray-900 font-inter text-vietnamese mt-2">Tiêu đề phần học tập</h2>
+                </div>
+
+                <!-- Heading 3 -->
+                <div class="typography-card bg-white rounded-xl shadow-md p-8 relative" onclick="copyTypographySpecs('font-family: Inter; font-size: 24px; line-height: 32px; font-weight: 600; letter-spacing: -0.01em;')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-body-regular font-medium text-gray-500 mb-1 font-roboto">HEADING 3</h3>
+                            <p class="text-body-small text-gray-400 font-roboto">24px/32px • Semibold • Inter</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto">Copy CSS</button>
+                    </div>
+                    <h3 class="text-h3 font-semibold text-gray-900 font-inter">Card Title Example</h3>
+                    <h3 class="text-h3 font-semibold text-gray-900 font-inter text-vietnamese mt-2">Tiêu đề thẻ bài học</h3>
+                </div>
+
+                <!-- Heading 4 -->
+                <div class="typography-card bg-white rounded-xl shadow-md p-8 relative" onclick="copyTypographySpecs('font-family: Inter; font-size: 20px; line-height: 28px; font-weight: 500; letter-spacing: -0.01em;')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-body-regular font-medium text-gray-500 mb-1 font-roboto">HEADING 4</h3>
+                            <p class="text-body-small text-gray-400 font-roboto">20px/28px • Medium • Inter</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto">Copy CSS</button>
+                    </div>
+                    <h4 class="text-h4 font-medium text-gray-900 font-inter">Sub-heading Example</h4>
+                    <h4 class="text-h4 font-medium text-gray-900 font-inter text-vietnamese mt-2">Tiêu đề phụ của bài học</h4>
+                </div>
+
+                <!-- Body Large -->
+                <div class="typography-card bg-white rounded-xl shadow-md p-8 relative" onclick="copyTypographySpecs('font-family: Inter; font-size: 18px; line-height: 28px; font-weight: 400;')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-body-regular font-medium text-gray-500 mb-1 font-roboto">BODY LARGE</h3>
+                            <p class="text-body-small text-gray-400 font-roboto">18px/28px • Regular • Inter</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto">Copy CSS</button>
+                    </div>
+                    <p class="text-body-large font-regular text-gray-900 font-inter">Important text that needs emphasis and better readability for key information.</p>
+                    <p class="text-body-large font-regular text-gray-900 font-inter text-vietnamese mt-2">Văn bản quan trọng cần được nhấn mạnh và dễ đọc cho thông tin chính.</p>
+                </div>
+
+                <!-- Body Regular -->
+                <div class="typography-card bg-white rounded-xl shadow-md p-8 relative" onclick="copyTypographySpecs('font-family: Inter; font-size: 16px; line-height: 24px; font-weight: 400;')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-body-regular font-medium text-gray-500 mb-1 font-roboto">BODY REGULAR</h3>
+                            <p class="text-body-small text-gray-400 font-roboto">16px/24px • Regular • Inter</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto">Copy CSS</button>
+                    </div>
+                    <p class="text-body-regular font-regular text-gray-900 font-inter">Default body text used for most content, paragraphs, and general reading material throughout the platform.</p>
+                    <p class="text-body-regular font-regular text-gray-900 font-inter text-vietnamese mt-2">Văn bản nội dung mặc định được sử dụng cho hầu hết nội dung, đoạn văn và tài liệu đọc chung trên nền tảng.</p>
+                </div>
+
+                <!-- Body Small -->
+                <div class="typography-card bg-white rounded-xl shadow-md p-8 relative" onclick="copyTypographySpecs('font-family: Inter; font-size: 14px; line-height: 20px; font-weight: 400;')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-body-regular font-medium text-gray-500 mb-1 font-roboto">BODY SMALL</h3>
+                            <p class="text-body-small text-gray-400 font-roboto">14px/20px • Regular • Inter</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto">Copy CSS</button>
+                    </div>
+                    <p class="text-body-small font-regular text-gray-900 font-inter">Smaller text for captions, secondary information, and supporting details that don't need primary attention.</p>
+                    <p class="text-body-small font-regular text-gray-900 font-inter text-vietnamese mt-2">Văn bản nhỏ hơn cho chú thích, thông tin phụ và chi tiết hỗ trợ không cần sự chú ý chính.</p>
+                </div>
+
+                <!-- Caption -->
+                <div class="typography-card bg-white rounded-xl shadow-md p-8 relative" onclick="copyTypographySpecs('font-family: Roboto; font-size: 12px; line-height: 16px; font-weight: 500;')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-body-regular font-medium text-gray-500 mb-1 font-roboto">CAPTION</h3>
+                            <p class="text-body-small text-gray-400 font-roboto">12px/16px • Medium • Roboto</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto">Copy CSS</button>
+                    </div>
+                    <p class="text-caption font-medium text-gray-900 font-roboto">LABELS, TAGS, AND SMALL UI ELEMENTS</p>
+                    <p class="text-caption font-medium text-gray-900 font-roboto text-vietnamese mt-2">NHÃN, THẺ VÀ CÁC PHẦN TỬ GIAO DIỆN NHỎ</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vietnamese Text Considerations -->
+        <section class="mb-12">
+            <h2 class="text-h2 font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-blue-600 mr-3 rounded"></span>
+                Vietnamese Text Considerations
+            </h2>
+            
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-h3 font-semibold text-gray-900 mb-4 font-inter">Standard Line Height</h3>
+                        <div class="space-y-4">
+                            <p class="text-h3 font-semibold text-gray-900 font-inter">English Text Example</p>
+                            <p class="text-body-regular text-gray-600 font-inter">This is how English text appears with standard line heights for optimal readability.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-h3 font-semibold text-gray-900 mb-4 font-inter">Vietnamese (+4px Line Height)</h3>
+                        <div class="space-y-4">
+                            <p class="text-h3 font-semibold text-gray-900 font-inter text-vietnamese">Ví dụ văn bản tiếng Việt</p>
+                            <p class="text-body-regular text-gray-600 font-inter text-vietnamese">Đây là cách văn bản tiếng Việt xuất hiện với chiều cao dòng tăng thêm để hỗ trợ dấu thanh tốt hơn.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
+                    <h4 class="text-h4 font-medium text-blue-900 mb-3 font-inter">Key Adjustments for Vietnamese</h4>
+                    <ul class="space-y-2 text-body-regular text-blue-800 font-inter">
+                        <li>• <strong>Line Height:</strong> +4px added to all text sizes for proper diacritic spacing</li>
+                        <li>• <strong>Letter Spacing:</strong> -0.01em for headings to improve readability</li>
+                        <li>• <strong>Font Support:</strong> Both Inter and Roboto include full Vietnamese character set</li>
+                        <li>• <strong>Diacritics:</strong> Proper rendering of á, à, ả, ã, ạ, ă, ắ, ằ, ẳ, ẵ, ặ, â, ấ, ầ, ẩ, ẫ, ậ, etc.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Examples -->
+        <section class="mb-12">
+            <h2 class="text-h2 font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-green-600 mr-3 rounded"></span>
+                Real-World Usage Examples
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Student Interface -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-red-600 text-white p-6">
+                        <h3 class="text-h3 font-semibold font-inter">TOEIC Practice Test</h3>
+                        <p class="text-body-regular font-inter mt-2">Bài kiểm tra thực hành TOEIC</p>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h4 class="text-h4 font-medium text-gray-900 font-inter">Listening Section</h4>
+                        <p class="text-body-regular text-gray-700 font-inter">Complete the listening exercises below. Each question has four possible answers.</p>
+                        <p class="text-body-regular text-gray-700 font-inter text-vietnamese">Hoàn thành các bài tập nghe bên dưới. Mỗi câu hỏi có bốn đáp án có thể.</p>
+                        <div class="flex space-x-4">
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded font-medium text-body-small font-roboto">Start Test</button>
+                            <span class="text-caption font-medium text-gray-500 font-roboto">DURATION: 45 MIN</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Interface -->
+                <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden text-white">
+                    <div class="p-6 border-b border-gray-700">
+                        <h3 class="text-h3 font-semibold font-inter">Admin Dashboard</h3>
+                        <p class="text-body-small text-gray-300 font-roboto mt-1">STUDENT MANAGEMENT</p>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-h4 font-medium font-inter">Recent Activity</h4>
+                            <span class="text-caption font-medium text-gray-400 font-roboto">LAST 24 HOURS</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-body-regular font-inter">New registrations</span>
+                                <span class="text-body-regular font-bold text-green-400 font-roboto">+24</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-body-regular font-inter">Tests completed</span>
+                                <span class="text-body-regular font-bold text-blue-400 font-roboto">156</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CSS Reference -->
+        <section class="mb-12">
+            <h2 class="text-h2 font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-purple-600 mr-3 rounded"></span>
+                CSS Implementation Reference
+            </h2>
+            
+            <div class="bg-gray-900 rounded-xl p-6 overflow-x-auto">
+                <pre class="text-green-400 text-body-small font-roboto"><code>/* CHAM TOEIC Typography System */
+
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap');
+
+/* Font Families */
+.font-inter { font-family: 'Inter', sans-serif; }
+.font-roboto { font-family: 'Roboto', sans-serif; }
+
+/* Typography Scale */
+.text-h1 { font-size: 48px; line-height: 56px; font-weight: 700; letter-spacing: -0.01em; }
+.text-h2 { font-size: 36px; line-height: 44px; font-weight: 600; letter-spacing: -0.01em; }
+.text-h3 { font-size: 24px; line-height: 32px; font-weight: 600; letter-spacing: -0.01em; }
+.text-h4 { font-size: 20px; line-height: 28px; font-weight: 500; letter-spacing: -0.01em; }
+.text-body-large { font-size: 18px; line-height: 28px; font-weight: 400; }
+.text-body-regular { font-size: 16px; line-height: 24px; font-weight: 400; }
+.text-body-small { font-size: 14px; line-height: 20px; font-weight: 400; }
+.text-caption { font-size: 12px; line-height: 16px; font-weight: 500; }
+
+/* Vietnamese Text Adjustments (+4px line-height) */
+.text-vietnamese.text-h1 { line-height: 60px; }
+.text-vietnamese.text-h2 { line-height: 48px; }
+.text-vietnamese.text-h3 { line-height: 36px; }
+.text-vietnamese.text-h4 { line-height: 32px; }
+.text-vietnamese.text-body-large { line-height: 32px; }
+.text-vietnamese.text-body-regular { line-height: 28px; }
+.text-vietnamese.text-body-small { line-height: 24px; }
+.text-vietnamese.text-caption { line-height: 20px; }</code></pre>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 border-t border-gray-200">
+            <p class="text-body-regular text-gray-600 font-inter">CHAM TOEIC Typography System • Hover over examples to copy CSS specifications</p>
+        </footer>
+    </div>
+
+    <script>
+        function copyTypographySpecs(cssSpecs) {
+            navigator.clipboard.writeText(cssSpecs).then(function() {
+                const notification = document.getElementById('copyNotification');
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2000);
+            });
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dc1a4f633de2e7',t:'MTc1NDk2MTEyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

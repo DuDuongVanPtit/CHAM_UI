@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC 8-Point Grid Spacing System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-roboto { font-family: 'Roboto', sans-serif; }
+        
+        /* 8-Point Grid Spacing System */
+        .space-xs { margin: 4px; }
+        .space-sm { margin: 8px; }
+        .space-md { margin: 16px; }
+        .space-lg { margin: 24px; }
+        .space-xl { margin: 32px; }
+        .space-2xl { margin: 48px; }
+        .space-3xl { margin: 64px; }
+        .space-4xl { margin: 96px; }
+        
+        .p-xs { padding: 4px; }
+        .p-sm { padding: 8px; }
+        .p-md { padding: 16px; }
+        .p-lg { padding: 24px; }
+        .p-xl { padding: 32px; }
+        .p-2xl { padding: 48px; }
+        .p-3xl { padding: 64px; }
+        .p-4xl { padding: 96px; }
+        
+        /* Component Spacing */
+        .btn-padding { padding: 12px 24px; }
+        .card-padding { padding: 24px; }
+        .section-margin { margin: 48px 0; }
+        .form-field-margin { margin-bottom: 16px; }
+        .icon-spacing { margin-right: 8px; }
+        
+        /* Visual Helpers */
+        .spacing-demo {
+            background: linear-gradient(45deg, #f3f4f6 25%, transparent 25%), 
+                        linear-gradient(-45deg, #f3f4f6 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #f3f4f6 75%), 
+                        linear-gradient(-45deg, transparent 75%, #f3f4f6 75%);
+            background-size: 8px 8px;
+            background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+        }
+        
+        .spacing-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .spacing-card:hover {
+            border-color: #B91C1C;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(185, 28, 28, 0.1);
+        }
+        
+        .copy-button {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .spacing-card:hover .copy-button {
+            opacity: 1;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10B981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .copy-notification.show {
+            transform: translateX(0);
+        }
+        
+        .grid-overlay {
+            background-image: 
+                linear-gradient(rgba(185, 28, 28, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(185, 28, 28, 0.1) 1px, transparent 1px);
+            background-size: 8px 8px;
+        }
+        
+        .measurement-line {
+            position: relative;
+        }
+        .measurement-line::after {
+            content: attr(data-size);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #B91C1C;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-inter">
+    <div class="copy-notification" id="copyNotification">
+        Spacing value copied! 📏
+    </div>
+
+    <div class="container mx-auto px-6 py-12">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-gray-900 mb-4 font-inter">CHAM TOEIC 8-Point Grid System</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto font-inter">
+                Consistent spacing system based on 8-pixel increments for perfect alignment and visual harmony. 
+                Click any spacing example to copy its value.
+            </p>
+        </div>
+
+        <!-- Grid Visualization -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-red-600 mr-3 rounded"></span>
+                8-Point Grid Foundation
+            </h2>
+            
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                <div class="grid-overlay h-32 rounded-lg border-2 border-red-200 relative">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="bg-white px-4 py-2 rounded-lg shadow-md">
+                            <p class="text-sm font-medium text-gray-900 font-roboto">8px × 8px Grid</p>
+                            <p class="text-xs text-gray-600 font-roboto">All spacing values are multiples of 8</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600 mt-4 font-inter">
+                    The 8-point grid ensures consistent spacing throughout the interface. Every element aligns to this invisible grid, 
+                    creating visual harmony and making the design feel more organized and professional.
+                </p>
+            </div>
+        </section>
+
+        <!-- Spacing Scale -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-blue-600 mr-3 rounded"></span>
+                Spacing Scale
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- XS Spacing -->
+                <div class="spacing-card bg-white rounded-xl shadow-md p-6 relative cursor-pointer" onclick="copySpacing('4px')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 font-inter">XS</h3>
+                            <p class="text-sm text-gray-600 font-roboto">4px • 0.25rem</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy</button>
+                    </div>
+                    <div class="flex items-center justify-center h-16 bg-gray-100 rounded">
+                        <div class="bg-red-600 measurement-line" data-size="4px" style="width: 4px; height: 32px;"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 font-inter">Micro spacing, borders</p>
+                </div>
+
+                <!-- SM Spacing -->
+                <div class="spacing-card bg-white rounded-xl shadow-md p-6 relative cursor-pointer" onclick="copySpacing('8px')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 font-inter">SM</h3>
+                            <p class="text-sm text-gray-600 font-roboto">8px • 0.5rem</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy</button>
+                    </div>
+                    <div class="flex items-center justify-center h-16 bg-gray-100 rounded">
+                        <div class="bg-red-600 measurement-line" data-size="8px" style="width: 8px; height: 32px;"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 font-inter">Icon spacing, small gaps</p>
+                </div>
+
+                <!-- MD Spacing -->
+                <div class="spacing-card bg-white rounded-xl shadow-md p-6 relative cursor-pointer" onclick="copySpacing('16px')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 font-inter">MD</h3>
+                            <p class="text-sm text-gray-600 font-roboto">16px • 1rem</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy</button>
+                    </div>
+                    <div class="flex items-center justify-center h-16 bg-gray-100 rounded">
+                        <div class="bg-red-600 measurement-line" data-size="16px" style="width: 16px; height: 32px;"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 font-inter">Form fields, content spacing</p>
+                </div>
+
+                <!-- LG Spacing -->
+                <div class="spacing-card bg-white rounded-xl shadow-md p-6 relative cursor-pointer" onclick="copySpacing('24px')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 font-inter">LG</h3>
+                            <p class="text-sm text-gray-600 font-roboto">24px • 1.5rem</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy</button>
+                    </div>
+                    <div class="flex items-center justify-center h-16 bg-gray-100 rounded">
+                        <div class="bg-red-600 measurement-line" data-size="24px" style="width: 24px; height: 32px;"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 font-inter">Card padding, components</p>
+                </div>
+
+                <!-- XL Spacing -->
+                <div class="spacing-card bg-white rounded-xl shadow-md p-6 relative cursor-pointer" onclick="copySpacing('32px')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 font-inter">XL</h3>
+                            <p class="text-sm text-gray-600 font-roboto">32px • 2rem</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy</button>
+                    </div>
+                    <div class="flex items-center justify-center h-16 bg-gray-100 rounded">
+                        <div class="bg-red-600 measurement-line" data-size="32px" style="width: 32px; height: 32px;"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 font-inter">Large components</p>
+                </div>
+
+                <!-- 2XL Spacing -->
+                <div class="spacing-card bg-white rounded-xl shadow-md p-6 relative cursor-pointer" onclick="copySpacing('48px')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 font-inter">2XL</h3>
+                            <p class="text-sm text-gray-600 font-roboto">48px • 3rem</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy</button>
+                    </div>
+                    <div class="flex items-center justify-center h-16 bg-gray-100 rounded">
+                        <div class="bg-red-600 measurement-line" data-size="48px" style="width: 48px; height: 32px;"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 font-inter">Section margins</p>
+                </div>
+
+                <!-- 3XL Spacing -->
+                <div class="spacing-card bg-white rounded-xl shadow-md p-6 relative cursor-pointer" onclick="copySpacing('64px')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 font-inter">3XL</h3>
+                            <p class="text-sm text-gray-600 font-roboto">64px • 4rem</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy</button>
+                    </div>
+                    <div class="flex items-center justify-center h-16 bg-gray-100 rounded">
+                        <div class="bg-red-600 measurement-line" data-size="64px" style="width: 64px; height: 32px;"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 font-inter">Large sections</p>
+                </div>
+
+                <!-- 4XL Spacing -->
+                <div class="spacing-card bg-white rounded-xl shadow-md p-6 relative cursor-pointer" onclick="copySpacing('96px')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 font-inter">4XL</h3>
+                            <p class="text-sm text-gray-600 font-roboto">96px • 6rem</p>
+                        </div>
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy</button>
+                    </div>
+                    <div class="flex items-center justify-center h-16 bg-gray-100 rounded">
+                        <div class="bg-red-600 measurement-line" data-size="96px" style="width: 96px; height: 32px;"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 font-inter">Page sections</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Component Spacing -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-green-600 mr-3 rounded"></span>
+                Component Spacing Standards
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Button Spacing -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Button Padding: 12px × 24px</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <button class="btn-padding bg-red-600 text-white rounded-lg font-medium font-roboto hover:bg-red-700 transition-colors">
+                                Primary Button
+                            </button>
+                            <p class="text-sm text-gray-600 mt-2 font-inter">12px top/bottom, 24px left/right</p>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn-padding border-2 border-red-600 text-red-600 rounded-lg font-medium font-roboto hover:bg-red-50 transition-colors">
+                                Secondary Button
+                            </button>
+                            <p class="text-sm text-gray-600 mt-2 font-inter">Consistent padding across variants</p>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn-padding bg-gray-600 text-white rounded-lg font-medium font-roboto hover:bg-gray-700 transition-colors flex items-center mx-auto">
+                                <svg class="w-4 h-4 icon-spacing" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12l-4-4h8l-4 4z"/>
+                                </svg>
+                                With Icon
+                            </button>
+                            <p class="text-sm text-gray-600 mt-2 font-inter">8px icon spacing from text</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Spacing -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Card Padding: 24px</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-50 rounded-lg card-padding border-2 border-dashed border-gray-300">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2 font-inter">TOEIC Practice Test</h4>
+                            <p class="text-gray-600 mb-4 font-inter">Complete listening and reading sections with detailed explanations.</p>
+                            <button class="btn-padding bg-blue-600 text-white rounded-lg font-medium font-roboto">Start Test</button>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg card-padding border-2 border-dashed border-gray-300">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2 font-inter">Progress Report</h4>
+                            <p class="text-gray-600 mb-4 font-inter">Track your improvement across all skill areas.</p>
+                            <button class="btn-padding bg-green-600 text-white rounded-lg font-medium font-roboto">View Report</button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-4 font-inter">24px padding provides comfortable breathing room for card content</p>
+                </div>
+
+                <!-- Form Spacing -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Form Field Margin: 16px</h3>
+                    <div class="max-w-md">
+                        <div class="form-field-margin">
+                            <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">Email Address</label>
+                            <input type="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 font-inter" placeholder="your@email.com">
+                        </div>
+                        <div class="form-field-margin">
+                            <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">Password</label>
+                            <input type="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 font-inter" placeholder="••••••••">
+                        </div>
+                        <div class="form-field-margin">
+                            <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">TOEIC Level</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 font-inter">
+                                <option>Pre-TOEIC</option>
+                                <option>Level 1</option>
+                                <option>Level 2</option>
+                            </select>
+                        </div>
+                        <button class="btn-padding bg-red-600 text-white rounded-lg font-medium font-roboto w-full">Sign Up</button>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-4 font-inter">16px bottom margin creates clear separation between form fields</p>
+                </div>
+
+                <!-- Section Spacing -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Section Margin: 48px</h3>
+                    <div class="space-y-12">
+                        <div class="text-center py-8 bg-blue-50 rounded-lg border-2 border-dashed border-blue-200">
+                            <h4 class="text-lg font-semibold text-blue-900 font-inter">Section A</h4>
+                            <p class="text-blue-700 font-inter">Content area with proper spacing</p>
+                        </div>
+                        <div class="text-center py-8 bg-green-50 rounded-lg border-2 border-dashed border-green-200">
+                            <h4 class="text-lg font-semibold text-green-900 font-inter">Section B</h4>
+                            <p class="text-green-700 font-inter">48px margin creates clear visual separation</p>
+                        </div>
+                        <div class="text-center py-8 bg-purple-50 rounded-lg border-2 border-dashed border-purple-200">
+                            <h4 class="text-lg font-semibold text-purple-900 font-inter">Section C</h4>
+                            <p class="text-purple-700 font-inter">Consistent spacing throughout the page</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layout Examples -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-purple-600 mr-3 rounded"></span>
+                Real-World Layout Examples
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Student Dashboard -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-red-600 text-white card-padding">
+                        <h3 class="text-xl font-semibold font-inter">Student Dashboard</h3>
+                        <p class="text-red-100 font-inter">Your TOEIC learning progress</p>
+                    </div>
+                    <div class="card-padding space-y-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-900 font-inter">Tests Taken</h4>
+                                <p class="text-2xl font-bold text-blue-600 font-roboto">12</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-green-900 font-inter">Best Score</h4>
+                                <p class="text-2xl font-bold text-green-600 font-roboto">785</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-gray-900 font-inter">Recent Activities</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full icon-spacing"></div>
+                                    <span class="font-inter">Completed Listening Practice</span>
+                                </div>
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full icon-spacing"></div>
+                                    <span class="font-inter">Started Reading Section</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Interface -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white card-padding">
+                        <h3 class="text-xl font-semibold font-inter">TOEIC Practice Test</h3>
+                        <p class="text-gray-300 font-inter">Question 15 of 30</p>
+                    </div>
+                    <div class="card-padding">
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-gray-900 mb-4 font-inter">Listen to the audio and choose the best answer:</h4>
+                            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center icon-spacing">
+                                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M8 5v10l7-5-7-5z"/>
+                                        </svg>
+                                    </div>
+                                    <span class="font-inter">Audio clip ready</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="radio" name="answer" class="mr-3">
+                                <span class="font-inter">A) In the morning</span>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="radio" name="answer" class="mr-3">
+                                <span class="font-inter">B) At the office</span>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="radio" name="answer" class="mr-3">
+                                <span class="font-inter">C) Next week</span>
+                            </label>
+                        </div>
+                        <div class="flex justify-between mt-6">
+                            <button class="btn-padding border border-gray-300 text-gray-700 rounded-lg font-medium font-roboto hover:bg-gray-50">Previous</button>
+                            <button class="btn-padding bg-red-600 text-white rounded-lg font-medium font-roboto hover:bg-red-700">Next Question</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CSS Reference -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-orange-600 mr-3 rounded"></span>
+                CSS Implementation Reference
+            </h2>
+            
+            <div class="bg-gray-900 rounded-xl p-6 overflow-x-auto">
+                <pre class="text-green-400 text-sm font-roboto"><code>/* CHAM TOEIC 8-Point Grid Spacing System */
+
+/* Base Spacing Scale (8px increments) */
+.space-xs { margin: 4px; }     /* 0.25rem */
+.space-sm { margin: 8px; }     /* 0.5rem */
+.space-md { margin: 16px; }    /* 1rem */
+.space-lg { margin: 24px; }    /* 1.5rem */
+.space-xl { margin: 32px; }    /* 2rem */
+.space-2xl { margin: 48px; }   /* 3rem */
+.space-3xl { margin: 64px; }   /* 4rem */
+.space-4xl { margin: 96px; }   /* 6rem */
+
+/* Padding Utilities */
+.p-xs { padding: 4px; }
+.p-sm { padding: 8px; }
+.p-md { padding: 16px; }
+.p-lg { padding: 24px; }
+.p-xl { padding: 32px; }
+.p-2xl { padding: 48px; }
+.p-3xl { padding: 64px; }
+.p-4xl { padding: 96px; }
+
+/* Component-Specific Spacing */
+.btn-padding { padding: 12px 24px; }
+.card-padding { padding: 24px; }
+.section-margin { margin: 48px 0; }
+.form-field-margin { margin-bottom: 16px; }
+.icon-spacing { margin-right: 8px; }
+
+/* Responsive Spacing (example) */
+@media (max-width: 768px) {
+  .card-padding { padding: 16px; }
+  .section-margin { margin: 32px 0; }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 border-t border-gray-200">
+            <p class="text-gray-600 font-inter">CHAM TOEIC 8-Point Grid Spacing System • Click any spacing example to copy its value</p>
+        </footer>
+    </div>
+
+    <script>
+        function copySpacing(value) {
+            navigator.clipboard.writeText(value).then(function() {
+                const notification = document.getElementById('copyNotification');
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2000);
+            });
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dc1e768310e2e7',t:'MTc1NDk2MTI5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

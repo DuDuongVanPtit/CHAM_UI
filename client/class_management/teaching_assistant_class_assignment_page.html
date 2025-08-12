@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teaching Assistant Dashboard - CHAM TOEIC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-red': '#B91C1C',
+                        'brand-orange': '#EA580C',
+                        'brand-blue': '#2563EB',
+                        'brand-yellow': '#D97706',
+                        'brand-green': '#059669'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'roboto': ['Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-inter">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <h1 class="text-2xl font-bold text-brand-red">CHAM TOEIC</h1>
+                        <span class="ml-2 text-sm text-gray-500 font-roboto">BIG STEP TO SUCCESS</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-brand-blue">
+                            Trợ giảng
+                        </span>
+                        <span class="text-sm text-gray-600">Minh Nguyen</span>
+                    </div>
+                    <div class="w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white font-medium">
+                        M
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Title -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Teaching Assistant Dashboard</h1>
+            <p class="text-gray-600 font-roboto">Manage your assigned classes and support students</p>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center">
+                    <div class="p-2 bg-brand-red bg-opacity-10 rounded-lg">
+                        <svg class="w-6 h-6 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-2xl font-bold text-gray-900">3</p>
+                        <p class="text-sm text-gray-600">Total Classes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center">
+                    <div class="p-2 bg-brand-green bg-opacity-10 rounded-lg">
+                        <svg class="w-6 h-6 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-2xl font-bold text-gray-900">68</p>
+                        <p class="text-sm text-gray-600">Active Students</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center">
+                    <div class="p-2 bg-brand-orange bg-opacity-10 rounded-lg">
+                        <svg class="w-6 h-6 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-2xl font-bold text-gray-900">12</p>
+                        <p class="text-sm text-gray-600">This Week's Sessions</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center">
+                    <div class="p-2 bg-brand-yellow bg-opacity-10 rounded-lg">
+                        <svg class="w-6 h-6 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-2xl font-bold text-gray-900">8</p>
+                        <p class="text-sm text-gray-600">Pending Tasks</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column - Assigned Classes -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-semibold text-gray-900">Assigned Classes</h2>
+                    <button class="text-brand-red hover:text-red-700 text-sm font-medium">View All</button>
+                </div>
+
+                <!-- Class Cards -->
+                <div class="space-y-6">
+                    <!-- Class 1 -->
+                    <div class="bg-white rounded-lg shadow-sm border p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <h3 class="text-lg font-semibold text-gray-900">TOEIC Foundation Course</h3>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-brand-orange">
+                                        Pre-TOEIC
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-600">Main Teacher: Ms. Sarah Johnson</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-900">24 students</p>
+                                <p class="text-xs text-gray-500">Mon, Wed, Fri</p>
+                            </div>
+                        </div>
+
+                        <!-- Student List Preview -->
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-gray-700 mb-2">Recent Students</p>
+                            <div class="flex items-center space-x-2">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">AN</div>
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">BH</div>
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">CT</div>
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">+21</div>
+                                </div>
+                                <button class="text-brand-red hover:text-red-700 text-xs font-medium ml-2">View All</button>
+                            </div>
+                        </div>
+
+                        <!-- Responsibilities -->
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-gray-700 mb-2">Your Responsibilities</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-brand-blue">
+                                    Attendance Tracking
+                                </span>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-brand-green">
+                                    Assignment Grading
+                                </span>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-brand-yellow">
+                                    Student Support
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Next Session -->
+                        <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <p class="text-sm font-medium text-gray-900">Next Session: Today, 7:00 PM</p>
+                            <p class="text-xs text-gray-600">Lesson 13: Grammar - Present Perfect</p>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="flex flex-wrap gap-2">
+                            <button class="bg-brand-red text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors">
+                                Take Attendance
+                            </button>
+                            <button class="border border-gray-300 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
+                                Grade Assignments
+                            </button>
+                            <button class="border border-gray-300 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
+                                Message Students
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Class 2 -->
+                    <div class="bg-white rounded-lg shadow-sm border p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <h3 class="text-lg font-semibold text-gray-900">TOEIC Intermediate</h3>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-brand-blue">
+                                        Level 1
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-600">Main Teacher: Mr. Robert Chen</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-900">22 students</p>
+                                <p class="text-xs text-gray-500">Tue, Thu, Sat</p>
+                            </div>
+                        </div>
+
+                        <!-- Student List Preview -->
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-gray-700 mb-2">Recent Students</p>
+                            <div class="flex items-center space-x-2">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">DL</div>
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">EM</div>
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">FN</div>
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">+19</div>
+                                </div>
+                                <button class="text-brand-red hover:text-red-700 text-xs font-medium ml-2">View All</button>
+                            </div>
+                        </div>
+
+                        <!-- Responsibilities -->
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-gray-700 mb-2">Your Responsibilities</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-brand-blue">
+                                    Attendance Tracking
+                                </span>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-brand-green">
+                                    Quiz Grading
+                                </span>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-600">
+                                    Practice Sessions
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Next Session -->
+                        <div class="mb-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                            <p class="text-sm font-medium text-gray-900">Next Session: Tomorrow, 6:00 PM</p>
+                            <p class="text-xs text-gray-600">Lesson 8: Listening Part 3 Practice</p>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="flex flex-wrap gap-2">
+                            <button class="bg-brand-red text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-red-700 transition-colors">
+                                Take Attendance
+                            </button>
+                            <button class="border border-gray-300 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
+                                Grade Assignments
+                            </button>
+                            <button class="border border-gray-300 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
+                                Message Students
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Class 3 -->
+                    <div class="bg-white rounded-lg shadow-sm border p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <h3 class="text-lg font-semibold text-gray-900">TOEIC Speaking & Writing</h3>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-brand-orange">
+                                        Pre-TOEIC
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-600">Main Teacher: Ms. Lisa Park</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-900">18 students</p>
+                                <p class="text-xs text-gray-500">Tue, Thu</p>
+                            </div>
+                        </div>
+
+                        <!-- Student List Preview -->
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-gray-700 mb-2">Recent Students</p>
+                            <div class="flex items-center space-x-2">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">GH</div>
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">HI</div>
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">JK</div>
+                                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-xs border-2 border-white">+15</div>
+                                </div>
+                                <button class="text-brand-red hover:text-red-700 text-xs font-medium ml-2">View All</button>
+                            </div>
+                        </div>
+
+                        <!-- Responsibilities -->
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-gray-700 mb-2">Your Responsibilities</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-brand-blue">
+                                    Speaking Assessment
+                                </span>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-brand-green">
+                                    Writing Feedback
+                                </span>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-brand-yellow">
+                                    1-on-1 Sessions
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Next Session -->
+                        <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <p class="text-sm font-medium text-gray-900">Upcoming: April 2, 7:30 PM</p>
+                            <p class="text-xs text-gray-600">Course starts next week</p>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="flex flex-wrap gap-2">
+                            <button class="bg-gray-100 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors">
+                                Prepare Materials
+                            </button>
+                            <button class="border border-gray-300 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
+                                Contact Students
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Schedule & Tasks -->
+            <div class="space-y-6">
+                <!-- Weekly Schedule -->
+                <div class="bg-white rounded-lg shadow-sm border p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">This Week's Schedule</h3>
+                    <div class="space-y-3">
+                        <!-- Today -->
+                        <div class="p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-900">Today</span>
+                                <span class="text-xs text-brand-red font-medium">7:00 PM</span>
+                            </div>
+                            <p class="text-sm text-gray-700">TOEIC Foundation</p>
+                            <p class="text-xs text-gray-500">Attendance & Support</p>
+                        </div>
+
+                        <!-- Tomorrow -->
+                        <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-900">Tomorrow</span>
+                                <span class="text-xs text-gray-600">6:00 PM</span>
+                            </div>
+                            <p class="text-sm text-gray-700">TOEIC Intermediate</p>
+                            <p class="text-xs text-gray-500">Quiz grading session</p>
+                        </div>
+
+                        <!-- Wednesday -->
+                        <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-900">Wednesday</span>
+                                <span class="text-xs text-gray-600">7:00 PM</span>
+                            </div>
+                            <p class="text-sm text-gray-700">TOEIC Foundation</p>
+                            <p class="text-xs text-gray-500">Attendance & Support</p>
+                        </div>
+
+                        <!-- Thursday -->
+                        <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-900">Thursday</span>
+                                <span class="text-xs text-gray-600">6:00 PM</span>
+                            </div>
+                            <p class="text-sm text-gray-700">TOEIC Intermediate</p>
+                            <p class="text-xs text-gray-500">Practice session</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Tasks -->
+                <div class="bg-white rounded-lg shadow-sm border p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Pending Tasks</h3>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-brand-yellow">
+                            8 tasks
+                        </span>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <!-- High Priority Task -->
+                        <div class="p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">Grade Week 3 Vocabulary Quiz</p>
+                                    <p class="text-xs text-gray-600 mt-1">TOEIC Foundation - 24 submissions</p>
+                                </div>
+                                <span class="text-xs text-brand-red font-medium">Due Today</span>
+                            </div>
+                        </div>
+
+                        <!-- Medium Priority Tasks -->
+                        <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">Record Attendance - March 20</p>
+                                    <p class="text-xs text-gray-600 mt-1">TOEIC Intermediate - Missing 3 students</p>
+                                </div>
+                                <span class="text-xs text-brand-yellow font-medium">Tomorrow</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">Answer Student Questions</p>
+                                    <p class="text-xs text-gray-600 mt-1">5 new questions in discussion forum</p>
+                                </div>
+                                <span class="text-xs text-brand-blue font-medium">This Week</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">Prepare Speaking Materials</p>
+                                    <p class="text-xs text-gray-600 mt-1">TOEIC Speaking & Writing - Course starts April 2</p>
+                                </div>
+                                <span class="text-xs text-gray-600 font-medium">Next Week</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="w-full mt-4 text-brand-red hover:text-red-700 text-sm font-medium">
+                        View All Tasks
+                    </button>
+                </div>
+
+                <!-- Communication Tools -->
+                <div class="bg-white rounded-lg shadow-sm border p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Communication Tools</h3>
+                    
+                    <div class="space-y-3">
+                        <button class="w-full flex items-center justify-between p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2 bg-brand-blue bg-opacity-10 rounded-lg">
+                                    <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-sm font-medium text-gray-900">Message Teachers</p>
+                                    <p class="text-xs text-gray-500">Coordinate with main instructors</p>
+                                </div>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+
+                        <button class="w-full flex items-center justify-between p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2 bg-brand-green bg-opacity-10 rounded-lg">
+                                    <svg class="w-5 h-5 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-sm font-medium text-gray-900">Send Announcements</p>
+                                    <p class="text-xs text-gray-500">Notify students about updates</p>
+                                </div>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+
+                        <button class="w-full flex items-center justify-between p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2 bg-brand-yellow bg-opacity-10 rounded-lg">
+                                    <svg class="w-5 h-5 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-sm font-medium text-gray-900">Student Support Chat</p>
+                                    <p class="text-xs text-gray-500">Help students with questions</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-brand-red">
+                                    3 new
+                                </span>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Button click handlers
+        document.addEventListener('click', function(e) {
+            const buttonText = e.target.textContent.trim();
+            
+            if (buttonText === 'Take Attendance') {
+                alert('Opening attendance tracker... This would show a list of students to mark present/absent.');
+            } else if (buttonText === 'Grade Assignments') {
+                alert('Opening assignment grading interface... This would show submitted assignments to review and grade.');
+            } else if (buttonText === 'Message Students') {
+                alert('Opening student messaging... This would show a list of students to send messages to.');
+            } else if (buttonText === 'View All') {
+                alert('Viewing all items... This would show the complete list.');
+            } else if (buttonText === 'Prepare Materials') {
+                alert('Opening material preparation... This would show tools to prepare class materials.');
+            } else if (buttonText === 'Contact Students') {
+                alert('Opening student contact list... This would show all enrolled students with contact options.');
+            } else if (buttonText === 'View All Tasks') {
+                alert('Opening task manager... This would show all pending tasks with detailed information.');
+            } else if (buttonText === 'Message Teachers') {
+                alert('Opening teacher messaging... This would show a chat interface with main instructors.');
+            } else if (buttonText === 'Send Announcements') {
+                alert('Opening announcement composer... This would show a form to create and send class announcements.');
+            } else if (buttonText === 'Student Support Chat') {
+                alert('Opening support chat... This would show active student conversations and new questions.');
+            }
+        });
+
+        // Add some interactive hover effects
+        const classCards = document.querySelectorAll('.bg-white.rounded-lg.shadow-sm.border.p-6');
+        classCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.classList.add('shadow-md');
+            });
+            card.addEventListener('mouseleave', function() {
+                this.classList.remove('shadow-md');
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dc5d7a74f50489',t:'MTc1NDk2Mzg4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

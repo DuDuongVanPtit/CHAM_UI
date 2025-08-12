@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC Navigation System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-roboto { font-family: 'Roboto', sans-serif; }
+        
+        /* Header Styles */
+        .header {
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                height: 64px;
+                padding: 0 16px;
+            }
+        }
+        
+        /* Logo Styles */
+        .logo {
+            width: 160px;
+            height: auto;
+            flex-shrink: 0;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: #B91C1C;
+            font-family: 'Roboto', sans-serif;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #B91C1C, #DC2626);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        
+        /* Navigation Styles */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            color: #1F2937;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 8px 0;
+            position: relative;
+            transition: color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .nav-link:hover {
+            color: #B91C1C;
+        }
+        
+        .nav-link.active {
+            color: #B91C1C;
+        }
+        
+        /* Underline Animation */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #B91C1C;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-icon {
+            margin-left: 4px;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown:hover .dropdown-icon {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 12px 16px;
+            color: #1F2937;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #F3F4F6;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover {
+            background: #FEF2F2;
+            color: #B91C1C;
+            padding-left: 20px;
+        }
+        
+        /* CTA Button */
+        .cta-button {
+            background: linear-gradient(135deg, #B91C1C, #DC2626);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(185, 28, 28, 0.3);
+            background: linear-gradient(135deg, #991B1B, #B91C1C);
+        }
+        
+        /* Mobile Menu Styles */
+        .mobile-menu-button {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        .hamburger-line {
+            width: 100%;
+            height: 2px;
+            background: #1F2937;
+            margin: 2px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-button.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        
+        .mobile-menu-button.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-menu-button.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            z-index: 999;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+        
+        .mobile-overlay.active {
+            right: 0;
+        }
+        
+        .mobile-menu {
+            padding: 80px 24px 24px;
+        }
+        
+        .mobile-nav-item {
+            border-bottom: 1px solid #F3F4F6;
+        }
+        
+        .mobile-nav-link {
+            display: block;
+            padding: 16px 0;
+            color: #1F2937;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.3s ease;
+        }
+        
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+            color: #B91C1C;
+        }
+        
+        .mobile-dropdown {
+            background: #F9FAFB;
+            margin: 8px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease;
+        }
+        
+        .mobile-dropdown.active {
+            max-height: 300px;
+        }
+        
+        .mobile-dropdown-item {
+            display: block;
+            padding: 12px 16px;
+            color: #6B7280;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .mobile-dropdown-item:hover {
+            color: #B91C1C;
+            background: #FEF2F2;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                gap: 24px;
+            }
+            
+            .nav-link {
+                font-size: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-button {
+                display: flex;
+            }
+            
+            .logo-text {
+                font-size: 24px;
+            }
+            
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+            }
+        }
+        
+        /* Tablet Condensed Menu */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .nav-item.tablet-hidden {
+                display: none;
+            }
+            
+            .more-menu {
+                display: block;
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            .more-menu {
+                display: none;
+            }
+        }
+        
+        /* Scroll Effect */
+        .header.scrolled {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header.scrolled .header-container {
+            height: 70px;
+        }
+        
+        @media (max-width: 768px) {
+            .header.scrolled .header-container {
+                height: 60px;
+            }
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 0.3s ease-in-out;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header Navigation -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="#" class="logo-text">
+                    <div class="logo-icon">C</div>
+                    CHAM TOEIC
+                </a>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="nav-menu">
+                <!-- Về chúng tôi -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link">
+                        Về chúng tôi
+                        <svg class="dropdown-icon w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Giới thiệu</a>
+                        <a href="#" class="dropdown-item">Tầm nhìn & Sứ mệnh</a>
+                        <a href="#" class="dropdown-item">Thành tích</a>
+                        <a href="#" class="dropdown-item">Chứng nhận</a>
+                    </div>
+                </li>
+                
+                <!-- Đội ngũ đào tạo -->
+                <li class="nav-item dropdown tablet-hidden">
+                    <a href="#" class="nav-link">
+                        Đội ngũ đào tạo
+                        <svg class="dropdown-icon w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Giáo viên bản ngữ</a>
+                        <a href="#" class="dropdown-item">Giáo viên Việt Nam</a>
+                        <a href="#" class="dropdown-item">Chuyên gia TOEIC</a>
+                    </div>
+                </li>
+                
+                <!-- Học viên -->
+                <li class="nav-item dropdown tablet-hidden">
+                    <a href="#" class="nav-link">
+                        Học viên
+                        <svg class="dropdown-icon w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Cảm nhận học viên</a>
+                        <a href="#" class="dropdown-item">Thành tích nổi bật</a>
+                        <a href="#" class="dropdown-item">Cộng đồng học tập</a>
+                    </div>
+                </li>
+                
+                <!-- Lịch khai giảng -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Lịch khai giảng</a>
+                </li>
+                
+                <!-- Khóa học -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link">
+                        Khóa học
+                        <svg class="dropdown-icon w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">TOEIC Cơ bản</a>
+                        <a href="#" class="dropdown-item">TOEIC Nâng cao</a>
+                        <a href="#" class="dropdown-item">TOEIC 4 kỹ năng</a>
+                        <a href="#" class="dropdown-item">Luyện thi cấp tốc</a>
+                    </div>
+                </li>
+                
+                <!-- Test online -->
+                <li class="nav-item tablet-hidden">
+                    <a href="#" class="nav-link">Test online</a>
+                </li>
+                
+                <!-- Bài tập -->
+                <li class="nav-item tablet-hidden">
+                    <a href="#" class="nav-link">Bài tập</a>
+                </li>
+                
+                <!-- Tin tức -->
+                <li class="nav-item tablet-hidden">
+                    <a href="#" class="nav-link">Tin tức</a>
+                </li>
+                
+                <!-- More Menu for Tablet -->
+                <li class="nav-item dropdown more-menu">
+                    <a href="#" class="nav-link">
+                        Thêm
+                        <svg class="dropdown-icon w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Đội ngũ đào tạo</a>
+                        <a href="#" class="dropdown-item">Học viên</a>
+                        <a href="#" class="dropdown-item">Test online</a>
+                        <a href="#" class="dropdown-item">Bài tập</a>
+                        <a href="#" class="dropdown-item">Tin tức</a>
+                        <a href="#" class="dropdown-item">Tài liệu thêm</a>
+                    </div>
+                </li>
+            </nav>
+            
+            <!-- CTA Button -->
+            <div class="flex items-center gap-4">
+                <button class="cta-button" onclick="handleLogin()">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                    </svg>
+                    Đăng nhập
+                </button>
+                
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-button" onclick="toggleMobileMenu()">
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay">
+        <div class="mobile-menu">
+            <!-- Mobile Navigation Items -->
+            <div class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link" onclick="toggleMobileDropdown('about')">
+                    Về chúng tôi
+                    <svg class="dropdown-icon w-4 h-4 float-right mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+                <div class="mobile-dropdown" id="about-dropdown">
+                    <a href="#" class="mobile-dropdown-item">Giới thiệu</a>
+                    <a href="#" class="mobile-dropdown-item">Tầm nhìn & Sứ mệnh</a>
+                    <a href="#" class="mobile-dropdown-item">Thành tích</a>
+                    <a href="#" class="mobile-dropdown-item">Chứng nhận</a>
+                </div>
+            </div>
+            
+            <div class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link" onclick="toggleMobileDropdown('teachers')">
+                    Đội ngũ đào tạo
+                    <svg class="dropdown-icon w-4 h-4 float-right mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+                <div class="mobile-dropdown" id="teachers-dropdown">
+                    <a href="#" class="mobile-dropdown-item">Giáo viên bản ngữ</a>
+                    <a href="#" class="mobile-dropdown-item">Giáo viên Việt Nam</a>
+                    <a href="#" class="mobile-dropdown-item">Chuyên gia TOEIC</a>
+                </div>
+            </div>
+            
+            <div class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link" onclick="toggleMobileDropdown('students')">
+                    Học viên
+                    <svg class="dropdown-icon w-4 h-4 float-right mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+                <div class="mobile-dropdown" id="students-dropdown">
+                    <a href="#" class="mobile-dropdown-item">Cảm nhận học viên</a>
+                    <a href="#" class="mobile-dropdown-item">Thành tích nổi bật</a>
+                    <a href="#" class="mobile-dropdown-item">Cộng đồng học tập</a>
+                </div>
+            </div>
+            
+            <div class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link">Lịch khai giảng</a>
+            </div>
+            
+            <div class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link" onclick="toggleMobileDropdown('courses')">
+                    Khóa học
+                    <svg class="dropdown-icon w-4 h-4 float-right mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+                <div class="mobile-dropdown" id="courses-dropdown">
+                    <a href="#" class="mobile-dropdown-item">TOEIC Cơ bản</a>
+                    <a href="#" class="mobile-dropdown-item">TOEIC Nâng cao</a>
+                    <a href="#" class="mobile-dropdown-item">TOEIC 4 kỹ năng</a>
+                    <a href="#" class="mobile-dropdown-item">Luyện thi cấp tốc</a>
+                </div>
+            </div>
+            
+            <div class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link">Test online</a>
+            </div>
+            
+            <div class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link">Bài tập</a>
+            </div>
+            
+            <div class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link">Tin tức</a>
+            </div>
+            
+            <div class="mobile-nav-item">
+                <a href="#" class="mobile-nav-link">Tài liệu thêm</a>
+            </div>
+            
+            <!-- Mobile CTA -->
+            <div class="mt-8 pt-8 border-t border-gray-200">
+                <button class="cta-button w-full justify-center" onclick="handleLogin()">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                    </svg>
+                    Đăng nhập
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Demo Content -->
+    <main class="pt-8">
+        <div class="max-w-1200px mx-auto px-6">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-6 font-inter">CHAM TOEIC Navigation System</h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 font-inter">Desktop Features</h3>
+                        <ul class="text-sm text-gray-600 space-y-2 font-inter">
+                            <li>• Full horizontal menu (1200px container)</li>
+                            <li>• Dropdown menus with hover effects</li>
+                            <li>• Red underline animations</li>
+                            <li>• Sticky header with scroll effects</li>
+                            <li>• 80px height (70px when scrolled)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 font-inter">Tablet Behavior</h3>
+                        <ul class="text-sm text-gray-600 space-y-2 font-inter">
+                            <li>• Condensed menu layout</li>
+                            <li>• "Thêm" dropdown for extra items</li>
+                            <li>• Responsive spacing adjustments</li>
+                            <li>• Optimized touch interactions</li>
+                            <li>• Maintained functionality</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3 font-inter">Mobile Experience</h3>
+                        <ul class="text-sm text-gray-600 space-y-2 font-inter">
+                            <li>• Hamburger menu button</li>
+                            <li>• Full-screen overlay (slide from right)</li>
+                            <li>• Collapsible dropdown sections</li>
+                            <li>• 64px header height (60px scrolled)</li>
+                            <li>• Touch-optimized interactions</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- React Component Code -->
+                <div class="bg-gray-900 rounded-lg p-6 overflow-x-auto">
+                    <h3 class="text-lg font-semibold text-white mb-4 font-inter">React Component Implementation</h3>
+                    <pre class="text-sm text-gray-300 font-mono"><code>// Header.jsx
+import React, { useState, useEffect } from 'react';
+
+const Header = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navigationItems = [
+    {
+      label: 'Về chúng tôi',
+      hasDropdown: true,
+      items: ['Giới thiệu', 'Tầm nhìn & Sứ mệnh', 'Thành tích', 'Chứng nhận']
+    },
+    {
+      label: 'Đội ngũ đào tạo',
+      hasDropdown: true,
+      tabletHidden: true,
+      items: ['Giáo viên bản ngữ', 'Giáo viên Việt Nam', 'Chuyên gia TOEIC']
+    },
+    // ... more items
+  ];
+
+  return (
+    &lt;header className={`header ${isScrolled ? 'scrolled' : ''}`}&gt;
+      &lt;div className="header-container"&gt;
+        &lt;Logo /&gt;
+        &lt;Navigation items={navigationItems} /&gt;
+        &lt;CTAButton /&gt;
+        &lt;MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} /&gt;
+      &lt;/div&gt;
+      &lt;MobileMenu isOpen={isMobileMenuOpen} items={navigationItems} /&gt;
+    &lt;/header&gt;
+  );
+};
+
+export default Header;</code></pre>
+                </div>
+            </div>
+            
+            <!-- Demo Sections -->
+            <div class="space-y-8">
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4 font-inter">Navigation States Demo</h2>
+                    <p class="text-gray-600 mb-6 font-inter">Try hovering over navigation items to see the red underline animation and dropdown menus. On mobile, tap the hamburger menu to see the full-screen overlay.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-semibold text-gray-900 font-inter">Desktop Interactions</h3>
+                            <ul class="text-gray-600 space-y-2 font-inter">
+                                <li>• Hover effects with red color transition</li>
+                                <li>• Smooth underline animation</li>
+                                <li>• Dropdown menus with fade-in effect</li>
+                                <li>• Active state highlighting</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-semibold text-gray-900 font-inter">Mobile Features</h3>
+                            <ul class="text-gray-600 space-y-2 font-inter">
+                                <li>• Animated hamburger to X transformation</li>
+                                <li>• Right-to-left slide animation</li>
+                                <li>• Collapsible dropdown sections</li>
+                                <li>• Full-screen navigation overlay</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4 font-inter">Responsive Breakpoints</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="py-3 px-4 font-semibold text-gray-900 font-inter">Breakpoint</th>
+                                    <th class="py-3 px-4 font-semibold text-gray-900 font-inter">Layout</th>
+                                    <th class="py-3 px-4 font-semibold text-gray-900 font-inter">Height</th>
+                                    <th class="py-3 px-4 font-semibold text-gray-900 font-inter">Navigation</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 font-inter">
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-4">Desktop (1025px+)</td>
+                                    <td class="py-3 px-4">Full horizontal menu</td>
+                                    <td class="py-3 px-4">80px / 70px scrolled</td>
+                                    <td class="py-3 px-4">All items visible</td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-3 px-4">Tablet (769px - 1024px)</td>
+                                    <td class="py-3 px-4">Condensed with "Thêm"</td>
+                                    <td class="py-3 px-4">80px / 70px scrolled</td>
+                                    <td class="py-3 px-4">Some items in dropdown</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">Mobile (768px-)</td>
+                                    <td class="py-3 px-4">Hamburger menu</td>
+                                    <td class="py-3 px-4">64px / 60px scrolled</td>
+                                    <td class="py-3 px-4">Full-screen overlay</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobileOverlay');
+            const button = document.querySelector('.mobile-menu-button');
+            
+            overlay.classList.toggle('active');
+            button.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+        }
+        
+        // Mobile dropdown functionality
+        function toggleMobileDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId + '-dropdown');
+            const icon = event.target.querySelector('.dropdown-icon');
+            
+            dropdown.classList.toggle('active');
+            
+            if (icon) {
+                icon.style.transform = dropdown.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+        }
+        
+        // Handle login button
+        function handleLogin() {
+            alert('Chuyển đến trang đăng nhập!');
+        }
+        
+        // Scroll effect for header
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const overlay = document.getElementById('mobileOverlay');
+            const button = document.querySelector('.mobile-menu-button');
+            
+            if (overlay.classList.contains('active') && 
+                !overlay.contains(e.target) && 
+                !button.contains(e.target)) {
+                toggleMobileMenu();
+            }
+        });
+        
+        // Handle navigation link clicks
+        document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(l => {
+                    l.classList.remove('active');
+                });
+                
+                // Add active class to clicked link
+                if (!e.target.closest('.dropdown')) {
+                    e.target.classList.add('active');
+                }
+            });
+        });
+        
+        // Keyboard navigation support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const overlay = document.getElementById('mobileOverlay');
+                if (overlay.classList.contains('active')) {
+                    toggleMobileMenu();
+                }
+            }
+        });
+        
+        // Touch gesture support for mobile menu
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const overlay = document.getElementById('mobileOverlay');
+            const swipeThreshold = 100;
+            
+            if (touchEndX < touchStartX - swipeThreshold && !overlay.classList.contains('active')) {
+                // Swipe left to open menu
+                toggleMobileMenu();
+            } else if (touchEndX > touchStartX + swipeThreshold && overlay.classList.contains('active')) {
+                // Swipe right to close menu
+                toggleMobileMenu();
+            }
+        }
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dc30e913331110',t:'MTc1NDk2MjA1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

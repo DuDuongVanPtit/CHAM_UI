@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC Color Palette</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .color-card {
+            transition: all 0.3s ease;
+        }
+        .color-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10B981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .copy-notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="copy-notification" id="copyNotification">
+        Color code copied to clipboard! 📋
+    </div>
+
+    <div class="container mx-auto px-6 py-12">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">CHAM TOEIC Color Palette</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Comprehensive color system for the CHAM TOEIC education platform. Click any color to copy its hex code.
+            </p>
+        </div>
+
+        <!-- Primary Colors -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span class="w-1 h-8 bg-red-600 mr-3 rounded"></span>
+                Primary Colors
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#B91C1C')">
+                    <div class="h-32" style="background-color: #B91C1C;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Brand Red</h3>
+                        <p class="text-sm text-gray-600 mb-2">Primary brand color</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#B91C1C</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#991B1B')">
+                    <div class="h-32" style="background-color: #991B1B;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Deep Red</h3>
+                        <p class="text-sm text-gray-600 mb-2">Hover states, emphasis</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#991B1B</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#DC2626')">
+                    <div class="h-32" style="background-color: #DC2626;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Light Red</h3>
+                        <p class="text-sm text-gray-600 mb-2">Active states</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#DC2626</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#7F1D1D')">
+                    <div class="h-32" style="background-color: #7F1D1D;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Dark Red</h3>
+                        <p class="text-sm text-gray-600 mb-2">Text, borders</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#7F1D1D</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secondary Colors -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span class="w-1 h-8 bg-blue-600 mr-3 rounded"></span>
+                Secondary Colors
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#EA580C')">
+                    <div class="h-32" style="background-color: #EA580C;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Orange</h3>
+                        <p class="text-sm text-gray-600 mb-2">Pre-TOEIC level</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#EA580C</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#2563EB')">
+                    <div class="h-32" style="background-color: #2563EB;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Blue</h3>
+                        <p class="text-sm text-gray-600 mb-2">Level 1</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#2563EB</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#059669')">
+                    <div class="h-32" style="background-color: #059669;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Green</h3>
+                        <p class="text-sm text-gray-600 mb-2">Success states</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#059669</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#D97706')">
+                    <div class="h-32" style="background-color: #D97706;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Yellow</h3>
+                        <p class="text-sm text-gray-600 mb-2">Level 2, warnings</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#D97706</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Neutral Colors -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span class="w-1 h-8 bg-gray-500 mr-3 rounded"></span>
+                Neutral Colors
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#F9FAFB')">
+                    <div class="h-24 border" style="background-color: #F9FAFB;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Gray 50</h3>
+                        <p class="text-sm text-gray-600 mb-2">Backgrounds</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#F9FAFB</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#F3F4F6')">
+                    <div class="h-24" style="background-color: #F3F4F6;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Gray 100</h3>
+                        <p class="text-sm text-gray-600 mb-2">Cards, sections</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#F3F4F6</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#E5E7EB')">
+                    <div class="h-24" style="background-color: #E5E7EB;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Gray 200</h3>
+                        <p class="text-sm text-gray-600 mb-2">Borders</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#E5E7EB</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#6B7280')">
+                    <div class="h-24" style="background-color: #6B7280;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Gray 500</h3>
+                        <p class="text-sm text-gray-600 mb-2">Secondary text</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#6B7280</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#111827')">
+                    <div class="h-24" style="background-color: #111827;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Gray 900</h3>
+                        <p class="text-sm text-gray-600 mb-2">Primary text</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#111827</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer border" onclick="copyColor('#FFFFFF')">
+                    <div class="h-24 border" style="background-color: #FFFFFF;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">White</h3>
+                        <p class="text-sm text-gray-600 mb-2">Pure white</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#FFFFFF</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#000000')">
+                    <div class="h-24" style="background-color: #000000;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Black</h3>
+                        <p class="text-sm text-gray-600 mb-2">Pure black</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#000000</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel Colors -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span class="w-1 h-8 bg-gray-700 mr-3 rounded"></span>
+                Admin Panel Colors
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#374151')">
+                    <div class="h-32" style="background-color: #374151;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Primary</h3>
+                        <p class="text-sm text-gray-600 mb-2">Professional dark gray</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#374151</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#6B7280')">
+                    <div class="h-32" style="background-color: #6B7280;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Secondary</h3>
+                        <p class="text-sm text-gray-600 mb-2">Secondary elements</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#6B7280</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#10B981')">
+                    <div class="h-32" style="background-color: #10B981;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Success</h3>
+                        <p class="text-sm text-gray-600 mb-2">Success messages</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#10B981</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#F59E0B')">
+                    <div class="h-32" style="background-color: #F59E0B;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Warning</h3>
+                        <p class="text-sm text-gray-600 mb-2">Warning alerts</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#F59E0B</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#EF4444')">
+                    <div class="h-32" style="background-color: #EF4444;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Danger</h3>
+                        <p class="text-sm text-gray-600 mb-2">Error states</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#EF4444</code>
+                    </div>
+                </div>
+                <div class="color-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer" onclick="copyColor('#3B82F6')">
+                    <div class="h-32" style="background-color: #3B82F6;"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900">Info</h3>
+                        <p class="text-sm text-gray-600 mb-2">Information alerts</p>
+                        <code class="text-xs bg-gray-100 px-2 py-1 rounded">#3B82F6</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Examples -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span class="w-1 h-8 bg-green-600 mr-3 rounded"></span>
+                Usage Examples
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Student Interface Example -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Student Interface</h3>
+                    <div class="space-y-4">
+                        <button class="w-full py-3 px-4 rounded-lg font-medium text-white transition-colors" style="background-color: #B91C1C;" onmouseover="this.style.backgroundColor='#991B1B'" onmouseout="this.style.backgroundColor='#B91C1C'">
+                            Start TOEIC Practice
+                        </button>
+                        <div class="flex space-x-2">
+                            <span class="px-3 py-1 rounded-full text-sm font-medium text-white" style="background-color: #EA580C;">Pre-TOEIC</span>
+                            <span class="px-3 py-1 rounded-full text-sm font-medium text-white" style="background-color: #2563EB;">Level 1</span>
+                            <span class="px-3 py-1 rounded-full text-sm font-medium text-white" style="background-color: #D97706;">Level 2</span>
+                        </div>
+                        <div class="p-4 rounded-lg" style="background-color: #F9FAFB; border: 1px solid #E5E7EB;">
+                            <p style="color: #111827;">Your progress has been saved successfully!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Panel Example -->
+                <div class="rounded-xl shadow-lg p-6" style="background-color: #374151;">
+                    <h3 class="text-lg font-semibold text-white mb-4">Admin Panel</h3>
+                    <div class="space-y-4">
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 rounded text-sm font-medium text-white" style="background-color: #10B981;">Success</button>
+                            <button class="px-4 py-2 rounded text-sm font-medium text-white" style="background-color: #F59E0B;">Warning</button>
+                            <button class="px-4 py-2 rounded text-sm font-medium text-white" style="background-color: #EF4444;">Danger</button>
+                            <button class="px-4 py-2 rounded text-sm font-medium text-white" style="background-color: #3B82F6;">Info</button>
+                        </div>
+                        <div class="p-3 rounded" style="background-color: #6B7280;">
+                            <p class="text-white text-sm">Dashboard statistics and controls</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 border-t border-gray-200">
+            <p class="text-gray-600">CHAM TOEIC Color Palette System • Click any color to copy its hex code</p>
+        </footer>
+    </div>
+
+    <script>
+        function copyColor(colorCode) {
+            navigator.clipboard.writeText(colorCode).then(function() {
+                const notification = document.getElementById('copyNotification');
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2000);
+            });
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dc17d9f527e2e7',t:'MTc1NDk2MTAyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC React Component Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-roboto { font-family: 'Roboto', sans-serif; }
+        
+        /* Button System */
+        .btn-base {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        /* Button Variants */
+        .btn-primary {
+            background-color: #B91C1C;
+            color: white;
+            border-color: #B91C1C;
+        }
+        .btn-primary:hover { background-color: #991B1B; border-color: #991B1B; }
+        .btn-primary:active { background-color: #7F1D1D; border-color: #7F1D1D; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #B91C1C;
+            border-color: #B91C1C;
+        }
+        .btn-secondary:hover { background-color: #FEF2F2; }
+        .btn-secondary:active { background-color: #FEE2E2; }
+        .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .btn-ghost {
+            background-color: transparent;
+            color: #B91C1C;
+            border-color: transparent;
+        }
+        .btn-ghost:hover { background-color: #FEF2F2; }
+        .btn-ghost:active { background-color: #FEE2E2; }
+        .btn-ghost:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .btn-danger {
+            background-color: #DC2626;
+            color: white;
+            border-color: #DC2626;
+        }
+        .btn-danger:hover { background-color: #B91C1C; border-color: #B91C1C; }
+        .btn-danger:active { background-color: #991B1B; border-color: #991B1B; }
+        .btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        /* Button Sizes */
+        .btn-small { height: 32px; padding: 0 12px; font-size: 14px; }
+        .btn-medium { height: 40px; padding: 0 16px; font-size: 16px; }
+        .btn-large { height: 48px; padding: 0 24px; font-size: 18px; }
+        
+        /* Input System */
+        .input-base {
+            border-radius: 8px;
+            padding: 12px;
+            border: 2px solid #E5E7EB;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+        }
+        
+        .input-default:focus {
+            outline: none;
+            border-color: #B91C1C;
+            box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.1);
+        }
+        
+        .input-error {
+            border-color: #DC2626;
+            color: #DC2626;
+        }
+        .input-error:focus {
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+        
+        .input-success {
+            border-color: #059669;
+            color: #059669;
+        }
+        .input-success:focus {
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+        
+        /* Input Sizes */
+        .input-small { height: 36px; padding: 8px 12px; font-size: 14px; }
+        .input-medium { height: 44px; padding: 12px; font-size: 16px; }
+        .input-large { height: 52px; padding: 16px; font-size: 18px; }
+        
+        /* Card System */
+        .card-base {
+            background-color: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .card-default:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .card-active {
+            border-color: #B91C1C;
+            box-shadow: 0 0 0 1px #B91C1C;
+        }
+        
+        .course-card {
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .course-card-image {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #B91C1C, #DC2626);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+        }
+        
+        .course-card-content {
+            padding: 24px;
+        }
+        
+        /* Interactive Elements */
+        .component-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .component-card:hover {
+            border-color: #B91C1C;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(185, 28, 28, 0.1);
+        }
+        
+        .copy-button {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .component-card:hover .copy-button {
+            opacity: 1;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10B981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .copy-notification.show {
+            transform: translateX(0);
+        }
+        
+        .code-block {
+            background: #1F2937;
+            color: #F9FAFB;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+        
+        .syntax-keyword { color: #F472B6; }
+        .syntax-string { color: #34D399; }
+        .syntax-comment { color: #9CA3AF; }
+        .syntax-function { color: #60A5FA; }
+        .syntax-property { color: #FBBF24; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-inter">
+    <div class="copy-notification" id="copyNotification">
+        Component code copied! 📋
+    </div>
+
+    <div class="container mx-auto px-6 py-12">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-gray-900 mb-4 font-inter">CHAM TOEIC Component Library</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto font-inter">
+                Complete React component system with buttons, inputs, and cards. 
+                Hover over any component to copy its React implementation code.
+            </p>
+        </div>
+
+        <!-- Button System -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-red-600 mr-3 rounded"></span>
+                Button System
+            </h2>
+            
+            <!-- Button Variants -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Button Variants</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Primary Button -->
+                    <div class="component-card bg-white rounded-xl shadow-md p-6 relative" onclick="copyCode('primaryButton')">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 font-inter">Primary</h4>
+                                <p class="text-sm text-gray-600 font-roboto">Main actions</p>
+                            </div>
+                            <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy Code</button>
+                        </div>
+                        <div class="space-y-3">
+                            <button class="btn-base btn-primary btn-medium w-full">Default</button>
+                            <button class="btn-base btn-primary btn-medium w-full" style="background-color: #991B1B; border-color: #991B1B;">Hover</button>
+                            <button class="btn-base btn-primary btn-medium w-full" disabled>Disabled</button>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Button -->
+                    <div class="component-card bg-white rounded-xl shadow-md p-6 relative" onclick="copyCode('secondaryButton')">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 font-inter">Secondary</h4>
+                                <p class="text-sm text-gray-600 font-roboto">Alternative actions</p>
+                            </div>
+                            <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy Code</button>
+                        </div>
+                        <div class="space-y-3">
+                            <button class="btn-base btn-secondary btn-medium w-full">Default</button>
+                            <button class="btn-base btn-secondary btn-medium w-full" style="background-color: #FEF2F2;">Hover</button>
+                            <button class="btn-base btn-secondary btn-medium w-full" disabled>Disabled</button>
+                        </div>
+                    </div>
+
+                    <!-- Ghost Button -->
+                    <div class="component-card bg-white rounded-xl shadow-md p-6 relative" onclick="copyCode('ghostButton')">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 font-inter">Ghost</h4>
+                                <p class="text-sm text-gray-600 font-roboto">Subtle actions</p>
+                            </div>
+                            <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy Code</button>
+                        </div>
+                        <div class="space-y-3">
+                            <button class="btn-base btn-ghost btn-medium w-full">Default</button>
+                            <button class="btn-base btn-ghost btn-medium w-full" style="background-color: #FEF2F2;">Hover</button>
+                            <button class="btn-base btn-ghost btn-medium w-full" disabled>Disabled</button>
+                        </div>
+                    </div>
+
+                    <!-- Danger Button -->
+                    <div class="component-card bg-white rounded-xl shadow-md p-6 relative" onclick="copyCode('dangerButton')">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 font-inter">Danger</h4>
+                                <p class="text-sm text-gray-600 font-roboto">Destructive actions</p>
+                            </div>
+                            <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto">Copy Code</button>
+                        </div>
+                        <div class="space-y-3">
+                            <button class="btn-base btn-danger btn-medium w-full">Delete</button>
+                            <button class="btn-base btn-danger btn-medium w-full" style="background-color: #B91C1C; border-color: #B91C1C;">Hover</button>
+                            <button class="btn-base btn-danger btn-medium w-full" disabled>Disabled</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button Sizes -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Button Sizes</h3>
+                <div class="component-card bg-white rounded-xl shadow-lg p-8 relative" onclick="copyCode('buttonSizes')">
+                    <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4">Copy Code</button>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <button class="btn-base btn-primary btn-small mb-2">Small Button</button>
+                            <p class="text-sm text-gray-600 font-inter">32px height • 14px text</p>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn-base btn-primary btn-medium mb-2">Medium Button</button>
+                            <p class="text-sm text-gray-600 font-inter">40px height • 16px text</p>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn-base btn-primary btn-large mb-2">Large Button</button>
+                            <p class="text-sm text-gray-600 font-inter">48px height • 18px text</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button with Icons -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Buttons with Icons</h3>
+                <div class="component-card bg-white rounded-xl shadow-lg p-8 relative" onclick="copyCode('buttonWithIcon')">
+                    <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4">Copy Code</button>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="btn-base btn-primary btn-medium flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 12l-4-4h8l-4 4z"/>
+                            </svg>
+                            Download
+                        </button>
+                        <button class="btn-base btn-secondary btn-medium flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                            </svg>
+                            Profile
+                        </button>
+                        <button class="btn-base btn-ghost btn-medium flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
+                            </svg>
+                            Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Input System -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-blue-600 mr-3 rounded"></span>
+                Input System
+            </h2>
+            
+            <!-- Input States -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Input States</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="component-card bg-white rounded-xl shadow-lg p-8 relative" onclick="copyCode('inputStates')">
+                        <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4">Copy Code</button>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">Default State</label>
+                                <input type="text" class="input-base input-default input-medium" placeholder="Enter your email">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">Focus State</label>
+                                <input type="text" class="input-base input-default input-medium" placeholder="Click to focus" style="border-color: #B91C1C; box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.1);">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-red-600 mb-2 font-roboto">Error State</label>
+                                <input type="text" class="input-base input-error input-medium" placeholder="Invalid input" value="invalid@">
+                                <p class="text-sm text-red-600 mt-1 font-inter">Please enter a valid email address</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-green-600 mb-2 font-roboto">Success State</label>
+                                <input type="text" class="input-base input-success input-medium" placeholder="Valid input" value="user@example.com">
+                                <p class="text-sm text-green-600 mt-1 font-inter">Email address is valid</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Sizes -->
+                    <div class="component-card bg-white rounded-xl shadow-lg p-8 relative" onclick="copyCode('inputSizes')">
+                        <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4">Copy Code</button>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">Small Input (36px)</label>
+                                <input type="text" class="input-base input-default input-small" placeholder="Small input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">Medium Input (44px)</label>
+                                <input type="text" class="input-base input-default input-medium" placeholder="Medium input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">Large Input (52px)</label>
+                                <input type="text" class="input-base input-default input-large" placeholder="Large input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Example -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Complete Form Example</h3>
+                <div class="component-card bg-white rounded-xl shadow-lg p-8 relative" onclick="copyCode('formExample')">
+                    <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4">Copy Code</button>
+                    <div class="max-w-md mx-auto">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 font-inter">TOEIC Registration</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">Full Name</label>
+                                <input type="text" class="input-base input-default input-medium" placeholder="Enter your full name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">Email Address</label>
+                                <input type="email" class="input-base input-default input-medium" placeholder="your@email.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">TOEIC Level</label>
+                                <select class="input-base input-default input-medium">
+                                    <option>Select your level</option>
+                                    <option>Pre-TOEIC</option>
+                                    <option>Level 1 (200-450)</option>
+                                    <option>Level 2 (450-700)</option>
+                                    <option>Advanced (700+)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2 font-roboto">Password</label>
+                                <input type="password" class="input-base input-default input-medium" placeholder="Create a password">
+                            </div>
+                            <button class="btn-base btn-primary btn-medium w-full mt-6">Create Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Card System -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-green-600 mr-3 rounded"></span>
+                Card System
+            </h2>
+            
+            <!-- Basic Cards -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Basic Card States</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Default Card -->
+                    <div class="component-card bg-white rounded-xl shadow-md p-6 relative" onclick="copyCode('defaultCard')">
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4">Copy Code</button>
+                        <div class="card-base card-default">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2 font-inter">Default Card</h4>
+                            <p class="text-gray-600 font-inter">This is a default card with standard styling and hover effects.</p>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2 text-center font-inter">Hover for elevation</p>
+                    </div>
+
+                    <!-- Active Card -->
+                    <div class="component-card bg-white rounded-xl shadow-md p-6 relative" onclick="copyCode('activeCard')">
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4">Copy Code</button>
+                        <div class="card-base card-active">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2 font-inter">Active Card</h4>
+                            <p class="text-gray-600 font-inter">This card shows the active state with red border accent.</p>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2 text-center font-inter">Red border accent</p>
+                    </div>
+
+                    <!-- Card with Actions -->
+                    <div class="component-card bg-white rounded-xl shadow-md p-6 relative" onclick="copyCode('cardWithActions')">
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4">Copy Code</button>
+                        <div class="card-base card-default">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2 font-inter">Card with Actions</h4>
+                            <p class="text-gray-600 mb-4 font-inter">Card containing action buttons and interactive elements.</p>
+                            <div class="flex space-x-2">
+                                <button class="btn-base btn-primary btn-small">Start</button>
+                                <button class="btn-base btn-ghost btn-small">Learn More</button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2 text-center font-inter">With action buttons</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Cards -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Course Card Layout</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- TOEIC Listening Course -->
+                    <div class="component-card bg-white rounded-xl shadow-md overflow-hidden relative" onclick="copyCode('courseCard')">
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4 z-10">Copy Code</button>
+                        <div class="card-base course-card card-default">
+                            <div class="course-card-image">
+                                🎧
+                            </div>
+                            <div class="course-card-content">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded font-roboto">LISTENING</span>
+                                    <span class="text-sm text-gray-500 font-roboto">Level 1</span>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2 font-inter">TOEIC Listening Practice</h4>
+                                <p class="text-gray-600 text-sm mb-4 font-inter">Master listening skills with authentic TOEIC practice questions and detailed explanations.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center text-sm text-gray-500 font-roboto">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 12l-4-4h8l-4 4z"/>
+                                        </svg>
+                                        45 lessons
+                                    </div>
+                                    <button class="btn-base btn-primary btn-small">Start Course</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TOEIC Reading Course -->
+                    <div class="component-card bg-white rounded-xl shadow-md overflow-hidden relative" onclick="copyCode('courseCard')">
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4 z-10">Copy Code</button>
+                        <div class="card-base course-card card-default">
+                            <div class="course-card-image" style="background: linear-gradient(135deg, #059669, #10B981);">
+                                📖
+                            </div>
+                            <div class="course-card-content">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded font-roboto">READING</span>
+                                    <span class="text-sm text-gray-500 font-roboto">Level 2</span>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2 font-inter">TOEIC Reading Mastery</h4>
+                                <p class="text-gray-600 text-sm mb-4 font-inter">Improve reading comprehension with strategic approaches to TOEIC reading sections.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center text-sm text-gray-500 font-roboto">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 12l-4-4h8l-4 4z"/>
+                                        </svg>
+                                        38 lessons
+                                    </div>
+                                    <button class="btn-base btn-primary btn-small">Start Course</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Practice Test Course -->
+                    <div class="component-card bg-white rounded-xl shadow-md overflow-hidden relative" onclick="copyCode('courseCard')">
+                        <button class="copy-button bg-red-600 text-white px-2 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4 z-10">Copy Code</button>
+                        <div class="card-base course-card card-default">
+                            <div class="course-card-image" style="background: linear-gradient(135deg, #D97706, #F59E0B);">
+                                📝
+                            </div>
+                            <div class="course-card-content">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded font-roboto">PRACTICE</span>
+                                    <span class="text-sm text-gray-500 font-roboto">All Levels</span>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-900 mb-2 font-inter">Full Practice Tests</h4>
+                                <p class="text-gray-600 text-sm mb-4 font-inter">Complete TOEIC practice tests with real exam conditions and instant scoring.</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center text-sm text-gray-500 font-roboto">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 12l-4-4h8l-4 4z"/>
+                                        </svg>
+                                        12 tests
+                                    </div>
+                                    <button class="btn-base btn-primary btn-small">Take Test</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Cards -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6 font-inter">Dashboard Cards</h3>
+                <div class="component-card bg-white rounded-xl shadow-lg p-8 relative" onclick="copyCode('dashboardCards')">
+                    <button class="copy-button bg-red-600 text-white px-3 py-1 rounded text-xs font-medium font-roboto absolute top-4 right-4">Copy Code</button>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="card-base card-default text-center">
+                            <div class="text-3xl font-bold text-blue-600 mb-2 font-roboto">24</div>
+                            <h4 class="font-semibold text-gray-900 mb-1 font-inter">Tests Completed</h4>
+                            <p class="text-sm text-gray-600 font-inter">This month</p>
+                        </div>
+                        <div class="card-base card-default text-center">
+                            <div class="text-3xl font-bold text-green-600 mb-2 font-roboto">785</div>
+                            <h4 class="font-semibold text-gray-900 mb-1 font-inter">Best Score</h4>
+                            <p class="text-sm text-gray-600 font-inter">Personal record</p>
+                        </div>
+                        <div class="card-base card-default text-center">
+                            <div class="text-3xl font-bold text-yellow-600 mb-2 font-roboto">12h</div>
+                            <h4 class="font-semibold text-gray-900 mb-1 font-inter">Study Time</h4>
+                            <p class="text-sm text-gray-600 font-inter">This week</p>
+                        </div>
+                        <div class="card-base card-default text-center">
+                            <div class="text-3xl font-bold text-red-600 mb-2 font-roboto">89%</div>
+                            <h4 class="font-semibold text-gray-900 mb-1 font-inter">Accuracy</h4>
+                            <p class="text-sm text-gray-600 font-inter">Average score</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- React Code Examples -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-semibold text-gray-900 mb-8 font-inter flex items-center">
+                <span class="w-1 h-8 bg-purple-600 mr-3 rounded"></span>
+                React Implementation Examples
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Button Component -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white p-4">
+                        <h3 class="text-lg font-semibold font-inter">Button Component</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="code-block">
+<span class="syntax-comment">// Button.jsx</span>
+<span class="syntax-keyword">import</span> React <span class="syntax-keyword">from</span> <span class="syntax-string">'react'</span>;
+
+<span class="syntax-keyword">const</span> <span class="syntax-function">Button</span> = ({ 
+  <span class="syntax-property">variant</span> = <span class="syntax-string">'primary'</span>, 
+  <span class="syntax-property">size</span> = <span class="syntax-string">'medium'</span>, 
+  <span class="syntax-property">disabled</span> = <span class="syntax-keyword">false</span>, 
+  <span class="syntax-property">children</span>, 
+  <span class="syntax-property">onClick</span>,
+  <span class="syntax-property">...props</span> 
+}) => {
+  <span class="syntax-keyword">const</span> baseClasses = <span class="syntax-string">'btn-base'</span>;
+  <span class="syntax-keyword">const</span> variantClasses = {
+    <span class="syntax-property">primary</span>: <span class="syntax-string">'btn-primary'</span>,
+    <span class="syntax-property">secondary</span>: <span class="syntax-string">'btn-secondary'</span>,
+    <span class="syntax-property">ghost</span>: <span class="syntax-string">'btn-ghost'</span>,
+    <span class="syntax-property">danger</span>: <span class="syntax-string">'btn-danger'</span>
+  };
+  <span class="syntax-keyword">const</span> sizeClasses = {
+    <span class="syntax-property">small</span>: <span class="syntax-string">'btn-small'</span>,
+    <span class="syntax-property">medium</span>: <span class="syntax-string">'btn-medium'</span>,
+    <span class="syntax-property">large</span>: <span class="syntax-string">'btn-large'</span>
+  };
+
+  <span class="syntax-keyword">return</span> (
+    &lt;<span class="syntax-function">button</span>
+      <span class="syntax-property">className</span>={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}`}
+      <span class="syntax-property">disabled</span>={disabled}
+      <span class="syntax-property">onClick</span>={onClick}
+      {...props}
+    &gt;
+      {children}
+    &lt;/<span class="syntax-function">button</span>&gt;
+  );
+};
+
+<span class="syntax-keyword">export default</span> Button;
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Component -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white p-4">
+                        <h3 class="text-lg font-semibold font-inter">Input Component</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="code-block">
+<span class="syntax-comment">// Input.jsx</span>
+<span class="syntax-keyword">import</span> React <span class="syntax-keyword">from</span> <span class="syntax-string">'react'</span>;
+
+<span class="syntax-keyword">const</span> <span class="syntax-function">Input</span> = ({ 
+  <span class="syntax-property">state</span> = <span class="syntax-string">'default'</span>, 
+  <span class="syntax-property">size</span> = <span class="syntax-string">'medium'</span>, 
+  <span class="syntax-property">label</span>, 
+  <span class="syntax-property">error</span>, 
+  <span class="syntax-property">success</span>,
+  <span class="syntax-property">...props</span> 
+}) => {
+  <span class="syntax-keyword">const</span> baseClasses = <span class="syntax-string">'input-base'</span>;
+  <span class="syntax-keyword">const</span> stateClasses = {
+    <span class="syntax-property">default</span>: <span class="syntax-string">'input-default'</span>,
+    <span class="syntax-property">error</span>: <span class="syntax-string">'input-error'</span>,
+    <span class="syntax-property">success</span>: <span class="syntax-string">'input-success'</span>
+  };
+  <span class="syntax-keyword">const</span> sizeClasses = {
+    <span class="syntax-property">small</span>: <span class="syntax-string">'input-small'</span>,
+    <span class="syntax-property">medium</span>: <span class="syntax-string">'input-medium'</span>,
+    <span class="syntax-property">large</span>: <span class="syntax-string">'input-large'</span>
+  };
+
+  <span class="syntax-keyword">return</span> (
+    &lt;<span class="syntax-function">div</span>&gt;
+      {label && &lt;<span class="syntax-function">label</span> <span class="syntax-property">className</span>=<span class="syntax-string">"block text-sm font-medium text-gray-700 mb-2"</span>&gt;{label}&lt;/<span class="syntax-function">label</span>&gt;}
+      &lt;<span class="syntax-function">input</span>
+        <span class="syntax-property">className</span>={`${baseClasses} ${stateClasses[state]} ${sizeClasses[size]}`}
+        {...props}
+      /&gt;
+      {error && &lt;<span class="syntax-function">p</span> <span class="syntax-property">className</span>=<span class="syntax-string">"text-sm text-red-600 mt-1"</span>&gt;{error}&lt;/<span class="syntax-function">p</span>&gt;}
+      {success && &lt;<span class="syntax-function">p</span> <span class="syntax-property">className</span>=<span class="syntax-string">"text-sm text-green-600 mt-1"</span>&gt;{success}&lt;/<span class="syntax-function">p</span>&gt;}
+    &lt;/<span class="syntax-function">div</span>&gt;
+  );
+};
+
+<span class="syntax-keyword">export default</span> Input;
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Component -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white p-4">
+                        <h3 class="text-lg font-semibold font-inter">Card Component</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="code-block">
+<span class="syntax-comment">// Card.jsx</span>
+<span class="syntax-keyword">import</span> React <span class="syntax-keyword">from</span> <span class="syntax-string">'react'</span>;
+
+<span class="syntax-keyword">const</span> <span class="syntax-function">Card</span> = ({ 
+  <span class="syntax-property">variant</span> = <span class="syntax-string">'default'</span>, 
+  <span class="syntax-property">children</span>, 
+  <span class="syntax-property">className</span> = <span class="syntax-string">''</span>,
+  <span class="syntax-property">...props</span> 
+}) => {
+  <span class="syntax-keyword">const</span> baseClasses = <span class="syntax-string">'card-base'</span>;
+  <span class="syntax-keyword">const</span> variantClasses = {
+    <span class="syntax-property">default</span>: <span class="syntax-string">'card-default'</span>,
+    <span class="syntax-property">active</span>: <span class="syntax-string">'card-active'</span>,
+    <span class="syntax-property">course</span>: <span class="syntax-string">'course-card'</span>
+  };
+
+  <span class="syntax-keyword">return</span> (
+    &lt;<span class="syntax-function">div</span>
+      <span class="syntax-property">className</span>={`${baseClasses} ${variantClasses[variant]} ${className}`}
+      {...props}
+    &gt;
+      {children}
+    &lt;/<span class="syntax-function">div</span>&gt;
+  );
+};
+
+<span class="syntax-keyword">const</span> <span class="syntax-function">CourseCard</span> = ({ <span class="syntax-property">title</span>, <span class="syntax-property">description</span>, <span class="syntax-property">level</span>, <span class="syntax-property">lessons</span>, <span class="syntax-property">icon</span>, <span class="syntax-property">color</span> }) => (
+  &lt;<span class="syntax-function">Card</span> <span class="syntax-property">variant</span>=<span class="syntax-string">"course"</span>&gt;
+    &lt;<span class="syntax-function">div</span> <span class="syntax-property">className</span>=<span class="syntax-string">"course-card-image"</span> <span class="syntax-property">style</span>={{<span class="syntax-property">background</span>: color}}&gt;
+      {icon}
+    &lt;/<span class="syntax-function">div</span>&gt;
+    &lt;<span class="syntax-function">div</span> <span class="syntax-property">className</span>=<span class="syntax-string">"course-card-content"</span>&gt;
+      &lt;<span class="syntax-function">h4</span>&gt;{title}&lt;/<span class="syntax-function">h4</span>&gt;
+      &lt;<span class="syntax-function">p</span>&gt;{description}&lt;/<span class="syntax-function">p</span>&gt;
+      &lt;<span class="syntax-function">div</span>&gt;{lessons} lessons • {level}&lt;/<span class="syntax-function">div</span>&gt;
+    &lt;/<span class="syntax-function">div</span>&gt;
+  &lt;/<span class="syntax-function">Card</span>&gt;
+);
+
+<span class="syntax-keyword">export</span> { Card, CourseCard };
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 border-t border-gray-200">
+            <p class="text-gray-600 font-inter">CHAM TOEIC React Component Library • Hover over components to copy implementation code</p>
+        </footer>
+    </div>
+
+    <script>
+        const codeExamples = {
+            primaryButton: `// Primary Button Usage
+<Button variant="primary" size="medium" onClick={handleClick}>
+  Primary Action
+</Button>`,
+            
+            secondaryButton: `// Secondary Button Usage
+<Button variant="secondary" size="medium" onClick={handleClick}>
+  Secondary Action
+</Button>`,
+            
+            ghostButton: `// Ghost Button Usage
+<Button variant="ghost" size="medium" onClick={handleClick}>
+  Subtle Action
+</Button>`,
+            
+            dangerButton: `// Danger Button Usage
+<Button variant="danger" size="medium" onClick={handleDelete}>
+  Delete Item
+</Button>`,
+            
+            buttonSizes: `// Button Sizes
+<Button variant="primary" size="small">Small</Button>
+<Button variant="primary" size="medium">Medium</Button>
+<Button variant="primary" size="large">Large</Button>`,
+            
+            buttonWithIcon: `// Button with Icon
+<Button variant="primary" size="medium">
+  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M10 12l-4-4h8l-4 4z"/>
+  </svg>
+  Download
+</Button>`,
+            
+            inputStates: `// Input States
+<Input 
+  label="Email Address" 
+  placeholder="Enter your email"
+  state="default"
+/>
+<Input 
+  label="Invalid Email" 
+  value="invalid@"
+  state="error"
+  error="Please enter a valid email address"
+/>
+<Input 
+  label="Valid Email" 
+  value="user@example.com"
+  state="success"
+  success="Email address is valid"
+/>`,
+            
+            inputSizes: `// Input Sizes
+<Input size="small" placeholder="Small input" />
+<Input size="medium" placeholder="Medium input" />
+<Input size="large" placeholder="Large input" />`,
+            
+            formExample: `// Complete Form
+<form className="space-y-4">
+  <Input 
+    label="Full Name" 
+    placeholder="Enter your full name"
+    required
+  />
+  <Input 
+    label="Email Address" 
+    type="email"
+    placeholder="your@email.com"
+    required
+  />
+  <select className="input-base input-default input-medium">
+    <option>Select your level</option>
+    <option>Pre-TOEIC</option>
+    <option>Level 1 (200-450)</option>
+    <option>Level 2 (450-700)</option>
+  </select>
+  <Button variant="primary" size="medium" type="submit">
+    Create Account
+  </Button>
+</form>`,
+            
+            defaultCard: `// Default Card
+<Card variant="default">
+  <h4>Card Title</h4>
+  <p>Card content goes here with proper spacing and styling.</p>
+</Card>`,
+            
+            activeCard: `// Active Card
+<Card variant="active">
+  <h4>Active Card</h4>
+  <p>This card shows the active state with red border accent.</p>
+</Card>`,
+            
+            cardWithActions: `// Card with Actions
+<Card variant="default">
+  <h4>Card with Actions</h4>
+  <p>Card containing action buttons and interactive elements.</p>
+  <div className="flex space-x-2 mt-4">
+    <Button variant="primary" size="small">Start</Button>
+    <Button variant="ghost" size="small">Learn More</Button>
+  </div>
+</Card>`,
+            
+            courseCard: `// Course Card
+<CourseCard
+  title="TOEIC Listening Practice"
+  description="Master listening skills with authentic TOEIC practice questions."
+  level="Level 1"
+  lessons="45"
+  icon="🎧"
+  color="linear-gradient(135deg, #B91C1C, #DC2626)"
+/>`,
+            
+            dashboardCards: `// Dashboard Stats Cards
+<div className="grid grid-cols-4 gap-6">
+  <Card variant="default" className="text-center">
+    <div className="text-3xl font-bold text-blue-600 mb-2">24</div>
+    <h4 className="font-semibold text-gray-900 mb-1">Tests Completed</h4>
+    <p className="text-sm text-gray-600">This month</p>
+  </Card>
+  {/* More stat cards... */}
+</div>`
+        };
+
+        function copyCode(codeKey) {
+            const code = codeExamples[codeKey];
+            if (code) {
+                navigator.clipboard.writeText(code).then(function() {
+                    const notification = document.getElementById('copyNotification');
+                    notification.classList.add('show');
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 3000);
+                });
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dc2e8f93ec1110',t:'MTc1NDk2MTk1OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
