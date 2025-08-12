@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Bank Selection - CHAM TOEIC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#374151',
+                        accent: '#B91C1C',
+                        client: '#2563EB'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Modal Overlay -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-7xl h-[90vh] flex flex-col">
+                <!-- Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-client text-white px-3 py-2 rounded-lg font-bold text-lg">CHAM</div>
+                        <h2 class="text-2xl font-bold text-primary">Question Bank Selection</h2>
+                        <div class="text-sm text-gray-500">
+                            <span id="totalQuestions">2,847</span> questions available
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="saveAsTemplate()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-bookmark mr-2"></i>Save Template
+                        </button>
+                        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-1 overflow-hidden">
+                    <!-- Left Sidebar - Filters -->
+                    <div class="w-80 bg-gray-50 border-r border-gray-200 overflow-y-auto">
+                        <div class="p-6">
+                            <!-- Search -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Search Questions</label>
+                                <div class="relative">
+                                    <input type="text" id="searchInput" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-client focus:border-client" placeholder="Search question content...">
+                                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                                </div>
+                            </div>
+
+                            <!-- TOEIC Parts Filter -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-3">TOEIC Parts</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client" value="1" checked>
+                                        <span class="text-sm">Part 1 - Photographs (284)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client" value="2" checked>
+                                        <span class="text-sm">Part 2 - Question-Response (456)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client" value="3" checked>
+                                        <span class="text-sm">Part 3 - Conversations (523)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client" value="4" checked>
+                                        <span class="text-sm">Part 4 - Short Talks (398)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client" value="5" checked>
+                                        <span class="text-sm">Part 5 - Grammar (612)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client" value="6" checked>
+                                        <span class="text-sm">Part 6 - Text Completion (287)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client" value="7" checked>
+                                        <span class="text-sm">Part 7 - Reading (287)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Difficulty Range -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Difficulty Level</label>
+                                <div class="px-3">
+                                    <input type="range" id="difficultyRange" min="1" max="5" value="3" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider">
+                                    <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                        <span>Beginner</span>
+                                        <span>Intermediate</span>
+                                        <span>Advanced</span>
+                                    </div>
+                                    <div class="text-center mt-2">
+                                        <span class="px-2 py-1 bg-client text-white rounded text-xs">Level <span id="difficultyValue">3</span></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Topics -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Topics</label>
+                                <div class="space-y-2 max-h-40 overflow-y-auto">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client" checked>
+                                        <span class="text-sm">Business & Office (892)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client">
+                                        <span class="text-sm">Travel & Transportation (456)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client">
+                                        <span class="text-sm">Technology (334)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client">
+                                        <span class="text-sm">Health & Medicine (223)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client">
+                                        <span class="text-sm">Education (189)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client">
+                                        <span class="text-sm">Entertainment (167)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-3 text-client">
+                                        <span class="text-sm">Shopping & Services (145)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Quality Rating -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Minimum Quality Rating</label>
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex space-x-1">
+                                        <button class="star-rating text-yellow-400 hover:text-yellow-500" data-rating="1">
+                                            <i class="fas fa-star"></i>
+                                        </button>
+                                        <button class="star-rating text-yellow-400 hover:text-yellow-500" data-rating="2">
+                                            <i class="fas fa-star"></i>
+                                        </button>
+                                        <button class="star-rating text-yellow-400 hover:text-yellow-500" data-rating="3">
+                                            <i class="fas fa-star"></i>
+                                        </button>
+                                        <button class="star-rating text-yellow-400 hover:text-yellow-500" data-rating="4">
+                                            <i class="fas fa-star"></i>
+                                        </button>
+                                        <button class="star-rating text-gray-300 hover:text-yellow-500" data-rating="5">
+                                            <i class="fas fa-star"></i>
+                                        </button>
+                                    </div>
+                                    <span class="text-sm text-gray-600">4.0+ stars</span>
+                                </div>
+                            </div>
+
+                            <!-- Usage Statistics -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Usage Filter</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="usage" class="mr-3 text-client" value="all" checked>
+                                        <span class="text-sm">All Questions</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="usage" class="mr-3 text-client" value="popular">
+                                        <span class="text-sm">Popular (500+ uses)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="usage" class="mr-3 text-client" value="underused">
+                                        <span class="text-sm">Underused (&lt;50 uses)</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="usage" class="mr-3 text-client" value="new">
+                                        <span class="text-sm">Recently Added</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="space-y-2">
+                                <button onclick="clearAllFilters()" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50">
+                                    <i class="fas fa-refresh mr-2"></i>Clear Filters
+                                </button>
+                                <button onclick="showBatchTools()" class="w-full px-3 py-2 bg-client text-white rounded-lg text-sm hover:bg-blue-700">
+                                    <i class="fas fa-magic mr-2"></i>Batch Selection
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content Area -->
+                    <div class="flex-1 flex flex-col overflow-hidden">
+                        <!-- Toolbar -->
+                        <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+                            <div class="flex items-center space-x-4">
+                                <div class="text-sm text-gray-600">
+                                    Showing <span id="showingCount">24</span> of <span id="filteredCount">847</span> questions
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="text-sm text-gray-600">Sort by:</label>
+                                    <select class="border border-gray-300 rounded px-2 py-1 text-sm">
+                                        <option>Relevance</option>
+                                        <option>Quality Rating</option>
+                                        <option>Recently Added</option>
+                                        <option>Most Used</option>
+                                        <option>Difficulty</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="toggleView('grid')" class="p-2 border border-gray-300 rounded hover:bg-gray-50 view-toggle active" data-view="grid">
+                                    <i class="fas fa-th"></i>
+                                </button>
+                                <button onclick="toggleView('list')" class="p-2 border border-gray-300 rounded hover:bg-gray-50 view-toggle" data-view="list">
+                                    <i class="fas fa-list"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Question Grid -->
+                        <div class="flex-1 overflow-y-auto p-4">
+                            <div id="questionGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                                <!-- Question Cards -->
+                                <div class="question-card bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onclick="toggleQuestionSelection(this, 'Q-2024-001847')">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex items-center space-x-2">
+                                            <input type="checkbox" class="question-checkbox text-client" onclick="event.stopPropagation()">
+                                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">Part 1</span>
+                                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Level 2</span>
+                                        </div>
+                                        <div class="flex items-center text-yellow-400">
+                                            <i class="fas fa-star text-xs"></i>
+                                            <span class="text-xs text-gray-600 ml-1">4.7</span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p class="text-sm text-gray-800 line-clamp-2">Look at the picture. What is the woman doing?</p>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-gray-500">
+                                        <span>Used 1,247 times</span>
+                                        <span>68% success</span>
+                                    </div>
+                                    <div class="mt-2 flex flex-wrap gap-1">
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">office-work</span>
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">technology</span>
+                                    </div>
+                                </div>
+
+                                <div class="question-card bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onclick="toggleQuestionSelection(this, 'Q-2024-001848')">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex items-center space-x-2">
+                                            <input type="checkbox" class="question-checkbox text-client" onclick="event.stopPropagation()">
+                                            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded">Part 3</span>
+                                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Level 3</span>
+                                        </div>
+                                        <div class="flex items-center text-yellow-400">
+                                            <i class="fas fa-star text-xs"></i>
+                                            <span class="text-xs text-gray-600 ml-1">4.5</span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p class="text-sm text-gray-800 line-clamp-2">What does the man suggest about the meeting schedule?</p>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-gray-500">
+                                        <span>Used 892 times</span>
+                                        <span>72% success</span>
+                                    </div>
+                                    <div class="mt-2 flex flex-wrap gap-1">
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">business</span>
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">meetings</span>
+                                    </div>
+                                </div>
+
+                                <div class="question-card bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onclick="toggleQuestionSelection(this, 'Q-2024-001849')">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex items-center space-x-2">
+                                            <input type="checkbox" class="question-checkbox text-client" onclick="event.stopPropagation()">
+                                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded">Part 5</span>
+                                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Level 2</span>
+                                        </div>
+                                        <div class="flex items-center text-yellow-400">
+                                            <i class="fas fa-star text-xs"></i>
+                                            <span class="text-xs text-gray-600 ml-1">4.8</span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p class="text-sm text-gray-800 line-clamp-2">The company will _____ its employees about the new policy.</p>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-gray-500">
+                                        <span>Used 2,156 times</span>
+                                        <span>65% success</span>
+                                    </div>
+                                    <div class="mt-2 flex flex-wrap gap-1">
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">grammar</span>
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">workplace</span>
+                                    </div>
+                                </div>
+
+                                <div class="question-card bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onclick="toggleQuestionSelection(this, 'Q-2024-001850')">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex items-center space-x-2">
+                                            <input type="checkbox" class="question-checkbox text-client" onclick="event.stopPropagation()">
+                                            <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded">Part 7</span>
+                                            <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded">Level 4</span>
+                                        </div>
+                                        <div class="flex items-center text-yellow-400">
+                                            <i class="fas fa-star text-xs"></i>
+                                            <span class="text-xs text-gray-600 ml-1">4.6</span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p class="text-sm text-gray-800 line-clamp-2">According to the email, what should employees do before...</p>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-gray-500">
+                                        <span>Used 634 times</span>
+                                        <span>58% success</span>
+                                    </div>
+                                    <div class="mt-2 flex flex-wrap gap-1">
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">reading</span>
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">email</span>
+                                    </div>
+                                </div>
+
+                                <!-- More question cards would be generated here -->
+                                <div class="question-card bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onclick="toggleQuestionSelection(this, 'Q-2024-001851')">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex items-center space-x-2">
+                                            <input type="checkbox" class="question-checkbox text-client" onclick="event.stopPropagation()">
+                                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Part 2</span>
+                                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Level 1</span>
+                                        </div>
+                                        <div class="flex items-center text-yellow-400">
+                                            <i class="fas fa-star text-xs"></i>
+                                            <span class="text-xs text-gray-600 ml-1">4.9</span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p class="text-sm text-gray-800 line-clamp-2">Where is the nearest coffee shop?</p>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-gray-500">
+                                        <span>Used 1,834 times</span>
+                                        <span>78% success</span>
+                                    </div>
+                                    <div class="mt-2 flex flex-wrap gap-1">
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">directions</span>
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">daily-life</span>
+                                    </div>
+                                </div>
+
+                                <div class="question-card bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onclick="toggleQuestionSelection(this, 'Q-2024-001852')">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex items-center space-x-2">
+                                            <input type="checkbox" class="question-checkbox text-client" onclick="event.stopPropagation()">
+                                            <span class="px-2 py-1 bg-pink-100 text-pink-800 text-xs rounded">Part 4</span>
+                                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Level 3</span>
+                                        </div>
+                                        <div class="flex items-center text-yellow-400">
+                                            <i class="fas fa-star text-xs"></i>
+                                            <span class="text-xs text-gray-600 ml-1">4.4</span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p class="text-sm text-gray-800 line-clamp-2">What is the main purpose of this announcement?</p>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-gray-500">
+                                        <span>Used 567 times</span>
+                                        <span>61% success</span>
+                                    </div>
+                                    <div class="mt-2 flex flex-wrap gap-1">
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">announcements</span>
+                                        <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">public</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Load More -->
+                            <div class="text-center mt-6">
+                                <button onclick="loadMoreQuestions()" class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                    Load More Questions
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Sidebar - Selection Basket & Analytics -->
+                    <div class="w-80 bg-gray-50 border-l border-gray-200 overflow-y-auto">
+                        <div class="p-6">
+                            <!-- Selection Basket -->
+                            <div class="mb-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-semibold text-primary">Selection Basket</h3>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 bg-client text-white rounded text-sm" id="selectedCount">3</span>
+                                        <button onclick="clearSelection()" class="text-red-600 hover:text-red-800 text-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2 max-h-60 overflow-y-auto" id="selectedQuestions">
+                                    <div class="selected-item flex items-center justify-between p-2 bg-white border border-gray-200 rounded">
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium">Q-2024-001847</div>
+                                            <div class="text-xs text-gray-500">Part 1 - Level 2</div>
+                                        </div>
+                                        <button onclick="removeFromSelection('Q-2024-001847')" class="text-red-600 hover:text-red-800">
+                                            <i class="fas fa-times text-xs"></i>
+                                        </button>
+                                    </div>
+                                    <div class="selected-item flex items-center justify-between p-2 bg-white border border-gray-200 rounded">
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium">Q-2024-001849</div>
+                                            <div class="text-xs text-gray-500">Part 5 - Level 2</div>
+                                        </div>
+                                        <button onclick="removeFromSelection('Q-2024-001849')" class="text-red-600 hover:text-red-800">
+                                            <i class="fas fa-times text-xs"></i>
+                                        </button>
+                                    </div>
+                                    <div class="selected-item flex items-center justify-between p-2 bg-white border border-gray-200 rounded">
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium">Q-2024-001851</div>
+                                            <div class="text-xs text-gray-500">Part 2 - Level 1</div>
+                                        </div>
+                                        <button onclick="removeFromSelection('Q-2024-001851')" class="text-red-600 hover:text-red-800">
+                                            <i class="fas fa-times text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Distribution Analysis -->
+                            <div class="mb-6">
+                                <h3 class="font-semibold text-primary mb-4">Distribution Analysis</h3>
+                                
+                                <!-- TOEIC Parts Chart -->
+                                <div class="mb-4">
+                                    <h4 class="text-sm font-medium text-gray-700 mb-2">TOEIC Parts</h4>
+                                    <canvas id="partsChart" width="200" height="100"></canvas>
+                                </div>
+
+                                <!-- Difficulty Balance -->
+                                <div class="mb-4">
+                                    <h4 class="text-sm font-medium text-gray-700 mb-2">Difficulty Balance</h4>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between text-sm">
+                                            <span>Level 1</span>
+                                            <div class="flex items-center space-x-2">
+                                                <div class="w-16 h-2 bg-gray-200 rounded">
+                                                    <div class="w-4 h-2 bg-green-500 rounded"></div>
+                                                </div>
+                                                <span class="text-xs text-gray-500">1</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between text-sm">
+                                            <span>Level 2</span>
+                                            <div class="flex items-center space-x-2">
+                                                <div class="w-16 h-2 bg-gray-200 rounded">
+                                                    <div class="w-8 h-2 bg-blue-500 rounded"></div>
+                                                </div>
+                                                <span class="text-xs text-gray-500">2</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between text-sm">
+                                            <span>Level 3</span>
+                                            <div class="flex items-center space-x-2">
+                                                <div class="w-16 h-2 bg-gray-200 rounded">
+                                                    <div class="w-0 h-2 bg-yellow-500 rounded"></div>
+                                                </div>
+                                                <span class="text-xs text-gray-500">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Estimated Time -->
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                    <div class="text-sm font-medium text-blue-800">Estimated Completion Time</div>
+                                    <div class="text-lg font-bold text-blue-900">4-6 minutes</div>
+                                    <div class="text-xs text-blue-600">Based on question types and difficulty</div>
+                                </div>
+                            </div>
+
+                            <!-- Recommendations -->
+                            <div class="mb-6">
+                                <h3 class="font-semibold text-primary mb-3">Recommendations</h3>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex items-start space-x-2 p-2 bg-yellow-50 border border-yellow-200 rounded">
+                                        <i class="fas fa-lightbulb text-yellow-600 mt-1"></i>
+                                        <div>
+                                            <div class="font-medium text-yellow-800">Add Level 3 Questions</div>
+                                            <div class="text-yellow-700">Consider adding intermediate difficulty questions for better balance</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-2 p-2 bg-green-50 border border-green-200 rounded">
+                                        <i class="fas fa-check text-green-600 mt-1"></i>
+                                        <div>
+                                            <div class="font-medium text-green-800">Good Topic Coverage</div>
+                                            <div class="text-green-700">Selection covers diverse business topics</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="space-y-3">
+                                <button onclick="addToTest()" class="w-full px-4 py-3 bg-client text-white rounded-lg hover:bg-blue-700 font-medium">
+                                    <i class="fas fa-plus mr-2"></i>Add to Test
+                                </button>
+                                <button onclick="saveAsTemplate()" class="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                    <i class="fas fa-bookmark mr-2"></i>Save as Template
+                                </button>
+                                <button onclick="exportSelection()" class="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                    <i class="fas fa-download mr-2"></i>Export Selection
+                                </button>
+                                <button onclick="shareSelection()" class="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                    <i class="fas fa-share mr-2"></i>Share with Colleagues
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Batch Selection Modal -->
+    <div id="batchModal" class="fixed inset-0 bg-black bg-opacity-50 z-60 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full">
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-primary">Batch Selection Tools</h3>
+                    <button onclick="closeBatchModal()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="autoSelectByCriteria()" class="flex items-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-magic text-blue-600 mr-3"></i>
+                            <div class="text-left">
+                                <div class="font-medium">Auto-Select by Criteria</div>
+                                <div class="text-sm text-gray-500">Select based on current filters</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="randomSelection()" class="flex items-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-random text-green-600 mr-3"></i>
+                            <div class="text-left">
+                                <div class="font-medium">Random Selection</div>
+                                <div class="text-sm text-gray-500">Random questions by parameters</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="useTemplate()" class="flex items-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-bookmark text-purple-600 mr-3"></i>
+                            <div class="text-left">
+                                <div class="font-medium">Use Template</div>
+                                <div class="text-sm text-gray-500">Load from saved template</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="importFromTest()" class="flex items-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-copy text-orange-600 mr-3"></i>
+                            <div class="text-left">
+                                <div class="font-medium">Import from Test</div>
+                                <div class="text-sm text-gray-500">Copy from existing test</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .question-card.selected {
+            border-color: #2563EB;
+            background-color: #eff6ff;
+        }
+
+        .view-toggle.active {
+            background-color: #2563EB;
+            color: white;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #2563EB;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #2563EB;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
+
+    <script>
+        let selectedQuestions = new Set(['Q-2024-001847', 'Q-2024-001849', 'Q-2024-001851']);
+        let currentView = 'grid';
+
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            updateDifficultySlider();
+            updateSelectionDisplay();
+        });
+
+        function initializeCharts() {
+            const ctx = document.getElementById('partsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Part 1', 'Part 2', 'Part 5'],
+                    datasets: [{
+                        data: [1, 1, 1],
+                        backgroundColor: ['#3B82F6', '#10B981', '#EF4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12,
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateDifficultySlider() {
+            const slider = document.getElementById('difficultyRange');
+            const valueDisplay = document.getElementById('difficultyValue');
+            
+            slider.addEventListener('input', function() {
+                valueDisplay.textContent = this.value;
+            });
+        }
+
+        function toggleQuestionSelection(card, questionId) {
+            const checkbox = card.querySelector('.question-checkbox');
+            
+            if (selectedQuestions.has(questionId)) {
+                selectedQuestions.delete(questionId);
+                card.classList.remove('selected');
+                checkbox.checked = false;
+            } else {
+                selectedQuestions.add(questionId);
+                card.classList.add('selected');
+                checkbox.checked = true;
+            }
+            
+            updateSelectionDisplay();
+        }
+
+        function updateSelectionDisplay() {
+            document.getElementById('selectedCount').textContent = selectedQuestions.size;
+            
+            // Update selected questions list
+            const container = document.getElementById('selectedQuestions');
+            container.innerHTML = '';
+            
+            selectedQuestions.forEach(questionId => {
+                const item = document.createElement('div');
+                item.className = 'selected-item flex items-center justify-between p-2 bg-white border border-gray-200 rounded';
+                item.innerHTML = `
+                    <div class="flex-1">
+                        <div class="text-sm font-medium">${questionId}</div>
+                        <div class="text-xs text-gray-500">Part ${Math.floor(Math.random() * 7) + 1} - Level ${Math.floor(Math.random() * 3) + 1}</div>
+                    </div>
+                    <button onclick="removeFromSelection('${questionId}')" class="text-red-600 hover:text-red-800">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function removeFromSelection(questionId) {
+            selectedQuestions.delete(questionId);
+            
+            // Update card appearance
+            const cards = document.querySelectorAll('.question-card');
+            cards.forEach(card => {
+                if (card.getAttribute('onclick').includes(questionId)) {
+                    card.classList.remove('selected');
+                    card.querySelector('.question-checkbox').checked = false;
+                }
+            });
+            
+            updateSelectionDisplay();
+        }
+
+        function clearSelection() {
+            if (confirm('Clear all selected questions?')) {
+                selectedQuestions.clear();
+                
+                // Update all cards
+                document.querySelectorAll('.question-card').forEach(card => {
+                    card.classList.remove('selected');
+                    card.querySelector('.question-checkbox').checked = false;
+                });
+                
+                updateSelectionDisplay();
+            }
+        }
+
+        function toggleView(view) {
+            currentView = view;
+            
+            // Update toggle buttons
+            document.querySelectorAll('.view-toggle').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-view="${view}"]`).classList.add('active');
+            
+            // Update grid layout
+            const grid = document.getElementById('questionGrid');
+            if (view === 'list') {
+                grid.className = 'space-y-2';
+                // Would implement list view layout here
+            } else {
+                grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4';
+            }
+        }
+
+        function clearAllFilters() {
+            // Reset all filter inputs
+            document.getElementById('searchInput').value = '';
+            document.getElementById('difficultyRange').value = '3';
+            document.getElementById('difficultyValue').textContent = '3';
+            
+            // Reset checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                if (!cb.classList.contains('question-checkbox')) {
+                    cb.checked = false;
+                }
+            });
+            
+            // Reset radio buttons
+            document.querySelector('input[name="usage"][value="all"]').checked = true;
+            
+            alert('All filters cleared');
+        }
+
+        function showBatchTools() {
+            document.getElementById('batchModal').classList.remove('hidden');
+        }
+
+        function closeBatchModal() {
+            document.getElementById('batchModal').classList.add('hidden');
+        }
+
+        function autoSelectByCriteria() {
+            alert('Auto-selecting questions based on current filter criteria...');
+            // Would implement auto-selection logic here
+            closeBatchModal();
+        }
+
+        function randomSelection() {
+            const count = prompt('How many random questions would you like to select?', '10');
+            if (count && !isNaN(count)) {
+                alert(`Randomly selecting ${count} questions based on current filters...`);
+                // Would implement random selection logic here
+            }
+            closeBatchModal();
+        }
+
+        function useTemplate() {
+            alert('Loading saved templates...');
+            // Would show template selection interface
+            closeBatchModal();
+        }
+
+        function importFromTest() {
+            alert('Select an existing test to import questions from...');
+            // Would show test selection interface
+            closeBatchModal();
+        }
+
+        function loadMoreQuestions() {
+            alert('Loading more questions...');
+            // Would implement pagination/infinite scroll
+        }
+
+        function addToTest() {
+            if (selectedQuestions.size === 0) {
+                alert('Please select at least one question');
+                return;
+            }
+            
+            alert(`Adding ${selectedQuestions.size} questions to your test...`);
+            // Would implement test integration
+        }
+
+        function saveAsTemplate() {
+            if (selectedQuestions.size === 0) {
+                alert('Please select questions first');
+                return;
+            }
+            
+            const name = prompt('Enter template name:', 'My Question Set');
+            if (name) {
+                alert(`Template "${name}" saved with ${selectedQuestions.size} questions`);
+            }
+        }
+
+        function exportSelection() {
+            if (selectedQuestions.size === 0) {
+                alert('Please select questions first');
+                return;
+            }
+            
+            alert(`Exporting ${selectedQuestions.size} questions...`);
+            // Would implement export functionality
+        }
+
+        function shareSelection() {
+            if (selectedQuestions.size === 0) {
+                alert('Please select questions first');
+                return;
+            }
+            
+            alert('Sharing question selection with colleagues...');
+            // Would implement sharing functionality
+        }
+
+        function closeModal() {
+            if (selectedQuestions.size > 0) {
+                if (confirm('You have selected questions. Are you sure you want to close without adding them?')) {
+                    // Close modal - in real implementation, this would close the modal
+                    alert('Modal closed');
+                }
+            } else {
+                alert('Modal closed');
+            }
+        }
+
+        // Star rating functionality
+        document.querySelectorAll('.star-rating').forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = parseInt(this.dataset.rating);
+                
+                // Update star display
+                document.querySelectorAll('.star-rating').forEach((s, index) => {
+                    if (index < rating) {
+                        s.classList.remove('text-gray-300');
+                        s.classList.add('text-yellow-400');
+                    } else {
+                        s.classList.remove('text-yellow-400');
+                        s.classList.add('text-gray-300');
+                    }
+                });
+                
+                // Update rating text
+                document.querySelector('.star-rating').parentElement.nextElementSibling.textContent = `${rating}.0+ stars`;
+            });
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            // Would implement search filtering here
+            console.log('Searching for:', searchTerm);
+        });
+
+        // Filter change handlers
+        document.querySelectorAll('input[type="checkbox"], input[type="radio"], select').forEach(input => {
+            input.addEventListener('change', function() {
+                // Would implement filter logic here
+                console.log('Filter changed:', this.name || this.type, this.value, this.checked);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dcce6a06feb6a7',t:'MTc1NDk2ODUwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

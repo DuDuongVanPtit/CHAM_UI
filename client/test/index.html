@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC - Bài tập & Kiểm tra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cham-blue': '#1E40AF',
+                        'cham-light-blue': '#3B82F6',
+                        'cham-orange': '#F97316',
+                        'cham-green': '#10B981',
+                        'cham-red': '#EF4444',
+                        'cham-yellow': '#F59E0B',
+                        'cham-purple': '#8B5CF6',
+                        'cham-gray': '#6B7280'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-cham-blue">CHAM TOEIC</h1>
+                    </div>
+                    <nav class="hidden md:ml-8 md:flex space-x-8">
+                        <a href="#" class="text-cham-blue border-b-2 border-cham-blue px-1 pb-4 text-sm font-medium">Bài tập & Kiểm tra</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-1 pb-4 text-sm font-medium">Lịch sử</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 px-1 pb-4 text-sm font-medium">Thống kê</a>
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-bell text-xl"></i>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <img class="h-8 w-8 rounded-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%233B82F6'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='30' font-family='Arial'%3EH%3C/text%3E%3C/svg%3E" alt="Avatar">
+                        <span class="text-sm font-medium text-gray-700">Hoàng Minh</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Performance Summary -->
+    <div class="bg-gradient-to-r from-cham-blue to-cham-light-blue text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold">85%</div>
+                    <div class="text-sm opacity-90">Tỷ lệ hoàn thành</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold">750</div>
+                    <div class="text-sm opacity-90">Điểm trung bình</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold">12</div>
+                    <div class="text-sm opacity-90">Ngày liên tiếp</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold">3</div>
+                    <div class="text-sm opacity-90">Sắp đến hạn</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Main Content -->
+            <div class="flex-1">
+                <!-- Filter Tabs -->
+                <div class="bg-white rounded-lg shadow-sm mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex space-x-8 px-6" id="filterTabs">
+                            <button class="filter-tab active py-4 px-1 border-b-2 border-cham-blue text-cham-blue font-medium text-sm" data-filter="all">
+                                Tất cả
+                            </button>
+                            <button class="filter-tab py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm" data-filter="homework">
+                                Bài tập
+                            </button>
+                            <button class="filter-tab py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm" data-filter="test">
+                                Bài test
+                            </button>
+                            <button class="filter-tab py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm" data-filter="completed">
+                                Đã hoàn thành
+                            </button>
+                            <button class="filter-tab py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm" data-filter="overdue">
+                                Quá hạn
+                            </button>
+                        </nav>
+                    </div>
+                    
+                    <!-- View Toggle -->
+                    <div class="px-6 py-4 flex justify-between items-center">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm text-gray-600">Hiển thị:</span>
+                            <button id="listViewBtn" class="view-toggle active px-3 py-1 rounded-md text-sm font-medium bg-cham-blue text-white">
+                                <i class="fas fa-list mr-1"></i> Danh sách
+                            </button>
+                            <button id="calendarViewBtn" class="view-toggle px-3 py-1 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-100">
+                                <i class="fas fa-calendar mr-1"></i> Lịch
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-600">Sắp xếp:</span>
+                            <select class="border border-gray-300 rounded-md px-3 py-1 text-sm">
+                                <option>Ưu tiên</option>
+                                <option>Ngày đến hạn</option>
+                                <option>Tên bài</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assignment Cards -->
+                <div id="assignmentList" class="space-y-4">
+                    <!-- Overdue Assignment -->
+                    <div class="assignment-card bg-white rounded-lg shadow-sm border-l-4 border-cham-red p-6" data-type="homework" data-status="overdue">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <span class="bg-cham-red text-white px-2 py-1 rounded-full text-xs font-medium">Homework</span>
+                                    <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">Quá hạn</span>
+                                    <span class="text-red-600 text-sm font-medium">
+                                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                                        Quá hạn 2 ngày
+                                    </span>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">TOEIC Reading Comprehension - Part 7</h3>
+                                <p class="text-gray-600 text-sm mb-3">Luyện tập đọc hiểu với các đoạn văn dài và câu hỏi suy luận</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                                    <span><i class="fas fa-book mr-1"></i> Reading - Part 7</span>
+                                    <span><i class="fas fa-clock mr-1"></i> 45 phút</span>
+                                    <span><i class="fas fa-question-circle mr-1"></i> 20 câu</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+                                    <div class="bg-cham-orange h-2 rounded-full" style="width: 60%"></div>
+                                </div>
+                                <div class="text-sm text-gray-600">Tiến độ: 12/20 câu (60%)</div>
+                            </div>
+                            <div class="ml-6 flex flex-col space-y-2">
+                                <button class="bg-cham-orange hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                    Tiếp tục
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700 px-4 py-2 text-sm">
+                                    Xem chi tiết
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Due Today -->
+                    <div class="assignment-card bg-white rounded-lg shadow-sm border-l-4 border-cham-orange p-6" data-type="test" data-status="pending">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <span class="bg-cham-purple text-white px-2 py-1 rounded-full text-xs font-medium">Test</span>
+                                    <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs font-medium">Hôm nay</span>
+                                    <span class="text-orange-600 text-sm font-medium">
+                                        <i class="fas fa-clock mr-1"></i>
+                                        Đến hạn hôm nay
+                                    </span>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">TOEIC Listening Mock Test #3</h3>
+                                <p class="text-gray-600 text-sm mb-3">Bài kiểm tra mô phỏng phần Listening đầy đủ 4 parts</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                                    <span><i class="fas fa-headphones mr-1"></i> Listening - Full</span>
+                                    <span><i class="fas fa-clock mr-1"></i> 45 phút</span>
+                                    <span><i class="fas fa-question-circle mr-1"></i> 100 câu</span>
+                                </div>
+                                <div class="text-sm text-gray-600">Chưa bắt đầu</div>
+                            </div>
+                            <div class="ml-6 flex flex-col space-y-2">
+                                <button class="bg-cham-blue hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                    Bắt đầu
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700 px-4 py-2 text-sm">
+                                    Xem chi tiết
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Completed Assignment -->
+                    <div class="assignment-card bg-white rounded-lg shadow-sm border-l-4 border-cham-green p-6" data-type="homework" data-status="completed">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <span class="bg-cham-green text-white px-2 py-1 rounded-full text-xs font-medium">Homework</span>
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">Hoàn thành</span>
+                                    <span class="text-green-600 text-sm font-medium">
+                                        <i class="fas fa-check-circle mr-1"></i>
+                                        Điểm: 85/100
+                                    </span>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">TOEIC Grammar Practice - Part 5</h3>
+                                <p class="text-gray-600 text-sm mb-3">Luyện tập ngữ pháp với câu hỏi điền từ vào chỗ trống</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                                    <span><i class="fas fa-pen mr-1"></i> Reading - Part 5</span>
+                                    <span><i class="fas fa-clock mr-1"></i> 30 phút</span>
+                                    <span><i class="fas fa-question-circle mr-1"></i> 40 câu</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+                                    <div class="bg-cham-green h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                                <div class="text-sm text-gray-600">Hoàn thành: 40/40 câu - Thời gian: 25 phút</div>
+                            </div>
+                            <div class="ml-6 flex flex-col space-y-2">
+                                <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                    Xem lại
+                                </button>
+                                <button class="text-cham-blue hover:text-blue-700 px-4 py-2 text-sm font-medium">
+                                    Làm lại
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Assignment -->
+                    <div class="assignment-card bg-white rounded-lg shadow-sm border-l-4 border-gray-300 p-6" data-type="practice" data-status="pending">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <span class="bg-cham-yellow text-white px-2 py-1 rounded-full text-xs font-medium">Practice</span>
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">Mới</span>
+                                    <span class="text-gray-600 text-sm">
+                                        <i class="fas fa-calendar mr-1"></i>
+                                        Đến hạn: 25/12/2024
+                                    </span>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">TOEIC Vocabulary Building - Business Terms</h3>
+                                <p class="text-gray-600 text-sm mb-3">Học từ vựng chuyên ngành kinh doanh thường gặp trong TOEIC</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                                    <span><i class="fas fa-book-open mr-1"></i> Vocabulary</span>
+                                    <span><i class="fas fa-clock mr-1"></i> 20 phút</span>
+                                    <span><i class="fas fa-list mr-1"></i> 50 từ</span>
+                                </div>
+                                <div class="text-sm text-gray-600">Chưa bắt đầu</div>
+                            </div>
+                            <div class="ml-6 flex flex-col space-y-2">
+                                <button class="bg-cham-blue hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                    Bắt đầu
+                                </button>
+                                <button class="text-gray-500 hover:text-gray-700 px-4 py-2 text-sm">
+                                    Xem chi tiết
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar View (Hidden by default) -->
+                <div id="calendarView" class="hidden bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-gray-900">Tháng 12, 2024</h2>
+                        <div class="flex items-center space-x-2">
+                            <button class="p-2 hover:bg-gray-100 rounded-md">
+                                <i class="fas fa-chevron-left text-gray-600"></i>
+                            </button>
+                            <button class="p-2 hover:bg-gray-100 rounded-md">
+                                <i class="fas fa-chevron-right text-gray-600"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-7 gap-1 mb-4">
+                        <div class="p-2 text-center text-sm font-medium text-gray-500">CN</div>
+                        <div class="p-2 text-center text-sm font-medium text-gray-500">T2</div>
+                        <div class="p-2 text-center text-sm font-medium text-gray-500">T3</div>
+                        <div class="p-2 text-center text-sm font-medium text-gray-500">T4</div>
+                        <div class="p-2 text-center text-sm font-medium text-gray-500">T5</div>
+                        <div class="p-2 text-center text-sm font-medium text-gray-500">T6</div>
+                        <div class="p-2 text-center text-sm font-medium text-gray-500">T7</div>
+                    </div>
+                    
+                    <div class="grid grid-cols-7 gap-1">
+                        <!-- Calendar days would be generated here -->
+                        <div class="p-2 text-center text-sm text-gray-400">1</div>
+                        <div class="p-2 text-center text-sm text-gray-400">2</div>
+                        <div class="p-2 text-center text-sm text-gray-400">3</div>
+                        <div class="p-2 text-center text-sm text-gray-400">4</div>
+                        <div class="p-2 text-center text-sm text-gray-400">5</div>
+                        <div class="p-2 text-center text-sm text-gray-400">6</div>
+                        <div class="p-2 text-center text-sm text-gray-400">7</div>
+                        <div class="p-2 text-center text-sm">8</div>
+                        <div class="p-2 text-center text-sm">9</div>
+                        <div class="p-2 text-center text-sm">10</div>
+                        <div class="p-2 text-center text-sm">11</div>
+                        <div class="p-2 text-center text-sm">12</div>
+                        <div class="p-2 text-center text-sm">13</div>
+                        <div class="p-2 text-center text-sm">14</div>
+                        <div class="p-2 text-center text-sm">15</div>
+                        <div class="p-2 text-center text-sm">16</div>
+                        <div class="p-2 text-center text-sm">17</div>
+                        <div class="p-2 text-center text-sm">18</div>
+                        <div class="p-2 text-center text-sm">19</div>
+                        <div class="p-2 text-center text-sm">20</div>
+                        <div class="p-2 text-center text-sm">21</div>
+                        <div class="p-2 text-center text-sm bg-cham-orange text-white rounded-md relative">
+                            22
+                            <div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full"></div>
+                        </div>
+                        <div class="p-2 text-center text-sm">23</div>
+                        <div class="p-2 text-center text-sm">24</div>
+                        <div class="p-2 text-center text-sm bg-cham-blue text-white rounded-md relative">
+                            25
+                            <div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full"></div>
+                        </div>
+                        <div class="p-2 text-center text-sm">26</div>
+                        <div class="p-2 text-center text-sm">27</div>
+                        <div class="p-2 text-center text-sm">28</div>
+                        <div class="p-2 text-center text-sm">29</div>
+                        <div class="p-2 text-center text-sm">30</div>
+                        <div class="p-2 text-center text-sm">31</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="w-full lg:w-80 space-y-6">
+                <!-- Quick Stats -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Thống kê nhanh</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Tỷ lệ hoàn thành</span>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-20 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-cham-green h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-900">85%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Điểm trung bình</span>
+                            <span class="text-sm font-medium text-gray-900">750/990</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Chuỗi học tập</span>
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-fire text-cham-orange"></i>
+                                <span class="text-sm font-medium text-gray-900">12 ngày</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Sắp đến hạn</span>
+                            <span class="text-sm font-medium text-cham-red">3 bài</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievement Badges -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Huy hiệu thành tích</h3>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-trophy text-white text-lg"></i>
+                            </div>
+                            <span class="text-xs text-gray-600">Siêu sao</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-gradient-to-r from-cham-blue to-cham-light-blue rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-medal text-white text-lg"></i>
+                            </div>
+                            <span class="text-xs text-gray-600">Chăm chỉ</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-gradient-to-r from-cham-green to-green-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-star text-white text-lg"></i>
+                            </div>
+                            <span class="text-xs text-gray-600">Xuất sắc</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Deadlines -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Sắp đến hạn</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3 p-3 bg-red-50 rounded-lg">
+                            <div class="w-2 h-2 bg-cham-red rounded-full"></div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-900">TOEIC Reading Part 7</div>
+                                <div class="text-xs text-red-600">Quá hạn 2 ngày</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-orange-50 rounded-lg">
+                            <div class="w-2 h-2 bg-cham-orange rounded-full"></div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-900">Listening Mock Test #3</div>
+                                <div class="text-xs text-orange-600">Hôm nay</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                            <div class="w-2 h-2 bg-cham-blue rounded-full"></div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-900">Vocabulary Building</div>
+                                <div class="text-xs text-blue-600">3 ngày nữa</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Study Reminder -->
+                <div class="bg-gradient-to-r from-cham-purple to-purple-600 rounded-lg p-6 text-white">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <i class="fas fa-bell text-xl"></i>
+                        <h3 class="font-semibold">Nhắc nhở học tập</h3>
+                    </div>
+                    <p class="text-sm opacity-90 mb-4">Đặt thời gian học tập hàng ngày để duy trì chuỗi học tập của bạn!</p>
+                    <button class="bg-white text-cham-purple px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors">
+                        Cài đặt nhắc nhở
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.filter-tab').forEach(t => {
+                    t.classList.remove('active', 'border-cham-blue', 'text-cham-blue');
+                    t.classList.add('border-transparent', 'text-gray-500');
+                });
+                
+                // Add active class to clicked tab
+                this.classList.add('active', 'border-cham-blue', 'text-cham-blue');
+                this.classList.remove('border-transparent', 'text-gray-500');
+                
+                // Filter assignments
+                const filter = this.dataset.filter;
+                const assignments = document.querySelectorAll('.assignment-card');
+                
+                assignments.forEach(card => {
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                    } else if (filter === 'homework' && card.dataset.type === 'homework') {
+                        card.style.display = 'block';
+                    } else if (filter === 'test' && card.dataset.type === 'test') {
+                        card.style.display = 'block';
+                    } else if (filter === 'completed' && card.dataset.status === 'completed') {
+                        card.style.display = 'block';
+                    } else if (filter === 'overdue' && card.dataset.status === 'overdue') {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // View toggle functionality
+        document.getElementById('listViewBtn').addEventListener('click', function() {
+            document.getElementById('assignmentList').classList.remove('hidden');
+            document.getElementById('calendarView').classList.add('hidden');
+            
+            // Update button states
+            this.classList.add('active', 'bg-cham-blue', 'text-white');
+            this.classList.remove('text-gray-600', 'hover:bg-gray-100');
+            
+            document.getElementById('calendarViewBtn').classList.remove('active', 'bg-cham-blue', 'text-white');
+            document.getElementById('calendarViewBtn').classList.add('text-gray-600', 'hover:bg-gray-100');
+        });
+
+        document.getElementById('calendarViewBtn').addEventListener('click', function() {
+            document.getElementById('assignmentList').classList.add('hidden');
+            document.getElementById('calendarView').classList.remove('hidden');
+            
+            // Update button states
+            this.classList.add('active', 'bg-cham-blue', 'text-white');
+            this.classList.remove('text-gray-600', 'hover:bg-gray-100');
+            
+            document.getElementById('listViewBtn').classList.remove('active', 'bg-cham-blue', 'text-white');
+            document.getElementById('listViewBtn').classList.add('text-gray-600', 'hover:bg-gray-100');
+        });
+
+        // Button interactions
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (this.textContent.includes('Bắt đầu')) {
+                    alert('Bắt đầu bài tập/kiểm tra...');
+                } else if (this.textContent.includes('Tiếp tục')) {
+                    alert('Tiếp tục bài tập đã bắt đầu...');
+                } else if (this.textContent.includes('Xem lại')) {
+                    alert('Xem lại kết quả bài đã hoàn thành...');
+                } else if (this.textContent.includes('Làm lại')) {
+                    alert('Làm lại bài tập...');
+                } else if (this.textContent.includes('Cài đặt nhắc nhở')) {
+                    alert('Mở cài đặt nhắc nhở học tập...');
+                }
+            });
+        });
+
+        // Mobile responsive adjustments
+        function adjustForMobile() {
+            if (window.innerWidth < 768) {
+                // Add mobile-specific classes or adjustments
+                document.querySelectorAll('.assignment-card').forEach(card => {
+                    card.classList.add('mx-2');
+                });
+            }
+        }
+
+        window.addEventListener('resize', adjustForMobile);
+        adjustForMobile();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dcd5d695230ec8',t:'MTc1NDk2ODgxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

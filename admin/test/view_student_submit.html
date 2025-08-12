@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC - Chấm bài học sinh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cham-blue': '#1E40AF',
+                        'cham-light-blue': '#3B82F6',
+                        'cham-orange': '#F97316',
+                        'cham-green': '#10B981',
+                        'cham-red': '#EF4444',
+                        'cham-yellow': '#F59E0B',
+                        'cham-purple': '#8B5CF6',
+                        'cham-gray': '#6B7280',
+                        'edu-primary': '#2563EB',
+                        'edu-secondary': '#059669',
+                        'edu-accent': '#DC2626',
+                        'edu-warning': '#D97706',
+                        'edu-info': '#0891B2'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-gray-700" onclick="history.back()">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <div>
+                        <h1 class="text-lg font-semibold text-gray-900">Chấm bài học sinh</h1>
+                        <div class="text-sm text-gray-500">TOEIC Reading Comprehension - Part 7</div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Navigation between submissions -->
+                    <div class="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+                        <button class="p-2 text-gray-500 hover:text-gray-700 hover:bg-white rounded-md transition-colors">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="text-sm text-gray-600 px-2">15 / 45</span>
+                        <button class="p-2 text-gray-500 hover:text-gray-700 hover:bg-white rounded-md transition-colors">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2">
+                        <button class="bg-edu-secondary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition-colors">
+                            <i class="fas fa-save mr-2"></i>
+                            Lưu điểm
+                        </button>
+                        <button class="bg-edu-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Gửi phản hồi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Student Submission Header -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex items-start justify-between">
+                <div class="flex items-start space-x-4">
+                    <img class="w-16 h-16 rounded-full border-2 border-gray-200" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23059669'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='24' font-family='Arial'%3ENA%3C/text%3E%3C/svg%3E" alt="Student Avatar">
+                    
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <h2 class="text-xl font-semibold text-gray-900">Nguyễn Văn An</h2>
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">Lớp 10A</span>
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                                <i class="fas fa-clock mr-1"></i>
+                                Nộp đúng hạn
+                            </span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-500">Nộp bài:</span>
+                                <div class="font-medium text-gray-900">23/12/2024 14:30</div>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Thời gian làm:</span>
+                                <div class="font-medium text-gray-900">38 phút</div>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Lần thử:</span>
+                                <div class="font-medium text-gray-900">1/2</div>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Trạng thái:</span>
+                                <div class="font-medium text-orange-600">Chờ chấm điểm</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="flex items-center space-x-2">
+                    <button class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors" title="Xem lịch sử">
+                        <i class="fas fa-history"></i>
+                    </button>
+                    <button class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors" title="Gửi tin nhắn">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                    <button class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors" title="Thông báo phụ huynh">
+                        <i class="fas fa-user-friends"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Main Review Area -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Auto Score Display -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Điểm số tự động</h3>
+                        <div class="flex items-center space-x-4">
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-edu-primary">16/20</div>
+                                <div class="text-sm text-gray-500">80%</div>
+                            </div>
+                            <button class="text-edu-warning hover:text-orange-700 text-sm font-medium">
+                                <i class="fas fa-edit mr-1"></i>
+                                Điều chỉnh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-4 gap-4 text-center">
+                        <div class="bg-green-50 rounded-lg p-3">
+                            <div class="text-lg font-semibold text-green-600">16</div>
+                            <div class="text-xs text-green-600">Đúng</div>
+                        </div>
+                        <div class="bg-red-50 rounded-lg p-3">
+                            <div class="text-lg font-semibold text-red-600">4</div>
+                            <div class="text-xs text-red-600">Sai</div>
+                        </div>
+                        <div class="bg-yellow-50 rounded-lg p-3">
+                            <div class="text-lg font-semibold text-yellow-600">0</div>
+                            <div class="text-xs text-yellow-600">Bỏ trống</div>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-3">
+                            <div class="text-lg font-semibold text-blue-600">2.5</div>
+                            <div class="text-xs text-blue-600">Phút/câu</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question Review -->
+                <div class="bg-white rounded-lg shadow-sm">
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Chi tiết từng câu</h3>
+                            <div class="flex items-center space-x-2">
+                                <button class="text-sm text-gray-500 hover:text-gray-700 px-3 py-1 rounded-md hover:bg-gray-100 transition-colors">
+                                    Tất cả
+                                </button>
+                                <button class="text-sm text-red-600 hover:text-red-700 px-3 py-1 rounded-md hover:bg-red-50 transition-colors">
+                                    Sai (4)
+                                </button>
+                                <button class="text-sm text-yellow-600 hover:text-yellow-700 px-3 py-1 rounded-md hover:bg-yellow-50 transition-colors">
+                                    Cần xem lại
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="divide-y divide-gray-200">
+                        <!-- Question 1 - Correct -->
+                        <div class="p-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-sm font-medium">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h4 class="font-medium text-gray-900">Câu 1</h4>
+                                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                            <span><i class="fas fa-clock mr-1"></i>2.3 phút</span>
+                                            <span class="text-green-600 font-medium">+1 điểm</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                                        <p class="text-sm text-gray-700 mb-3">
+                                            According to the passage, what is the main reason for the company's success?
+                                        </p>
+                                        <div class="grid grid-cols-2 gap-2 text-sm">
+                                            <div class="text-gray-600">(A) Innovative products</div>
+                                            <div class="text-gray-600">(B) Strong leadership</div>
+                                            <div class="text-green-600 font-medium">(C) Customer focus ✓</div>
+                                            <div class="text-gray-600">(D) Market expansion</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-4">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-sm text-gray-500">Học sinh chọn:</span>
+                                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">C</span>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-sm text-gray-500">Đáp án:</span>
+                                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">C</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Question 2 - Incorrect -->
+                        <div class="p-6 bg-red-50">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-sm font-medium">
+                                    <i class="fas fa-times"></i>
+                                </div>
+                                
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h4 class="font-medium text-gray-900">Câu 2</h4>
+                                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                            <span><i class="fas fa-clock mr-1"></i>4.1 phút</span>
+                                            <span class="text-red-600 font-medium">0 điểm</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-white rounded-lg p-4 mb-4">
+                                        <p class="text-sm text-gray-700 mb-3">
+                                            What can be inferred about the author's opinion regarding remote work?
+                                        </p>
+                                        <div class="grid grid-cols-2 gap-2 text-sm">
+                                            <div class="text-red-600 font-medium">(A) It reduces productivity ✗</div>
+                                            <div class="text-green-600 font-medium">(B) It offers flexibility ✓</div>
+                                            <div class="text-gray-600">(C) It's temporary</div>
+                                            <div class="text-gray-600">(D) It's problematic</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-sm text-gray-500">Học sinh chọn:</span>
+                                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm font-medium">A</span>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-sm text-gray-500">Đáp án:</span>
+                                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">B</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center space-x-2">
+                                            <button class="text-edu-warning hover:text-orange-700 text-sm font-medium">
+                                                <i class="fas fa-edit mr-1"></i>
+                                                Điểm thành phần
+                                            </button>
+                                            <button class="text-edu-info hover:text-cyan-700 text-sm font-medium">
+                                                <i class="fas fa-comment mr-1"></i>
+                                                Ghi chú
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Comment Section -->
+                                    <div class="mt-4 p-3 bg-yellow-50 rounded-lg">
+                                        <textarea class="w-full border-0 bg-transparent text-sm placeholder-gray-500 focus:ring-0 resize-none" rows="2" placeholder="Thêm ghi chú cho câu này..."></textarea>
+                                        <div class="flex justify-end mt-2">
+                                            <button class="text-xs text-edu-primary hover:text-blue-700 font-medium">Lưu ghi chú</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Question 3 - Needs Review -->
+                        <div class="p-6 bg-yellow-50">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-8 h-8 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-sm font-medium">
+                                    <i class="fas fa-exclamation"></i>
+                                </div>
+                                
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h4 class="font-medium text-gray-900">Câu 3</h4>
+                                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                            <span><i class="fas fa-clock mr-1"></i>1.8 phút</span>
+                                            <span class="text-yellow-600 font-medium">Cần xem lại</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-white rounded-lg p-4 mb-4">
+                                        <p class="text-sm text-gray-700 mb-3">
+                                            The word "substantial" in paragraph 2 is closest in meaning to:
+                                        </p>
+                                        <div class="grid grid-cols-2 gap-2 text-sm">
+                                            <div class="text-gray-600">(A) Minor</div>
+                                            <div class="text-green-600 font-medium">(B) Significant ✓</div>
+                                            <div class="text-gray-600">(C) Temporary</div>
+                                            <div class="text-gray-600">(D) Obvious</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-sm text-gray-500">Học sinh chọn:</span>
+                                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">B</span>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="text-sm text-gray-500">Đáp án:</span>
+                                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">B</span>
+                                            </div>
+                                            <span class="text-xs text-yellow-600 bg-yellow-100 px-2 py-1 rounded">Đoán may mắn?</span>
+                                        </div>
+                                        
+                                        <div class="flex items-center space-x-2">
+                                            <select class="text-sm border border-gray-300 rounded px-2 py-1">
+                                                <option>1.0 điểm</option>
+                                                <option>0.5 điểm</option>
+                                                <option>0 điểm</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grading Tools Sidebar -->
+            <div class="space-y-6">
+                <!-- Overall Feedback -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Phản hồi tổng quan</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Điểm tổng kết</label>
+                            <div class="flex items-center space-x-3">
+                                <input type="number" class="w-20 border border-gray-300 rounded-md px-3 py-2 text-center font-semibold" value="16" min="0" max="20">
+                                <span class="text-gray-500">/</span>
+                                <span class="text-gray-700 font-medium">20</span>
+                                <span class="text-gray-500">=</span>
+                                <span class="text-edu-primary font-semibold">80%</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nhận xét chung</label>
+                            <textarea class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-edu-primary focus:border-transparent" rows="4" placeholder="Viết nhận xét về bài làm của học sinh...">Bài làm tốt! Em đã hiểu được nội dung chính của đoạn văn. Cần chú ý hơn đến các câu hỏi suy luận.</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Ghi âm phản hồi</label>
+                            <div class="flex items-center space-x-2">
+                                <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                    <i class="fas fa-microphone mr-2"></i>
+                                    Ghi âm
+                                </button>
+                                <span class="text-sm text-gray-500">0:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Analysis -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Phân tích kỹ năng</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-gray-600">Đọc hiểu chính</span>
+                                <span class="text-sm font-medium text-green-600">85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-gray-600">Suy luận</span>
+                                <span class="text-sm font-medium text-yellow-600">60%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-gray-600">Từ vựng</span>
+                                <span class="text-sm font-medium text-blue-600">90%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-gray-600">Quản lý thời gian</span>
+                                <span class="text-sm font-medium text-green-600">80%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <h4 class="text-sm font-medium text-gray-900 mb-2">So với lớp</h4>
+                        <div class="text-sm text-gray-600">
+                            <div class="flex justify-between">
+                                <span>Điểm của em:</span>
+                                <span class="font-medium">80%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Trung bình lớp:</span>
+                                <span class="font-medium">75%</span>
+                            </div>
+                            <div class="flex justify-between text-green-600">
+                                <span>Cao hơn:</span>
+                                <span class="font-medium">+5%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Templates -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Mẫu phản hồi</h3>
+                    
+                    <div class="space-y-3">
+                        <button class="w-full text-left p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
+                            <div class="text-sm font-medium text-green-800">Khen ngợi</div>
+                            <div class="text-xs text-green-600">Bài làm xuất sắc, tiếp tục phát huy!</div>
+                        </button>
+                        
+                        <button class="w-full text-left p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                            <div class="text-sm font-medium text-blue-800">Khuyến khích</div>
+                            <div class="text-xs text-blue-600">Cố gắng hơn nữa, em đang tiến bộ!</div>
+                        </button>
+                        
+                        <button class="w-full text-left p-3 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition-colors">
+                            <div class="text-sm font-medium text-yellow-800">Gợi ý cải thiện</div>
+                            <div class="text-xs text-yellow-600">Cần luyện tập thêm kỹ năng suy luận</div>
+                        </button>
+                        
+                        <button class="w-full text-left p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors">
+                            <div class="text-sm font-medium text-purple-800">Tài liệu tham khảo</div>
+                            <div class="text-xs text-purple-600">Gợi ý bài tập và tài liệu bổ sung</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Communication -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Liên lạc</h3>
+                    
+                    <div class="space-y-3">
+                        <button class="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-comment text-blue-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Nhắn tin học sinh</div>
+                                <div class="text-xs text-gray-500">Gửi phản hồi trực tiếp</div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-user-friends text-green-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Thông báo phụ huynh</div>
+                                <div class="text-xs text-gray-500">Cập nhật tiến độ học tập</div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-users text-orange-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Nhóm học tập</div>
+                                <div class="text-xs text-gray-500">Gợi ý học nhóm</div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                            <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-chalkboard-teacher text-purple-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Gia sư hỗ trợ</div>
+                                <div class="text-xs text-gray-500">Đề xuất hỗ trợ thêm</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Progress History -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Lịch sử tiến độ</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Reading Part 6</div>
+                                <div class="text-xs text-gray-500">20/12/2024</div>
+                            </div>
+                            <div class="text-sm font-semibold text-green-600">85%</div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Grammar Practice</div>
+                                <div class="text-xs text-gray-500">18/12/2024</div>
+                            </div>
+                            <div class="text-sm font-semibold text-blue-600">78%</div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Listening Part 3</div>
+                                <div class="text-xs text-gray-500">15/12/2024</div>
+                            </div>
+                            <div class="text-sm font-semibold text-yellow-600">65%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <canvas id="progressChart" width="100" height="80"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Progress Chart
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['T1', 'T2', 'T3', 'T4', 'T5'],
+                    datasets: [{
+                        label: 'Điểm số',
+                        data: [65, 70, 78, 75, 80],
+                        borderColor: '#2563EB',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#2563EB',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        // Feedback template functionality
+        document.querySelectorAll('.bg-green-50, .bg-blue-50, .bg-yellow-50, .bg-purple-50').forEach(template => {
+            template.addEventListener('click', function() {
+                const feedbackText = this.querySelector('.text-xs').textContent;
+                const textarea = document.querySelector('textarea[placeholder*="Viết nhận xét"]');
+                if (textarea) {
+                    textarea.value += (textarea.value ? '\n\n' : '') + feedbackText;
+                }
+            });
+        });
+
+        // Score adjustment functionality
+        document.querySelector('input[type="number"]').addEventListener('input', function() {
+            const score = parseInt(this.value);
+            const total = 20;
+            const percentage = Math.round((score / total) * 100);
+            document.querySelector('.text-edu-primary.font-semibold').textContent = percentage + '%';
+        });
+
+        // Communication buttons
+        document.querySelectorAll('.space-y-3 button').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.querySelector('.text-sm.font-medium').textContent;
+                
+                if (action.includes('Nhắn tin')) {
+                    alert('Mở giao diện nhắn tin với học sinh...');
+                } else if (action.includes('Thông báo phụ huynh')) {
+                    alert('Soạn thông báo gửi phụ huynh...');
+                } else if (action.includes('Nhóm học tập')) {
+                    alert('Gợi ý nhóm học tập phù hợp...');
+                } else if (action.includes('Gia sư')) {
+                    alert('Đề xuất gia sư hỗ trợ...');
+                }
+            });
+        });
+
+        // Recording functionality
+        document.querySelector('.bg-red-500').addEventListener('click', function() {
+            const button = this;
+            const timeSpan = this.nextElementSibling;
+            
+            if (button.textContent.includes('Ghi âm')) {
+                button.innerHTML = '<i class="fas fa-stop mr-2"></i>Dừng';
+                button.classList.remove('bg-red-500', 'hover:bg-red-600');
+                button.classList.add('bg-gray-500', 'hover:bg-gray-600');
+                
+                // Simulate recording timer
+                let seconds = 0;
+                const timer = setInterval(() => {
+                    seconds++;
+                    const minutes = Math.floor(seconds / 60);
+                    const remainingSeconds = seconds % 60;
+                    timeSpan.textContent = `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+                }, 1000);
+                
+                button.timer = timer;
+            } else {
+                button.innerHTML = '<i class="fas fa-microphone mr-2"></i>Ghi âm';
+                button.classList.add('bg-red-500', 'hover:bg-red-600');
+                button.classList.remove('bg-gray-500', 'hover:bg-gray-600');
+                
+                clearInterval(button.timer);
+                alert('Đã lưu ghi âm phản hồi!');
+            }
+        });
+
+        // Save and send functionality
+        document.querySelector('.bg-edu-secondary').addEventListener('click', function() {
+            alert('Đã lưu điểm và nhận xét!');
+        });
+
+        document.querySelector('.bg-edu-primary').addEventListener('click', function() {
+            alert('Đã gửi phản hồi cho học sinh!');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dcec8cd5770502',t:'MTc1NDk2OTc0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

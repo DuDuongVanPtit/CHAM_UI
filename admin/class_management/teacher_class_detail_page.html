@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Management - TOEIC Foundation Course - CHAM TOEIC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-red': '#B91C1C',
+                        'brand-orange': '#EA580C',
+                        'brand-blue': '#2563EB',
+                        'brand-yellow': '#D97706',
+                        'brand-green': '#059669'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'roboto': ['Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-inter">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="flex items-center">
+                        <h1 class="text-2xl font-bold text-brand-red">CHAM TOEIC</h1>
+                        <span class="ml-2 text-sm text-gray-500 font-roboto">BIG STEP TO SUCCESS</span>
+                    </div>
+                    <div class="text-gray-400">|</div>
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-900">TOEIC Foundation Course</h2>
+                        <p class="text-sm text-gray-500">Pre-TOEIC Level • Room 201</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Export Button -->
+                    <button class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>Export</span>
+                    </button>
+                    
+                    <!-- Settings -->
+                    <button class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </button>
+                    
+                    <!-- Profile -->
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900">Ms. Sarah Johnson</p>
+                            <p class="text-xs text-gray-500">TOEIC Specialist</p>
+                        </div>
+                        <div class="w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center text-white font-medium">
+                            SJ
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex space-x-8">
+                <button class="py-4 px-1 border-b-2 border-brand-red text-brand-red font-medium text-sm">
+                    Overview
+                </button>
+                <button class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm">
+                    Students
+                </button>
+                <button class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm">
+                    Gradebook
+                </button>
+                <button class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm">
+                    Assignments
+                </button>
+                <button class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm">
+                    Analytics
+                </button>
+                <button class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm">
+                    Collaboration
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Class Control Panel -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
+            <!-- Class Info Card -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900">Class Information</h3>
+                        <p class="text-sm text-gray-600 mt-1">Manage class settings and configuration</p>
+                    </div>
+                    <button class="text-brand-red hover:text-red-700 text-sm font-medium">
+                        Edit Settings
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-600">Students Enrolled</p>
+                        <p class="text-2xl font-bold text-gray-900">24/30</p>
+                        <p class="text-xs text-brand-green">+3 this week</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Class Average</p>
+                        <p class="text-2xl font-bold text-gray-900">85%</p>
+                        <p class="text-xs text-brand-green">+2% from last month</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Attendance Rate</p>
+                        <p class="text-2xl font-bold text-gray-900">92%</p>
+                        <p class="text-xs text-brand-blue">Above target</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Completion Rate</p>
+                        <p class="text-2xl font-bold text-gray-900">78%</p>
+                        <p class="text-xs text-brand-orange">Needs attention</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-6 border-t">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-medium text-gray-700">Teaching Assistant</span>
+                        <button class="text-brand-red hover:text-red-700 text-sm font-medium">
+                            Manage
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-sm font-medium text-gray-600">
+                            MN
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Minh Nguyen</p>
+                            <p class="text-xs text-gray-500">Assistant Teacher • Online</p>
+                        </div>
+                        <div class="ml-auto">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-brand-green">
+                                Active
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <button class="flex items-center justify-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        <svg class="w-4 h-4 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span class="text-sm font-medium text-gray-700">Add Student</span>
+                    </button>
+                    
+                    <button class="flex items-center justify-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        <svg class="w-4 h-4 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                        <span class="text-sm font-medium text-gray-700">New Assignment</span>
+                    </button>
+                    
+                    <button class="flex items-center justify-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        <svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <span class="text-sm font-medium text-gray-700">View Reports</span>
+                    </button>
+                    
+                    <button class="flex items-center justify-center space-x-2 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        <svg class="w-4 h-4 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4m-4 8a2 2 0 100-4 2 2 0 000 4zm0 0v3m-3-3h6m-6 0H7a2 2 0 01-2-2V9a2 2 0 012-2h10a2 2 0 012 2v6a2 2 0 01-2 2H7z"></path>
+                        </svg>
+                        <span class="text-sm font-medium text-gray-700">Create Test</span>
+                    </button>
+                </div>
+
+                <div class="mt-6 pt-6 border-t">
+                    <h4 class="text-sm font-medium text-gray-900 mb-3">Class Management</h4>
+                    <div class="space-y-2">
+                        <button class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md">
+                            Schedule Parent Conferences
+                        </button>
+                        <button class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md">
+                            Bulk Grade Assignments
+                        </button>
+                        <button class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md">
+                            Generate Progress Reports
+                        </button>
+                        <button class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md">
+                            Archive Class
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Student Table -->
+        <div class="bg-white rounded-lg shadow-sm border mb-8">
+            <div class="p-6 border-b">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Student Management</h3>
+                        <p class="text-sm text-gray-600 mt-1">Comprehensive student profiles and performance tracking</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <input type="text" placeholder="Search students..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-red">
+                            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <select class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red">
+                            <option>All Students</option>
+                            <option>High Performers</option>
+                            <option>Needs Attention</option>
+                            <option>Absent Today</option>
+                        </select>
+                        <button class="bg-brand-red text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700">
+                            + Add Student
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Student
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Performance
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Attendance
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Assignments
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Parent Contact
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Student Row 1 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center text-white font-medium text-sm">
+                                        AN
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Alex Nguyen</div>
+                                        <div class="text-sm text-gray-500">ID: ST001 • Age: 22</div>
+                                        <div class="flex items-center space-x-2 mt-1">
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-brand-green">
+                                                Active
+                                            </span>
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-brand-blue">
+                                                High Achiever
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-lg font-semibold text-brand-green">92%</span>
+                                        <svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="text-xs text-gray-500">Last Test: 95%</div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                        <div class="bg-brand-green h-2 rounded-full" style="width: 92%"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="font-semibold">96%</div>
+                                    <div class="text-xs text-gray-500">23/24 sessions</div>
+                                    <div class="text-xs text-brand-green">Perfect this month</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="font-semibold">8/8 Complete</div>
+                                    <div class="text-xs text-gray-500">Avg: 94%</div>
+                                    <div class="text-xs text-brand-green">All on time</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="font-medium">Mrs. Nguyen</div>
+                                    <div class="text-xs text-gray-500">+84 901 234 567</div>
+                                    <div class="text-xs text-brand-blue">Last contact: 2 days ago</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-brand-blue hover:text-blue-700">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="text-brand-green hover:text-green-700">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Student Row 2 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-brand-orange rounded-full flex items-center justify-center text-white font-medium text-sm">
+                                        MT
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Mai Tran</div>
+                                        <div class="text-sm text-gray-500">ID: ST002 • Age: 20</div>
+                                        <div class="flex items-center space-x-2 mt-1">
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-brand-green">
+                                                Active
+                                            </span>
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-brand-yellow">
+                                                Needs Support
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-lg font-semibold text-brand-orange">74%</span>
+                                        <svg class="w-4 h-4 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="text-xs text-gray-500">Last Test: 68%</div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                        <div class="bg-brand-orange h-2 rounded-full" style="width: 74%"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="font-semibold">88%</div>
+                                    <div class="text-xs text-gray-500">21/24 sessions</div>
+                                    <div class="text-xs text-brand-orange">3 absences</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="font-semibold">6/8 Complete</div>
+                                    <div class="text-xs text-gray-500">Avg: 76%</div>
+                                    <div class="text-xs text-brand-orange">2 late submissions</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="font-medium">Mr. Tran</div>
+                                    <div class="text-xs text-gray-500">+84 902 345 678</div>
+                                    <div class="text-xs text-brand-orange">Conference needed</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-brand-blue hover:text-blue-700">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="text-brand-green hover:text-green-700">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Student Row 3 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-medium text-sm">
+                                        DL
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">David Lee</div>
+                                        <div class="text-sm text-gray-500">ID: ST003 • Age: 24</div>
+                                        <div class="flex items-center space-x-2 mt-1">
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-brand-green">
+                                                Active
+                                            </span>
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-brand-blue">
+                                                Consistent
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-lg font-semibold text-brand-blue">81%</span>
+                                        <svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="text-xs text-gray-500">Last Test: 84%</div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                        <div class="bg-brand-blue h-2 rounded-full" style="width: 81%"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="font-semibold">100%</div>
+                                    <div class="text-xs text-gray-500">24/24 sessions</div>
+                                    <div class="text-xs text-brand-green">Perfect attendance</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="font-semibold">8/8 Complete</div>
+                                    <div class="text-xs text-gray-500">Avg: 82%</div>
+                                    <div class="text-xs text-brand-green">Always on time</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">
+                                    <div class="font-medium">Mrs. Lee</div>
+                                    <div class="text-xs text-gray-500">+84 903 456 789</div>
+                                    <div class="text-xs text-brand-green">Regular updates</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-brand-blue hover:text-blue-700">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="text-brand-green hover:text-green-700">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="px-6 py-4 border-t bg-gray-50">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-700">
+                        Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span class="font-medium">24</span> students
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-100">
+                            Previous
+                        </button>
+                        <button class="px-3 py-1 bg-brand-red text-white rounded-md text-sm hover:bg-red-700">
+                            1
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-100">
+                            2
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-100">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Dashboard -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Performance Trends -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Performance Trends</h3>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red">
+                        <option>Last 3 months</option>
+                        <option>Last 6 months</option>
+                        <option>This year</option>
+                    </select>
+                </div>
+                <div class="h-64">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Attendance Patterns -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Attendance Patterns</h3>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red">
+                        <option>This month</option>
+                        <option>Last month</option>
+                        <option>This semester</option>
+                    </select>
+                </div>
+                <div class="h-64">
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teaching Tools & Collaboration -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Teaching Tools -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Teaching Tools</h3>
+                <div class="space-y-4">
+                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2 bg-brand-red bg-opacity-10 rounded-lg">
+                                    <svg class="w-5 h-5 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Gradebook</p>
+                                    <p class="text-xs text-gray-500">Weighted categories</p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-brand-orange">
+                                8 pending
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2 bg-brand-blue bg-opacity-10 rounded-lg">
+                                    <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Assignment Creator</p>
+                                    <p class="text-xs text-gray-500">Custom & templates</p>
+                                </div>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2 bg-brand-green bg-opacity-10 rounded-lg">
+                                    <svg class="w-5 h-5 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Progress Reports</p>
+                                    <p class="text-xs text-gray-500">Auto-generated</p>
+                                </div>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2 bg-brand-yellow bg-opacity-10 rounded-lg">
+                                    <svg class="w-5 h-5 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Behavioral Notes</p>
+                                    <p class="text-xs text-gray-500">Student observations</p>
+                                </div>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collaboration Hub -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Collaboration</h3>
+                <div class="space-y-4">
+                    <div class="p-4 border border-gray-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="text-sm font-medium text-gray-900">Assistant Tasks</h4>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-brand-blue">
+                                3 active
+                            </span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">Grade homework batch 1</span>
+                                <span class="text-brand-green">✓</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">Prepare listening materials</span>
+                                <span class="text-brand-orange">In progress</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">Contact absent students</span>
+                                <span class="text-gray-400">Pending</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-3 text-brand-red hover:text-red-700 text-sm font-medium">
+                            + Assign New Task
+                        </button>
+                    </div>
+
+                    <div class="p-4 border border-gray-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="text-sm font-medium text-gray-900">Peer Consultation</h4>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-brand-green">
+                                2 online
+                            </span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-brand-blue rounded-full flex items-center justify-center text-white text-xs">
+                                    JD
+                                </div>
+                                <span class="text-sm text-gray-700">John Doe - Advanced TOEIC</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-brand-green rounded-full flex items-center justify-center text-white text-xs">
+                                    LN
+                                </div>
+                                <span class="text-sm text-gray-700">Lisa Nguyen - Intermediate</span>
+                            </div>
+                        </div>
+                        <button class="w-full mt-3 text-brand-blue hover:text-blue-700 text-sm font-medium">
+                            Start Discussion
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">AI Recommendations</h3>
+                <div class="space-y-4">
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex items-start space-x-3">
+                            <div class="p-1 bg-brand-blue rounded-full">
+                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Focus on Listening Skills</p>
+                                <p class="text-xs text-gray-600 mt-1">3 students showing weakness in Part 3 & 4</p>
+                                <button class="text-xs text-brand-blue hover:text-blue-700 font-medium mt-2">
+                                    View Details →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                        <div class="flex items-start space-x-3">
+                            <div class="p-1 bg-brand-orange rounded-full">
+                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Schedule Parent Meetings</p>
+                                <p class="text-xs text-gray-600 mt-1">2 students need intervention support</p>
+                                <button class="text-xs text-brand-orange hover:text-orange-700 font-medium mt-2">
+                                    Schedule Now →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex items-start space-x-3">
+                            <div class="p-1 bg-brand-green rounded-full">
+                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Celebrate Achievements</p>
+                                <p class="text-xs text-gray-600 mt-1">5 students improved by 10+ points</p>
+                                <button class="text-xs text-brand-green hover:text-green-700 font-medium mt-2">
+                                    Send Recognition →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Performance Chart
+        const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(performanceCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Class Average',
+                    data: [78, 82, 85, 83, 87, 85],
+                    borderColor: '#B91C1C',
+                    backgroundColor: 'rgba(185, 28, 28, 0.1)',
+                    tension: 0.4
+                }, {
+                    label: 'Target Score',
+                    data: [80, 80, 80, 80, 80, 80],
+                    borderColor: '#059669',
+                    backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                    borderDash: [5, 5],
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 70,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Attendance Chart
+        const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
+        new Chart(attendanceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{
+                    label: 'Present',
+                    data: [23, 22, 24, 21],
+                    backgroundColor: '#059669'
+                }, {
+                    label: 'Absent',
+                    data: [1, 2, 0, 3],
+                    backgroundColor: '#EA580C'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        max: 30
+                    }
+                }
+            }
+        });
+
+        // Tab Navigation
+        document.querySelectorAll('nav button').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active state from all tabs
+                document.querySelectorAll('nav button').forEach(btn => {
+                    btn.classList.remove('border-brand-red', 'text-brand-red');
+                    btn.classList.add('border-transparent', 'text-gray-500');
+                });
+                
+                // Add active state to clicked tab
+                this.classList.remove('border-transparent', 'text-gray-500');
+                this.classList.add('border-brand-red', 'text-brand-red');
+                
+                // Show relevant content (in a real app, this would switch content panels)
+                const tabName = this.textContent.trim();
+                console.log(`Switching to ${tabName} tab`);
+            });
+        });
+
+        // Interactive buttons
+        document.addEventListener('click', function(e) {
+            const buttonText = e.target.textContent.trim();
+            
+            if (buttonText === 'Edit Settings') {
+                alert('Opening class settings... This would show options to modify class details, schedule, capacity, and curriculum settings.');
+            } else if (buttonText === 'Add Student') {
+                alert('Opening student enrollment... This would show a form to add new students with their details and learning plans.');
+            } else if (buttonText === 'New Assignment') {
+                alert('Opening assignment creator... This would show tools to create custom assignments with rubrics and due dates.');
+            } else if (buttonText === 'View Reports') {
+                alert('Opening comprehensive reports... This would show detailed analytics, progress tracking, and exportable reports.');
+            } else if (buttonText === 'Create Test') {
+                alert('Opening test creator... This would show tools to build custom TOEIC practice tests with automatic scoring.');
+            } else if (buttonText === 'Export') {
+                alert('Exporting class data... This would generate comprehensive reports including student performance, attendance, and analytics in PDF/Excel format.');
+            } else if (buttonText === 'Gradebook') {
+                alert('Opening advanced gradebook... This would show weighted categories, bulk grading tools, and detailed performance analytics.');
+            } else if (buttonText === 'Assignment Creator') {
+                alert('Opening assignment tools... This would show templates, custom creation tools, and distribution options.');
+            } else if (buttonText === 'Progress Reports') {
+                alert('Opening report generator... This would show automated progress reports with parent communication tools.');
+            } else if (buttonText === 'Behavioral Notes') {
+                alert('Opening student observation tools... This would show behavioral tracking, notes, and intervention recommendations.');
+            } else if (buttonText === '+ Assign New Task') {
+                alert('Creating assistant task... This would show a form to delegate specific tasks to your teaching assistant.');
+            } else if (buttonText === 'Start Discussion') {
+                alert('Opening peer consultation... This would connect you with other teachers for collaborative problem-solving.');
+            } else if (buttonText.includes('View Details')) {
+                alert('Opening detailed analysis... This would show specific student performance data and recommended interventions.');
+            } else if (buttonText.includes('Schedule Now')) {
+                alert('Opening parent conference scheduler... This would show available times and automated invitation tools.');
+            } else if (buttonText.includes('Send Recognition')) {
+                alert('Opening achievement recognition... This would show tools to celebrate student progress with certificates and notifications.');
+            }
+        });
+
+        // Student action buttons
+        document.querySelectorAll('table button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const svg = this.querySelector('svg');
+                const row = this.closest('tr');
+                const studentName = row.querySelector('.text-sm.font-medium.text-gray-900').textContent;
+                
+                if (svg && svg.querySelector('path[d*="M15 12a3 3 0 11-6 0"]')) {
+                    alert(`Opening detailed profile for ${studentName}... This would show comprehensive student information, learning history, and individual progress tracking.`);
+                } else if (svg && svg.querySelector('path[d*="M8 12h.01M12 12h.01M16 12h.01"]')) {
+                    alert(`Opening communication with ${studentName}... This would show message history, quick replies, and parent contact options.`);
+                } else if (svg && svg.querySelector('path[d*="M10 6a2 2 0 110-4"]')) {
+                    alert(`Opening action menu for ${studentName}... This would show options for individual learning plans, behavioral notes, and special accommodations.`);
+                }
+            });
+        });
+
+        // Search functionality
+        document.querySelector('input[placeholder="Search students..."]').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            console.log(`Searching for: ${searchTerm}`);
+            // In a real app, this would filter the student table
+        });
+
+        // Filter functionality
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function(e) {
+                console.log(`Filter changed: ${e.target.value}`);
+                // In a real app, this would update the displayed data
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dc71c5715fdd36',t:'MTc1NDk2NDcxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

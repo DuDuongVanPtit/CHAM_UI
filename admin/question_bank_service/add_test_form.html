@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Upload Manager - CHAM TOEIC Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#374151',
+                        accent: '#B91C1C'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-primary text-white px-3 py-2 rounded-lg font-bold text-lg">CHAM</div>
+                    <h1 class="text-2xl font-bold text-primary">Test Upload Manager</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-primary">
+                        <i class="fas fa-download mr-2"></i>Download Templates
+                    </button>
+                    <button onclick="goBack()" class="text-gray-600 hover:text-primary">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-6 py-6">
+        <!-- Progress Bar -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-primary">Upload Progress</h2>
+                <span class="text-sm text-gray-500">Step <span id="currentStep">1</span> of 6</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="step-indicator active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <span class="step-label">Upload</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator" data-step="2">
+                    <div class="step-circle">2</div>
+                    <span class="step-label">Format</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator" data-step="3">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Parse</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator" data-step="4">
+                    <div class="step-circle">4</div>
+                    <span class="step-label">Validate</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator" data-step="5">
+                    <div class="step-circle">5</div>
+                    <span class="step-label">Organize</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-indicator" data-step="6">
+                    <div class="step-circle">6</div>
+                    <span class="step-label">Review</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6">
+            <!-- Main Content -->
+            <div class="col-span-8">
+                <!-- Step 1: File Upload -->
+                <div id="step1" class="step-content bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-xl font-semibold text-primary mb-6">Upload Test Files</h3>
+                    
+                    <!-- Template Downloads -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-info-circle text-blue-600 mt-1"></i>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-blue-800 mb-2">Download Format Templates</h4>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button class="template-btn flex items-center p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50">
+                                        <i class="fas fa-file-excel text-green-600 mr-3"></i>
+                                        <div class="text-left">
+                                            <div class="font-medium text-sm">Excel Template</div>
+                                            <div class="text-xs text-gray-500">Standard TOEIC format</div>
+                                        </div>
+                                    </button>
+                                    <button class="template-btn flex items-center p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50">
+                                        <i class="fas fa-file-code text-orange-600 mr-3"></i>
+                                        <div class="text-left">
+                                            <div class="font-medium text-sm">JSON Template</div>
+                                            <div class="text-xs text-gray-500">API format</div>
+                                        </div>
+                                    </button>
+                                    <button class="template-btn flex items-center p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50">
+                                        <i class="fas fa-file-word text-blue-600 mr-3"></i>
+                                        <div class="text-left">
+                                            <div class="font-medium text-sm">Word Template</div>
+                                            <div class="text-xs text-gray-500">Document format</div>
+                                        </div>
+                                    </button>
+                                    <button class="template-btn flex items-center p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50">
+                                        <i class="fas fa-file-pdf text-red-600 mr-3"></i>
+                                        <div class="text-left">
+                                            <div class="font-medium text-sm">PDF Guide</div>
+                                            <div class="text-xs text-gray-500">Format specifications</div>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Drag and Drop Area -->
+                    <div id="dropZone" class="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center hover:border-primary transition-colors cursor-pointer">
+                        <div class="space-y-4">
+                            <div class="text-6xl text-gray-400">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-medium text-gray-700">Drop files here or click to browse</h4>
+                                <p class="text-gray-500 mt-2">Support multiple files: PDF, DOCX, XLSX, JSON, XML, ZIP</p>
+                                <p class="text-sm text-gray-400 mt-1">Maximum file size: 50MB per file</p>
+                            </div>
+                            <button class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-gray-700">
+                                <i class="fas fa-folder-open mr-2"></i>Browse Files
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- File List -->
+                    <div id="fileList" class="mt-6 space-y-3 hidden">
+                        <h4 class="font-medium text-gray-700">Uploaded Files</h4>
+                        <!-- Files will be added here dynamically -->
+                    </div>
+
+                    <!-- Bulk Actions -->
+                    <div class="mt-6 flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                <i class="fas fa-plus mr-2"></i>Add More Files
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                <i class="fas fa-trash mr-2"></i>Clear All
+                            </button>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            <span id="fileCount">0</span> files selected
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Format Selection (Hidden initially) -->
+                <div id="step2" class="step-content bg-white rounded-lg shadow-sm border border-gray-200 p-6 hidden">
+                    <h3 class="text-xl font-semibold text-primary mb-6">Format Selection</h3>
+                    
+                    <!-- Format Options -->
+                    <div class="grid grid-cols-1 gap-4 mb-8">
+                        <label class="format-option flex items-start p-4 border-2 border-gray-200 rounded-lg hover:border-primary cursor-pointer">
+                            <input type="radio" name="format" value="toeic-standard" class="mt-1 mr-4" checked>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-semibold text-primary">TOEIC Standard Format</h4>
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Recommended</span>
+                                </div>
+                                <p class="text-gray-600 mt-1">Pre-configured for standard TOEIC test structure with automatic part detection</p>
+                                <div class="mt-3 text-sm text-gray-500">
+                                    <div class="flex items-center space-x-4">
+                                        <span><i class="fas fa-check text-green-500 mr-1"></i>Auto part detection</span>
+                                        <span><i class="fas fa-check text-green-500 mr-1"></i>Answer key validation</span>
+                                        <span><i class="fas fa-check text-green-500 mr-1"></i>Audio pairing</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="format-option flex items-start p-4 border-2 border-gray-200 rounded-lg hover:border-primary cursor-pointer">
+                            <input type="radio" name="format" value="custom-mapping" class="mt-1 mr-4">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-primary">Custom Format Mapping</h4>
+                                <p class="text-gray-600 mt-1">Define custom field mappings for non-standard file formats</p>
+                                <div class="mt-3 text-sm text-gray-500">
+                                    <div class="flex items-center space-x-4">
+                                        <span><i class="fas fa-cog text-blue-500 mr-1"></i>Field mapping</span>
+                                        <span><i class="fas fa-cog text-blue-500 mr-1"></i>Custom validation</span>
+                                        <span><i class="fas fa-cog text-blue-500 mr-1"></i>Flexible structure</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="format-option flex items-start p-4 border-2 border-gray-200 rounded-lg hover:border-primary cursor-pointer">
+                            <input type="radio" name="format" value="auto-detect" class="mt-1 mr-4">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-primary">Auto-Detection</h4>
+                                <p class="text-gray-600 mt-1">Let the system automatically detect and parse file format</p>
+                                <div class="mt-3 text-sm text-gray-500">
+                                    <div class="flex items-center space-x-4">
+                                        <span><i class="fas fa-magic text-purple-500 mr-1"></i>AI-powered</span>
+                                        <span><i class="fas fa-magic text-purple-500 mr-1"></i>Smart parsing</span>
+                                        <span><i class="fas fa-magic text-purple-500 mr-1"></i>Format learning</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Audio File Pairing -->
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                        <h4 class="font-medium text-gray-700 mb-3">Audio File Pairing</h4>
+                        <div class="space-y-3">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-3 text-primary" checked>
+                                <span class="text-sm">Automatically pair audio files with listening questions</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-3 text-primary">
+                                <span class="text-sm">Validate audio duration matches question timing</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-3 text-primary">
+                                <span class="text-sm">Generate audio transcripts for accessibility</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question Type Detection -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-700 mb-3">Question Type Auto-Detection</h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-2"></i>
+                                    <span>Part 1: Photo descriptions</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-2"></i>
+                                    <span>Part 2: Question-response</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-2"></i>
+                                    <span>Part 3: Conversations</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-2"></i>
+                                    <span>Part 4: Short talks</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-2"></i>
+                                    <span>Part 5: Grammar</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-2"></i>
+                                    <span>Part 6: Text completion</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-2"></i>
+                                    <span>Part 7: Reading comprehension</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: File Parsing Preview (Hidden initially) -->
+                <div id="step3" class="step-content bg-white rounded-lg shadow-sm border border-gray-200 p-6 hidden">
+                    <h3 class="text-xl font-semibold text-primary mb-6">File Parsing Preview</h3>
+                    
+                    <!-- Parsing Status -->
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-medium text-gray-700">Parsing Progress</h4>
+                            <span class="text-sm text-gray-500">3 of 3 files processed</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center p-3 bg-green-50 border border-green-200 rounded-lg">
+                                <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                                <div class="flex-1">
+                                    <div class="font-medium text-green-800">TOEIC_Practice_Test_1.xlsx</div>
+                                    <div class="text-sm text-green-600">200 questions parsed successfully</div>
+                                </div>
+                                <button class="text-green-600 hover:text-green-800">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                <i class="fas fa-exclamation-triangle text-yellow-600 mr-3"></i>
+                                <div class="flex-1">
+                                    <div class="font-medium text-yellow-800">Audio_Files.zip</div>
+                                    <div class="text-sm text-yellow-600">45 audio files, 3 pairing issues</div>
+                                </div>
+                                <button class="text-yellow-600 hover:text-yellow-800">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center p-3 bg-green-50 border border-green-200 rounded-lg">
+                                <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                                <div class="flex-1">
+                                    <div class="font-medium text-green-800">Answer_Keys.json</div>
+                                    <div class="text-sm text-green-600">All answer keys validated</div>
+                                </div>
+                                <button class="text-green-600 hover:text-green-800">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Field Mapping Interface -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-700 mb-4">Field Mapping Verification</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full border border-gray-200 rounded-lg">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Source Field</th>
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Mapped To</th>
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Sample Data</th>
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-4 py-3 text-sm">Question_Text</td>
+                                        <td class="px-4 py-3 text-sm">Question Content</td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">Look at the picture...</td>
+                                        <td class="px-4 py-3">
+                                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Mapped</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 text-sm">Option_A</td>
+                                        <td class="px-4 py-3 text-sm">Answer Choice A</td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">She is typing...</td>
+                                        <td class="px-4 py-3">
+                                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Mapped</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 text-sm">Correct_Answer</td>
+                                        <td class="px-4 py-3 text-sm">Correct Option</td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">A</td>
+                                        <td class="px-4 py-3">
+                                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Mapped</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 text-sm">Audio_File</td>
+                                        <td class="px-4 py-3 text-sm">Media Reference</td>
+                                        <td class="px-4 py-3 text-sm text-gray-500">audio_001.mp3</td>
+                                        <td class="px-4 py-3">
+                                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded">Warning</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Preview Sample Questions -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-700 mb-3">Sample Parsed Questions</h4>
+                        <div class="space-y-4">
+                            <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">Part 1</span>
+                                    <span class="text-sm text-gray-500">Question 1</span>
+                                </div>
+                                <p class="text-sm text-gray-800 mb-3">Look at the picture. What is the woman doing?</p>
+                                <div class="grid grid-cols-2 gap-2 text-sm">
+                                    <div>(A) She is typing on her computer</div>
+                                    <div>(B) She is talking on the phone</div>
+                                    <div>(C) She is reading a document</div>
+                                    <div>(D) She is writing notes</div>
+                                </div>
+                                <div class="mt-2 text-xs text-green-600">
+                                    <i class="fas fa-check mr-1"></i>Correct Answer: A
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Data Validation (Hidden initially) -->
+                <div id="step4" class="step-content bg-white rounded-lg shadow-sm border border-gray-200 p-6 hidden">
+                    <h3 class="text-xl font-semibold text-primary mb-6">Data Validation</h3>
+                    
+                    <!-- Validation Summary -->
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-green-600">197</div>
+                            <div class="text-sm text-green-700">Valid Questions</div>
+                        </div>
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-yellow-600">3</div>
+                            <div class="text-sm text-yellow-700">Warnings</div>
+                        </div>
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold text-red-600">0</div>
+                            <div class="text-sm text-red-700">Errors</div>
+                        </div>
+                    </div>
+
+                    <!-- Validation Issues -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-700 mb-4">Validation Issues</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-start p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                <i class="fas fa-exclamation-triangle text-yellow-600 mr-3 mt-1"></i>
+                                <div class="flex-1">
+                                    <div class="font-medium text-yellow-800">Audio File Missing</div>
+                                    <div class="text-sm text-yellow-700 mt-1">Questions 45-47: Referenced audio file "conversation_15.mp3" not found</div>
+                                    <div class="mt-2">
+                                        <button class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded hover:bg-yellow-200">
+                                            Upload Missing File
+                                        </button>
+                                        <button class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded hover:bg-yellow-200 ml-2">
+                                            Skip These Questions
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                <i class="fas fa-exclamation-triangle text-yellow-600 mr-3 mt-1"></i>
+                                <div class="flex-1">
+                                    <div class="font-medium text-yellow-800">Duplicate Questions Detected</div>
+                                    <div class="text-sm text-yellow-700 mt-1">2 questions appear to be duplicates of existing questions in the database</div>
+                                    <div class="mt-2">
+                                        <button class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded hover:bg-yellow-200">
+                                            Review Duplicates
+                                        </button>
+                                        <button class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded hover:bg-yellow-200 ml-2">
+                                            Auto-Merge
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error Correction Tools -->
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                        <h4 class="font-medium text-gray-700 mb-3">Quick Fix Tools</h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
+                                <i class="fas fa-magic text-blue-600 mr-3"></i>
+                                <div class="text-left">
+                                    <div class="font-medium text-sm">Auto-Fix Common Issues</div>
+                                    <div class="text-xs text-gray-500">Fix formatting and validation errors</div>
+                                </div>
+                            </button>
+                            <button class="flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
+                                <i class="fas fa-search text-green-600 mr-3"></i>
+                                <div class="text-left">
+                                    <div class="font-medium text-sm">Find Missing Media</div>
+                                    <div class="text-xs text-gray-500">Search for referenced files</div>
+                                </div>
+                            </button>
+                            <button class="flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
+                                <i class="fas fa-copy text-purple-600 mr-3"></i>
+                                <div class="text-left">
+                                    <div class="font-medium text-sm">Merge Duplicates</div>
+                                    <div class="text-xs text-gray-500">Combine similar questions</div>
+                                </div>
+                            </button>
+                            <button class="flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
+                                <i class="fas fa-download text-orange-600 mr-3"></i>
+                                <div class="text-left">
+                                    <div class="font-medium text-sm">Export Error Report</div>
+                                    <div class="text-xs text-gray-500">Download detailed validation log</div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Validation Checklist -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-700 mb-3">Validation Checklist</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>All questions have valid answer choices</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Correct answers are properly marked</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Question types are correctly identified</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>
+                                <span>Some audio files need verification</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                <span>Text formatting is consistent</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Test Organization (Hidden initially) -->
+                <div id="step5" class="step-content bg-white rounded-lg shadow-sm border border-gray-200 p-6 hidden">
+                    <h3 class="text-xl font-semibold text-primary mb-6">Test Organization</h3>
+                    
+                    <!-- Auto-Categorization Results -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-700 mb-4">Auto-Categorization Results</h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h5 class="font-medium text-gray-700 mb-3">By TOEIC Part</h5>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span>Part 1 (Photos)</span>
+                                        <span class="font-medium">10 questions</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Part 2 (Q&A)</span>
+                                        <span class="font-medium">30 questions</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Part 3 (Conversations)</span>
+                                        <span class="font-medium">39 questions</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Part 4 (Talks)</span>
+                                        <span class="font-medium">30 questions</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Part 5 (Grammar)</span>
+                                        <span class="font-medium">40 questions</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Part 6 (Text Completion)</span>
+                                        <span class="font-medium">16 questions</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Part 7 (Reading)</span>
+                                        <span class="font-medium">54 questions</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h5 class="font-medium text-gray-700 mb-3">By Topic</h5>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span>Business & Office</span>
+                                        <span class="font-medium">89 questions</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Travel & Transportation</span>
+                                        <span class="font-medium">45 questions</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Technology</span>
+                                        <span class="font-medium">32 questions</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Health & Medicine</span>
+                                        <span class="font-medium">18 questions</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Education</span>
+                                        <span class="font-medium">13 questions</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bulk Tag Assignment -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-700 mb-4">Bulk Tag Assignment</h4>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                                    practice-test
+                                    <button class="ml-2 text-blue-600 hover:text-blue-800">×</button>
+                                </span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                                    intermediate
+                                    <button class="ml-2 text-blue-600 hover:text-blue-800">×</button>
+                                </span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                                    2024-batch
+                                    <button class="ml-2 text-blue-600 hover:text-blue-800">×</button>
+                                </span>
+                            </div>
+                            <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Add tags (press Enter to add)">
+                        </div>
+                    </div>
+
+                    <!-- Level Classification -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-700 mb-4">Level Classification</h4>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="border border-gray-200 rounded-lg p-4 text-center">
+                                <div class="text-lg font-bold text-green-600">Level 2-3</div>
+                                <div class="text-sm text-gray-600">Recommended Level</div>
+                                <div class="text-xs text-gray-500 mt-1">Based on content analysis</div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4 text-center">
+                                <div class="text-lg font-bold text-blue-600">4.2/5</div>
+                                <div class="text-sm text-gray-600">Quality Score</div>
+                                <div class="text-xs text-gray-500 mt-1">Auto-calculated</div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4 text-center">
+                                <div class="text-lg font-bold text-purple-600">120 min</div>
+                                <div class="text-sm text-gray-600">Test Duration</div>
+                                <div class="text-xs text-gray-500 mt-1">Standard TOEIC timing</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Duplicate Detection Results -->
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-copy text-yellow-600 mt-1"></i>
+                            <div>
+                                <h4 class="font-medium text-yellow-800">Duplicate Detection Results</h4>
+                                <p class="text-sm text-yellow-700 mt-1">Found 2 potential duplicates that can be merged with existing questions</p>
+                                <div class="mt-3 space-x-2">
+                                    <button class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded hover:bg-yellow-200">
+                                        Review Duplicates
+                                    </button>
+                                    <button class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded hover:bg-yellow-200">
+                                        Auto-Merge Similar
+                                    </button>
+                                    <button class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded hover:bg-yellow-200">
+                                        Keep All Separate
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: Review and Approval (Hidden initially) -->
+                <div id="step6" class="step-content bg-white rounded-lg shadow-sm border border-gray-200 p-6 hidden">
+                    <h3 class="text-xl font-semibold text-primary mb-6">Review & Approval</h3>
+                    
+                    <!-- Import Summary -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+                        <h4 class="font-semibold text-blue-800 mb-4">Import Summary</h4>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span class="text-blue-700">Total Questions:</span>
+                                    <span class="font-medium">200</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-blue-700">Successfully Processed:</span>
+                                    <span class="font-medium text-green-600">197</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-blue-700">Warnings:</span>
+                                    <span class="font-medium text-yellow-600">3</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-blue-700">Errors:</span>
+                                    <span class="font-medium text-red-600">0</span>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span class="text-blue-700">Audio Files:</span>
+                                    <span class="font-medium">42 paired</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-blue-700">Quality Score:</span>
+                                    <span class="font-medium">4.2/5</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-blue-700">Estimated Level:</span>
+                                    <span class="font-medium">Level 2-3</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-blue-700">Test Duration:</span>
+                                    <span class="font-medium">120 minutes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quality Checklist -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-700 mb-4">Quality Checklist</h4>
+                        <div class="space-y-3">
+                            <label class="flex items-start">
+                                <input type="checkbox" class="mt-1 mr-3 text-primary" checked>
+                                <div>
+                                    <div class="font-medium text-sm">Content Review</div>
+                                    <div class="text-xs text-gray-500">All questions reviewed for accuracy and appropriateness</div>
+                                </div>
+                            </label>
+                            <label class="flex items-start">
+                                <input type="checkbox" class="mt-1 mr-3 text-primary" checked>
+                                <div>
+                                    <div class="font-medium text-sm">Answer Key Validation</div>
+                                    <div class="text-xs text-gray-500">Correct answers verified and explanations provided</div>
+                                </div>
+                            </label>
+                            <label class="flex items-start">
+                                <input type="checkbox" class="mt-1 mr-3 text-primary">
+                                <div>
+                                    <div class="font-medium text-sm">Audio Quality Check</div>
+                                    <div class="text-xs text-gray-500">Audio files tested for clarity and proper timing</div>
+                                </div>
+                            </label>
+                            <label class="flex items-start">
+                                <input type="checkbox" class="mt-1 mr-3 text-primary" checked>
+                                <div>
+                                    <div class="font-medium text-sm">Accessibility Compliance</div>
+                                    <div class="text-xs text-gray-500">Content meets accessibility standards</div>
+                                </div>
+                            </label>
+                            <label class="flex items-start">
+                                <input type="checkbox" class="mt-1 mr-3 text-primary">
+                                <div>
+                                    <div class="font-medium text-sm">Peer Review</div>
+                                    <div class="text-xs text-gray-500">Content reviewed by another instructor</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Publication Settings -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-700 mb-4">Publication Settings</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Test Name</label>
+                                <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2" value="TOEIC Practice Test - Batch 2024-01">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                                <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 h-20 resize-none" placeholder="Enter test description..."></textarea>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Availability</label>
+                                    <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                        <option>Immediately Available</option>
+                                        <option>Schedule for Later</option>
+                                        <option>Draft Only</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Access Level</label>
+                                    <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                        <option>All Students</option>
+                                        <option>Specific Classes</option>
+                                        <option>Premium Only</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Final Actions -->
+                    <div class="grid grid-cols-3 gap-4">
+                        <button class="px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-save mr-2"></i>Save as Draft
+                        </button>
+                        <button class="px-4 py-3 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200">
+                            <i class="fas fa-user-check mr-2"></i>Submit for Review
+                        </button>
+                        <button class="px-4 py-3 bg-primary text-white rounded-lg hover:bg-gray-700">
+                            <i class="fas fa-check mr-2"></i>Publish Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between mt-8">
+                    <button id="prevBtn" onclick="previousStep()" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50" disabled>
+                        <i class="fas fa-arrow-left mr-2"></i>Previous
+                    </button>
+                    <button id="nextBtn" onclick="nextStep()" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-gray-700">
+                        Next<i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-span-4">
+                <!-- Processing Queue -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-primary mb-4">Processing Queue</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">1</div>
+                            <div class="flex-1">
+                                <div class="font-medium text-sm">Current Upload</div>
+                                <div class="text-xs text-gray-500">TOEIC_Practice_Test_1.xlsx</div>
+                            </div>
+                            <i class="fas fa-spinner fa-spin text-blue-600"></i>
+                        </div>
+                        <div class="flex items-center p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                            <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">2</div>
+                            <div class="flex-1">
+                                <div class="font-medium text-sm text-gray-500">Queued</div>
+                                <div class="text-xs text-gray-400">Advanced_Grammar_Set.json</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Statistics -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-primary mb-4">Upload Statistics</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Files Processed:</span>
+                            <span class="font-medium">3/3</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Questions Imported:</span>
+                            <span class="font-medium">197</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Success Rate:</span>
+                            <span class="font-medium text-green-600">98.5%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Processing Time:</span>
+                            <span class="font-medium">2m 34s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-primary mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <button class="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded">
+                            <i class="fas fa-download mr-2"></i>Download Error Log
+                        </button>
+                        <button class="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded">
+                            <i class="fas fa-undo mr-2"></i>Rollback Import
+                        </button>
+                        <button class="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded">
+                            <i class="fas fa-copy mr-2"></i>Duplicate Test
+                        </button>
+                        <button class="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded">
+                            <i class="fas fa-share mr-2"></i>Share for Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            background-color: #e5e7eb;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .step-indicator.active .step-circle {
+            background-color: #374151;
+            color: white;
+        }
+
+        .step-indicator.completed .step-circle {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .step-indicator.active .step-label {
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .step-line {
+            height: 2px;
+            background-color: #e5e7eb;
+            flex: 1;
+            margin: 0 16px;
+            margin-top: 20px;
+        }
+
+        .step-indicator.completed + .step-line {
+            background-color: #10b981;
+        }
+
+        .format-option:has(input:checked) {
+            border-color: #374151;
+            background-color: #f9fafb;
+        }
+
+        #dropZone.dragover {
+            border-color: #374151;
+            background-color: #f9fafb;
+        }
+    </style>
+
+    <script>
+        let currentStepNum = 1;
+        const totalSteps = 6;
+        let uploadedFiles = [];
+
+        function updateStepIndicator() {
+            document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+                const stepNum = index + 1;
+                indicator.classList.remove('active', 'completed');
+                
+                if (stepNum === currentStepNum) {
+                    indicator.classList.add('active');
+                } else if (stepNum < currentStepNum) {
+                    indicator.classList.add('completed');
+                }
+            });
+
+            document.getElementById('currentStep').textContent = currentStepNum;
+        }
+
+        function showStep(stepNum) {
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            document.getElementById(`step${stepNum}`).classList.remove('hidden');
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = stepNum === 1;
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (stepNum === totalSteps) {
+                nextBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Complete Import';
+                nextBtn.classList.remove('bg-primary', 'hover:bg-gray-700');
+                nextBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+            } else {
+                nextBtn.innerHTML = 'Next<i class="fas fa-arrow-right ml-2"></i>';
+                nextBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                nextBtn.classList.add('bg-primary', 'hover:bg-gray-700');
+            }
+        }
+
+        function nextStep() {
+            if (currentStepNum < totalSteps) {
+                currentStepNum++;
+                showStep(currentStepNum);
+                updateStepIndicator();
+            } else {
+                // Complete the import
+                alert('Test import completed successfully!');
+            }
+        }
+
+        function previousStep() {
+            if (currentStepNum > 1) {
+                currentStepNum--;
+                showStep(currentStepNum);
+                updateStepIndicator();
+            }
+        }
+
+        function goBack() {
+            if (confirm('Are you sure you want to leave? Any unsaved progress will be lost.')) {
+                window.history.back();
+            }
+        }
+
+        // File upload functionality
+        const dropZone = document.getElementById('dropZone');
+        const fileList = document.getElementById('fileList');
+        const fileCount = document.getElementById('fileCount');
+
+        dropZone.addEventListener('click', function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.accept = '.pdf,.docx,.xlsx,.json,.xml,.zip';
+            input.onchange = function(e) {
+                handleFiles(e.target.files);
+            };
+            input.click();
+        });
+
+        dropZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (file.size <= 50 * 1024 * 1024) { // 50MB limit
+                    uploadedFiles.push(file);
+                    addFileToList(file);
+                }
+            });
+            updateFileCount();
+        }
+
+        function addFileToList(file) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg';
+            
+            const fileIcon = getFileIcon(file.name);
+            const fileSize = formatFileSize(file.size);
+            
+            fileItem.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <i class="${fileIcon}"></i>
+                    <div>
+                        <div class="font-medium text-sm">${file.name}</div>
+                        <div class="text-xs text-gray-500">${fileSize}</div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div class="w-24 bg-gray-200 rounded-full h-2">
+                        <div class="bg-primary h-2 rounded-full" style="width: 100%"></div>
+                    </div>
+                    <button class="text-red-600 hover:text-red-800" onclick="removeFile(this, '${file.name}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            fileList.appendChild(fileItem);
+            fileList.classList.remove('hidden');
+        }
+
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const icons = {
+                'pdf': 'fas fa-file-pdf text-red-600',
+                'docx': 'fas fa-file-word text-blue-600',
+                'xlsx': 'fas fa-file-excel text-green-600',
+                'json': 'fas fa-file-code text-orange-600',
+                'xml': 'fas fa-file-code text-purple-600',
+                'zip': 'fas fa-file-archive text-gray-600'
+            };
+            return icons[ext] || 'fas fa-file text-gray-600';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function removeFile(button, filename) {
+            uploadedFiles = uploadedFiles.filter(file => file.name !== filename);
+            button.closest('.flex').remove();
+            updateFileCount();
+            
+            if (uploadedFiles.length === 0) {
+                fileList.classList.add('hidden');
+            }
+        }
+
+        function updateFileCount() {
+            fileCount.textContent = uploadedFiles.length;
+        }
+
+        // Template download functionality
+        document.querySelectorAll('.template-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const templateType = this.textContent.trim().split(' ')[0].toLowerCase();
+                alert(`Downloading ${templateType} template...`);
+            });
+        });
+
+        // Initialize
+        updateStepIndicator();
+        showStep(1);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dcc504b7e9b6a7',t:'MTc1NDk2ODEyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

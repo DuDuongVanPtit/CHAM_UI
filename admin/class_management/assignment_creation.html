@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Assignment - CHAM TOEIC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-red': '#B91C1C',
+                        'brand-orange': '#EA580C',
+                        'brand-blue': '#2563EB',
+                        'brand-yellow': '#D97706',
+                        'brand-green': '#059669'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'roboto': ['Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-inter">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="flex items-center">
+                        <h1 class="text-2xl font-bold text-brand-red">CHAM TOEIC</h1>
+                        <span class="ml-2 text-sm text-gray-500 font-roboto">BIG STEP TO SUCCESS</span>
+                    </div>
+                    <div class="text-gray-400">|</div>
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-900">Create Assignment</h2>
+                        <p class="text-sm text-gray-500">Assignment Creation Wizard</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Save Draft -->
+                    <button class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        <span>Save Draft</span>
+                    </button>
+                    
+                    <!-- Preview -->
+                    <button class="flex items-center space-x-2 px-4 py-2 border border-brand-blue text-brand-blue rounded-md text-sm font-medium hover:bg-blue-50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        <span>Preview</span>
+                    </button>
+                    
+                    <!-- Profile -->
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900">Ms. Sarah Johnson</p>
+                            <p class="text-xs text-gray-500">TOEIC Specialist</p>
+                        </div>
+                        <div class="w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center text-white font-medium">
+                            SJ
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Indicator -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <!-- Step 1 -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-brand-red rounded-full flex items-center justify-center text-white text-sm font-medium">
+                            1
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-brand-red">Basic Info</p>
+                            <p class="text-xs text-gray-500">Assignment details</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Connector -->
+                    <div class="w-12 h-0.5 bg-gray-300"></div>
+                    
+                    <!-- Step 2 -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 text-sm font-medium">
+                            2
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Content</p>
+                            <p class="text-xs text-gray-500">Questions & materials</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Connector -->
+                    <div class="w-12 h-0.5 bg-gray-300"></div>
+                    
+                    <!-- Step 3 -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 text-sm font-medium">
+                            3
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Distribution</p>
+                            <p class="text-xs text-gray-500">Classes & settings</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Connector -->
+                    <div class="w-12 h-0.5 bg-gray-300"></div>
+                    
+                    <!-- Step 4 -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 text-sm font-medium">
+                            4
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Grading</p>
+                            <p class="text-xs text-gray-500">Criteria & rubrics</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-sm text-gray-500">
+                    Step 1 of 4
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Main Form -->
+            <div class="lg:col-span-3">
+                <!-- Step 1: Basic Info -->
+                <div id="step1" class="bg-white rounded-lg shadow-sm border p-8">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2">Assignment Basic Information</h2>
+                        <p class="text-gray-600">Set up the fundamental details for your assignment</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Assignment Title -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Assignment Title *
+                            </label>
+                            <input type="text" 
+                                   placeholder="e.g., TOEIC Listening Practice - Part 1 & 2"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent">
+                        </div>
+
+                        <!-- Assignment Type -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Assignment Type *
+                            </label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <label class="relative">
+                                    <input type="radio" name="assignmentType" value="practice" class="sr-only peer">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-brand-red peer-checked:bg-red-50 hover:bg-gray-50">
+                                        <div class="text-center">
+                                            <div class="w-8 h-8 bg-brand-blue bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                                <svg class="w-4 h-4 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm font-medium text-gray-900">Practice</p>
+                                            <p class="text-xs text-gray-500">Skill building</p>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="relative">
+                                    <input type="radio" name="assignmentType" value="quiz" class="sr-only peer">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-brand-red peer-checked:bg-red-50 hover:bg-gray-50">
+                                        <div class="text-center">
+                                            <div class="w-8 h-8 bg-brand-green bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                                <svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm font-medium text-gray-900">Quiz</p>
+                                            <p class="text-xs text-gray-500">Timed assessment</p>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="relative">
+                                    <input type="radio" name="assignmentType" value="test" class="sr-only peer">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-brand-red peer-checked:bg-red-50 hover:bg-gray-50">
+                                        <div class="text-center">
+                                            <div class="w-8 h-8 bg-brand-orange bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                                <svg class="w-4 h-4 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm font-medium text-gray-900">Test</p>
+                                            <p class="text-xs text-gray-500">Formal exam</p>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="relative">
+                                    <input type="radio" name="assignmentType" value="homework" class="sr-only peer">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-brand-red peer-checked:bg-red-50 hover:bg-gray-50">
+                                        <div class="text-center">
+                                            <div class="w-8 h-8 bg-brand-yellow bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                                <svg class="w-4 h-4 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                                </svg>
+                                            </div>
+                                            <p class="text-sm font-medium text-gray-900">Homework</p>
+                                            <p class="text-xs text-gray-500">Take-home work</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Description
+                            </label>
+                            <div class="border border-gray-300 rounded-lg">
+                                <!-- Rich Text Editor Toolbar -->
+                                <div class="flex items-center space-x-1 p-3 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+                                    <button class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V4a2 2 0 011-1h2a2 2 0 011 1v2m-4 0a2 2 0 01-2 2H9a2 2 0 01-2-2m0 0V4a2 2 0 012-2h2a2 2 0 012 2v2"></path>
+                                        </svg>
+                                    </button>
+                                    <div class="w-px h-6 bg-gray-300"></div>
+                                    <button class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <textarea rows="6" 
+                                          placeholder="Provide clear instructions for students. Include objectives, requirements, and any special notes..."
+                                          class="w-full px-4 py-3 border-0 focus:outline-none focus:ring-0 resize-none rounded-b-lg"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Due Date & Time -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Due Date *
+                                </label>
+                                <input type="date" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Due Time *
+                                </label>
+                                <input type="time" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent">
+                            </div>
+                        </div>
+
+                        <!-- Points & Weight -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Total Points
+                                </label>
+                                <input type="number" 
+                                       placeholder="100"
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Grade Weight (%)
+                                </label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent">
+                                    <option>10% - Quiz</option>
+                                    <option>20% - Assignment</option>
+                                    <option>30% - Test</option>
+                                    <option>40% - Final Exam</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Additional Settings -->
+                        <div class="space-y-4">
+                            <h3 class="text-lg font-medium text-gray-900">Additional Settings</h3>
+                            
+                            <div class="space-y-3">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-brand-red focus:ring-brand-red">
+                                    <span class="ml-3 text-sm text-gray-700">Allow late submissions</span>
+                                </label>
+                                
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-brand-red focus:ring-brand-red">
+                                    <span class="ml-3 text-sm text-gray-700">Require submission comments</span>
+                                </label>
+                                
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-brand-red focus:ring-brand-red">
+                                    <span class="ml-3 text-sm text-gray-700">Send reminder notifications</span>
+                                </label>
+                                
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-brand-red focus:ring-brand-red">
+                                    <span class="ml-3 text-sm text-gray-700">Hide from students until published</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between pt-8 mt-8 border-t">
+                        <button class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium">
+                            Cancel
+                        </button>
+                        <button class="px-8 py-3 bg-brand-red text-white rounded-lg hover:bg-red-700 font-medium">
+                            Next: Add Content →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Content (Hidden initially) -->
+                <div id="step2" class="bg-white rounded-lg shadow-sm border p-8 hidden">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-2">Assignment Content</h2>
+                        <p class="text-gray-600">Add questions from the question bank or create custom content</p>
+                    </div>
+
+                    <!-- Content Creation Options -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg hover:border-brand-red hover:bg-red-50 cursor-pointer transition-colors">
+                            <div class="text-center">
+                                <div class="w-12 h-12 bg-brand-blue bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-6 h-6 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">Browse Question Bank</h3>
+                                <p class="text-sm text-gray-600">Select from 5,000+ TOEIC questions organized by skill and difficulty</p>
+                            </div>
+                        </div>
+
+                        <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg hover:border-brand-red hover:bg-red-50 cursor-pointer transition-colors">
+                            <div class="text-center">
+                                <div class="w-12 h-12 bg-brand-green bg-opacity-10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-6 h-6 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">Create Custom Questions</h3>
+                                <p class="text-sm text-gray-600">Build your own questions with audio, images, and custom answer keys</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question Bank Browser -->
+                    <div class="border border-gray-200 rounded-lg p-6 mb-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-medium text-gray-900">Question Bank</h3>
+                            <div class="flex items-center space-x-3">
+                                <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                                    <option>All Parts</option>
+                                    <option>Part 1 - Photos</option>
+                                    <option>Part 2 - Q&A</option>
+                                    <option>Part 3 - Conversations</option>
+                                    <option>Part 4 - Talks</option>
+                                    <option>Part 5 - Grammar</option>
+                                    <option>Part 6 - Text Completion</option>
+                                    <option>Part 7 - Reading</option>
+                                </select>
+                                <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                                    <option>All Levels</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Question List -->
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                                <div class="flex items-center space-x-4">
+                                    <input type="checkbox" class="rounded border-gray-300 text-brand-red focus:ring-brand-red">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Part 1 - Photo Description #001</p>
+                                        <p class="text-xs text-gray-500">Difficulty: Intermediate • Topic: Office Environment</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-brand-blue">
+                                        Audio
+                                    </span>
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-brand-green">
+                                        Image
+                                    </span>
+                                    <button class="text-brand-blue hover:text-blue-700 text-sm">Preview</button>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                                <div class="flex items-center space-x-4">
+                                    <input type="checkbox" class="rounded border-gray-300 text-brand-red focus:ring-brand-red">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Part 5 - Grammar #156</p>
+                                        <p class="text-xs text-gray-500">Difficulty: Beginner • Topic: Verb Tenses</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                        Text Only
+                                    </span>
+                                    <button class="text-brand-blue hover:text-blue-700 text-sm">Preview</button>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                                <div class="flex items-center space-x-4">
+                                    <input type="checkbox" class="rounded border-gray-300 text-brand-red focus:ring-brand-red">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Part 3 - Conversation #089</p>
+                                        <p class="text-xs text-gray-500">Difficulty: Advanced • Topic: Business Meeting</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-brand-blue">
+                                        Audio
+                                    </span>
+                                    <button class="text-brand-blue hover:text-blue-700 text-sm">Preview</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t">
+                            <p class="text-sm text-gray-600">3 questions selected</p>
+                            <button class="px-4 py-2 bg-brand-red text-white rounded-md text-sm font-medium hover:bg-red-700">
+                                Add Selected Questions
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Selected Questions -->
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Assignment Questions (3)</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-8 h-8 bg-brand-red rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                        1
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Part 1 - Photo Description #001</p>
+                                        <p class="text-xs text-gray-500">Points: 5 • Time: 30 seconds</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="text-red-400 hover:text-red-600">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between pt-8 mt-8 border-t">
+                        <button class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium">
+                            ← Back
+                        </button>
+                        <button class="px-8 py-3 bg-brand-red text-white rounded-lg hover:bg-red-700 font-medium">
+                            Next: Distribution →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Assignment Summary -->
+                <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Assignment Summary</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Type:</span>
+                            <span class="font-medium text-gray-900">Not selected</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Questions:</span>
+                            <span class="font-medium text-gray-900">0</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Total Points:</span>
+                            <span class="font-medium text-gray-900">-</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Due Date:</span>
+                            <span class="font-medium text-gray-900">Not set</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Classes:</span>
+                            <span class="font-medium text-gray-900">None</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <button class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md flex items-center space-x-2">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span>Load Template</span>
+                        </button>
+                        <button class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md flex items-center space-x-2">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>Duplicate Assignment</span>
+                        </button>
+                        <button class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md flex items-center space-x-2">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span>Import Questions</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Templates -->
+                <div class="bg-white rounded-lg shadow-sm border p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Templates</h3>
+                    <div class="space-y-3">
+                        <div class="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <p class="text-sm font-medium text-gray-900">TOEIC Part 1-2 Practice</p>
+                            <p class="text-xs text-gray-500">20 questions • Used 3 times</p>
+                        </div>
+                        <div class="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <p class="text-sm font-medium text-gray-900">Grammar Quiz Template</p>
+                            <p class="text-xs text-gray-500">15 questions • Used 5 times</p>
+                        </div>
+                        <div class="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <p class="text-sm font-medium text-gray-900">Reading Comprehension</p>
+                            <p class="text-xs text-gray-500">10 questions • Used 2 times</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Step navigation
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function showStep(step) {
+            // Hide all steps
+            for (let i = 1; i <= totalSteps; i++) {
+                const stepElement = document.getElementById(`step${i}`);
+                if (stepElement) {
+                    stepElement.classList.add('hidden');
+                }
+            }
+            
+            // Show current step
+            const currentStepElement = document.getElementById(`step${step}`);
+            if (currentStepElement) {
+                currentStepElement.classList.remove('hidden');
+            }
+            
+            // Update progress indicator
+            updateProgressIndicator(step);
+        }
+
+        function updateProgressIndicator(step) {
+            const steps = document.querySelectorAll('.flex.items-center.space-x-3');
+            steps.forEach((stepElement, index) => {
+                const stepNumber = index + 1;
+                const circle = stepElement.querySelector('.w-8.h-8');
+                const text = stepElement.querySelector('.text-sm.font-medium');
+                
+                if (stepNumber <= step) {
+                    circle.classList.remove('bg-gray-300', 'text-gray-600');
+                    circle.classList.add('bg-brand-red', 'text-white');
+                    text.classList.remove('text-gray-600');
+                    text.classList.add('text-brand-red');
+                } else {
+                    circle.classList.remove('bg-brand-red', 'text-white');
+                    circle.classList.add('bg-gray-300', 'text-gray-600');
+                    text.classList.remove('text-brand-red');
+                    text.classList.add('text-gray-600');
+                }
+            });
+            
+            // Update step counter
+            const stepCounter = document.querySelector('.text-sm.text-gray-500');
+            if (stepCounter) {
+                stepCounter.textContent = `Step ${step} of ${totalSteps}`;
+            }
+        }
+
+        // Navigation button handlers
+        document.addEventListener('click', function(e) {
+            const buttonText = e.target.textContent.trim();
+            
+            if (buttonText === 'Next: Add Content →') {
+                currentStep = 2;
+                showStep(currentStep);
+            } else if (buttonText === '← Back') {
+                if (currentStep > 1) {
+                    currentStep--;
+                    showStep(currentStep);
+                }
+            } else if (buttonText === 'Next: Distribution →') {
+                currentStep = 3;
+                showStep(currentStep);
+            } else if (buttonText === 'Save Draft') {
+                alert('Assignment saved as draft! You can continue editing later from your assignments dashboard.');
+            } else if (buttonText === 'Preview') {
+                alert('Opening assignment preview... This would show how students will see the assignment with all questions and instructions.');
+            } else if (buttonText === 'Browse Question Bank') {
+                alert('Opening question bank browser... This would show the full library of TOEIC questions with advanced filtering options.');
+            } else if (buttonText === 'Create Custom Questions') {
+                alert('Opening question creator... This would show tools to build custom questions with audio upload, image support, and answer key creation.');
+            } else if (buttonText === 'Add Selected Questions') {
+                alert('Adding 3 selected questions to assignment... Questions have been added to your assignment content.');
+            } else if (buttonText === 'Load Template') {
+                alert('Loading assignment template... This would show your saved templates and allow you to start with pre-configured settings.');
+            } else if (buttonText === 'Duplicate Assignment') {
+                alert('Duplicating assignment... This would create a copy of an existing assignment for quick editing.');
+            } else if (buttonText === 'Import Questions') {
+                alert('Opening import tool... This would allow you to import questions from external files or other assignments.');
+            }
+        });
+
+        // Assignment type selection
+        document.querySelectorAll('input[name="assignmentType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                console.log(`Assignment type selected: ${this.value}`);
+                // Update summary in sidebar
+                const summaryType = document.querySelector('.space-y-3 .flex:first-child .font-medium');
+                if (summaryType) {
+                    summaryType.textContent = this.value.charAt(0).toUpperCase() + this.value.slice(1);
+                }
+            });
+        });
+
+        // Question selection
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const selectedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                const countDisplay = document.querySelector('.text-sm.text-gray-600');
+                if (countDisplay && countDisplay.textContent.includes('questions selected')) {
+                    countDisplay.textContent = `${selectedCount} questions selected`;
+                }
+            });
+        });
+
+        // Rich text editor simulation
+        document.querySelectorAll('.p-2.text-gray-600').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('Rich text editor action triggered');
+            });
+        });
+
+        // Form validation
+        document.querySelectorAll('input, textarea, select').forEach(field => {
+            field.addEventListener('blur', function() {
+                if (this.hasAttribute('required') && !this.value) {
+                    this.classList.add('border-red-300');
+                } else {
+                    this.classList.remove('border-red-300');
+                }
+            });
+        });
+
+        // Initialize
+        showStep(currentStep);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dcba6da280714d',t:'MTc1NDk2NzY4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

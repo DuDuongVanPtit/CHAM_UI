@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC - Quản lý Kiểm tra Trực tuyến</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cham-blue': '#1E40AF',
+                        'cham-light-blue': '#3B82F6',
+                        'cham-orange': '#F97316',
+                        'cham-green': '#10B981',
+                        'cham-red': '#EF4444',
+                        'cham-yellow': '#F59E0B',
+                        'cham-purple': '#8B5CF6',
+                        'cham-gray': '#6B7280',
+                        'admin-dark': '#1F2937',
+                        'admin-darker': '#111827',
+                        'admin-blue': '#3B82F6',
+                        'admin-green': '#059669',
+                        'admin-red': '#DC2626',
+                        'admin-orange': '#EA580C',
+                        'admin-purple': '#7C3AED',
+                        'admin-yellow': '#D97706'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header class="bg-admin-dark text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl font-bold text-white">CHAM TOEIC</h1>
+                        <div class="text-xs text-gray-300">Admin Dashboard</div>
+                    </div>
+                    <nav class="hidden md:flex space-x-6">
+                        <a href="#" class="text-admin-blue border-b-2 border-admin-blue px-1 pb-4 text-sm font-medium">Kiểm tra</a>
+                        <a href="#" class="text-gray-300 hover:text-white px-1 pb-4 text-sm font-medium">Người dùng</a>
+                        <a href="#" class="text-gray-300 hover:text-white px-1 pb-4 text-sm font-medium">Báo cáo</a>
+                        <a href="#" class="text-gray-300 hover:text-white px-1 pb-4 text-sm font-medium">Hệ thống</a>
+                    </nav>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Live Status -->
+                    <div class="flex items-center space-x-2 bg-admin-darker rounded-lg px-3 py-2">
+                        <div class="w-2 h-2 bg-admin-green rounded-full animate-pulse"></div>
+                        <span class="text-sm text-gray-300">Live</span>
+                    </div>
+                    
+                    <!-- Alerts -->
+                    <button class="relative text-gray-300 hover:text-white">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span class="absolute -top-1 -right-1 bg-admin-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">5</span>
+                    </button>
+                    
+                    <!-- Admin Profile -->
+                    <div class="flex items-center space-x-2">
+                        <img class="h-8 w-8 rounded-full" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23DC2626'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='24' font-family='Arial'%3EA%3C/text%3E%3C/svg%3E" alt="Admin">
+                        <span class="text-sm font-medium text-white">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Overview -->
+    <div class="bg-gradient-to-r from-admin-dark to-admin-darker text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="bg-white bg-opacity-10 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold">8</div>
+                    <div class="text-sm opacity-90">Bài kiểm tra đang diễn ra</div>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold">247</div>
+                    <div class="text-sm opacity-90">Học sinh đang thi</div>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold">3</div>
+                    <div class="text-sm opacity-90">Cảnh báo kỹ thuật</div>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold">12</div>
+                    <div class="text-sm opacity-90">Hỗ trợ đang chờ</div>
+                </div>
+                <div class="bg-white bg-opacity-10 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold">98.5%</div>
+                    <div class="text-sm opacity-90">Uptime hệ thống</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Action Bar -->
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 space-y-4 lg:space-y-0">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900">Quản lý Kiểm tra Trực tuyến</h2>
+                <p class="text-gray-600">Tạo, triển khai và giám sát các bài kiểm tra</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <button id="createTestBtn" class="bg-admin-blue hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors">
+                    <i class="fas fa-plus mr-2"></i>
+                    Tạo bài kiểm tra
+                </button>
+                <button class="bg-admin-green hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors">
+                    <i class="fas fa-upload mr-2"></i>
+                    Import bài thi
+                </button>
+                <button class="bg-admin-orange hover:bg-orange-700 text-white px-4 py-2 rounded-md font-medium transition-colors">
+                    <i class="fas fa-chart-bar mr-2"></i>
+                    Báo cáo tổng hợp
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Left Panel - Test Library & Controls -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Thao tác nhanh</h3>
+                    <div class="space-y-3">
+                        <button class="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                            <div class="w-10 h-10 bg-admin-blue bg-opacity-10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-rocket text-admin-blue"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium text-gray-900">Triển khai nhanh</div>
+                                <div class="text-sm text-gray-500">Từ template có sẵn</div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                            <div class="w-10 h-10 bg-admin-green bg-opacity-10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-copy text-admin-green"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium text-gray-900">Sao chép bài thi</div>
+                                <div class="text-sm text-gray-500">Từ bài thi đã có</div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                            <div class="w-10 h-10 bg-admin-orange bg-opacity-10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-shield-alt text-admin-orange"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium text-gray-900">Kiểm tra bảo mật</div>
+                                <div class="text-sm text-gray-500">Rà soát hệ thống</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Emergency Controls -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-admin-red">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 text-red-700">Điều khiển khẩn cấp</h3>
+                    <div class="space-y-3">
+                        <button class="w-full bg-admin-red hover:bg-red-700 text-white px-4 py-2 rounded-md font-medium transition-colors">
+                            <i class="fas fa-stop mr-2"></i>
+                            Dừng tất cả bài thi
+                        </button>
+                        <button class="w-full bg-admin-orange hover:bg-orange-700 text-white px-4 py-2 rounded-md font-medium transition-colors">
+                            <i class="fas fa-clock mr-2"></i>
+                            Gia hạn thời gian
+                        </button>
+                        <button class="w-full bg-admin-yellow hover:bg-yellow-600 text-white px-4 py-2 rounded-md font-medium transition-colors">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            Thông báo khẩn cấp
+                        </button>
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Trạng thái hệ thống</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Server chính</span>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-admin-green rounded-full"></div>
+                                <span class="text-sm text-admin-green font-medium">Online</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Database</span>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-admin-green rounded-full"></div>
+                                <span class="text-sm text-admin-green font-medium">Stable</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">CDN</span>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-admin-yellow rounded-full"></div>
+                                <span class="text-sm text-admin-yellow font-medium">Slow</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Backup</span>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-admin-green rounded-full"></div>
+                                <span class="text-sm text-admin-green font-medium">Ready</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel - Main Content -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Tab Navigation -->
+                <div class="bg-white rounded-lg shadow-sm">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex space-x-8 px-6" id="mainTabs">
+                            <button class="main-tab active py-4 px-1 border-b-2 border-admin-blue text-admin-blue font-medium text-sm" data-tab="live">
+                                Giám sát trực tiếp
+                            </button>
+                            <button class="main-tab py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm" data-tab="library">
+                                Thư viện bài thi
+                            </button>
+                            <button class="main-tab py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm" data-tab="analytics">
+                                Phân tích
+                            </button>
+                            <button class="main-tab py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm" data-tab="deployment">
+                                Triển khai
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Live Monitoring Tab -->
+                <div id="liveTab" class="tab-content">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900">Bài kiểm tra đang diễn ra</h3>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-admin-green rounded-full animate-pulse"></div>
+                                <span class="text-sm text-gray-600">Cập nhật real-time</span>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <!-- Active Test 1 -->
+                            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3 mb-2">
+                                            <h4 class="font-semibold text-gray-900">TOEIC Mock Test #5</h4>
+                                            <span class="bg-admin-green text-white px-2 py-1 rounded-full text-xs font-medium">Đang diễn ra</span>
+                                            <span class="text-sm text-gray-500">Lớp 11A, 11B</span>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-4 gap-4 mb-3">
+                                            <div class="text-center">
+                                                <div class="text-lg font-semibold text-admin-blue">45/52</div>
+                                                <div class="text-xs text-gray-500">Đang thi</div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="text-lg font-semibold text-admin-green">38</div>
+                                                <div class="text-xs text-gray-500">Đã nộp</div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="text-lg font-semibold text-admin-orange">7</div>
+                                                <div class="text-xs text-gray-500">Chưa vào</div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="text-lg font-semibold text-gray-600">25 phút</div>
+                                                <div class="text-xs text-gray-500">Còn lại</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                            <span><i class="fas fa-clock mr-1"></i> Bắt đầu: 14:00</span>
+                                            <span><i class="fas fa-user-shield mr-1"></i> Giám sát: Bật</span>
+                                            <span><i class="fas fa-desktop mr-1"></i> Lockdown: Bật</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="ml-4 flex flex-col space-y-2">
+                                        <button class="bg-admin-blue hover:bg-blue-700 text-white px-3 py-1 rounded text-sm font-medium transition-colors">
+                                            Chi tiết
+                                        </button>
+                                        <button class="bg-admin-orange hover:bg-orange-700 text-white px-3 py-1 rounded text-sm font-medium transition-colors">
+                                            Cảnh báo (2)
+                                        </button>
+                                        <button class="text-admin-red hover:text-red-700 px-3 py-1 text-sm font-medium">
+                                            Dừng thi
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Active Test 2 -->
+                            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3 mb-2">
+                                            <h4 class="font-semibold text-gray-900">Reading Comprehension Test</h4>
+                                            <span class="bg-admin-yellow text-white px-2 py-1 rounded-full text-xs font-medium">Sắp kết thúc</span>
+                                            <span class="text-sm text-gray-500">Lớp 10C</span>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-4 gap-4 mb-3">
+                                            <div class="text-center">
+                                                <div class="text-lg font-semibold text-admin-blue">28/30</div>
+                                                <div class="text-xs text-gray-500">Đang thi</div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="text-lg font-semibold text-admin-green">25</div>
+                                                <div class="text-xs text-gray-500">Đã nộp</div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="text-lg font-semibold text-admin-orange">2</div>
+                                                <div class="text-xs text-gray-500">Chưa vào</div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="text-lg font-semibold text-admin-red">5 phút</div>
+                                                <div class="text-xs text-gray-500">Còn lại</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                            <span><i class="fas fa-clock mr-1"></i> Bắt đầu: 13:30</span>
+                                            <span><i class="fas fa-user-shield mr-1"></i> Giám sát: Bật</span>
+                                            <span><i class="fas fa-exclamation-triangle mr-1 text-admin-orange"></i> 1 cảnh báo</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="ml-4 flex flex-col space-y-2">
+                                        <button class="bg-admin-blue hover:bg-blue-700 text-white px-3 py-1 rounded text-sm font-medium transition-colors">
+                                            Chi tiết
+                                        </button>
+                                        <button class="bg-admin-yellow hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm font-medium transition-colors">
+                                            Gia hạn
+                                        </button>
+                                        <button class="text-admin-red hover:text-red-700 px-3 py-1 text-sm font-medium">
+                                            Dừng thi
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Library Tab -->
+                <div id="libraryTab" class="tab-content hidden">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900">Thư viện bài kiểm tra</h3>
+                            <div class="flex items-center space-x-3">
+                                <input type="text" placeholder="Tìm kiếm bài thi..." class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-admin-blue focus:border-transparent">
+                                <select class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-admin-blue focus:border-transparent">
+                                    <option>Tất cả danh mục</option>
+                                    <option>TOEIC Mock Test</option>
+                                    <option>Reading Practice</option>
+                                    <option>Listening Practice</option>
+                                    <option>Grammar Test</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Test Template 1 -->
+                            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">TOEIC Full Mock Test</h4>
+                                        <p class="text-sm text-gray-600">Bài thi mô phỏng đầy đủ 200 câu</p>
+                                    </div>
+                                    <span class="bg-admin-purple text-white px-2 py-1 rounded-full text-xs font-medium">Template</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-3 mb-4 text-sm">
+                                    <div class="text-center">
+                                        <div class="font-semibold text-gray-900">200</div>
+                                        <div class="text-gray-500">Câu hỏi</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="font-semibold text-gray-900">120</div>
+                                        <div class="text-gray-500">Phút</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="font-semibold text-gray-900">47</div>
+                                        <div class="text-gray-500">Lần sử dụng</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2 text-sm text-gray-500">
+                                        <span><i class="fas fa-star text-admin-yellow"></i> 4.8</span>
+                                        <span>•</span>
+                                        <span>Cập nhật: 20/12/2024</span>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button class="text-admin-blue hover:text-blue-700 text-sm font-medium">Xem</button>
+                                        <button class="text-admin-green hover:text-green-700 text-sm font-medium">Sử dụng</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Test Template 2 -->
+                            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900">Reading Part 7 Practice</h4>
+                                        <p class="text-sm text-gray-600">Luyện tập đọc hiểu nâng cao</p>
+                                    </div>
+                                    <span class="bg-admin-green text-white px-2 py-1 rounded-full text-xs font-medium">Active</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-3 mb-4 text-sm">
+                                    <div class="text-center">
+                                        <div class="font-semibold text-gray-900">54</div>
+                                        <div class="text-gray-500">Câu hỏi</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="font-semibold text-gray-900">75</div>
+                                        <div class="text-gray-500">Phút</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="font-semibold text-gray-900">23</div>
+                                        <div class="text-gray-500">Lần sử dụng</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2 text-sm text-gray-500">
+                                        <span><i class="fas fa-star text-admin-yellow"></i> 4.6</span>
+                                        <span>•</span>
+                                        <span>Cập nhật: 18/12/2024</span>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button class="text-admin-blue hover:text-blue-700 text-sm font-medium">Xem</button>
+                                        <button class="text-admin-green hover:text-green-700 text-sm font-medium">Sử dụng</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div id="analyticsTab" class="tab-content hidden">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-6">Phân tích hiệu suất</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-3">Tỷ lệ hoàn thành</h4>
+                                <canvas id="completionChart" width="100" height="80"></canvas>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-3">Điểm số trung bình</h4>
+                                <canvas id="scoresChart" width="100" height="80"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-gray-50 rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-admin-blue">94.2%</div>
+                                <div class="text-sm text-gray-600">Tỷ lệ hoàn thành</div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-admin-green">78.5</div>
+                                <div class="text-sm text-gray-600">Điểm trung bình</div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-admin-orange">42 phút</div>
+                                <div class="text-sm text-gray-600">Thời gian TB</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deployment Tab -->
+                <div id="deploymentTab" class="tab-content hidden">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-6">Triển khai bài kiểm tra</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Chọn bài kiểm tra</label>
+                                    <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-admin-blue focus:border-transparent">
+                                        <option>TOEIC Mock Test #5</option>
+                                        <option>Reading Part 7 Practice</option>
+                                        <option>Listening Comprehensive</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Lớp học</label>
+                                    <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-admin-blue focus:border-transparent">
+                                        <option>Tất cả lớp</option>
+                                        <option>Lớp 10A</option>
+                                        <option>Lớp 10B</option>
+                                        <option>Lớp 11A</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Thời gian bắt đầu</label>
+                                    <input type="datetime-local" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-admin-blue focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Thời gian kết thúc</label>
+                                    <input type="datetime-local" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-admin-blue focus:border-transparent">
+                                </div>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h4 class="font-medium text-gray-900 mb-3">Cài đặt bảo mật</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" class="text-admin-blue focus:ring-admin-blue" checked>
+                                        <span class="text-sm text-gray-700">Kích hoạt giám sát</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" class="text-admin-blue focus:ring-admin-blue" checked>
+                                        <span class="text-sm text-gray-700">Lockdown browser</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" class="text-admin-blue focus:ring-admin-blue">
+                                        <span class="text-sm text-gray-700">Ghi lại màn hình</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" class="text-admin-blue focus:ring-admin-blue">
+                                        <span class="text-sm text-gray-700">Chặn copy/paste</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end space-x-3">
+                                <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-md font-medium transition-colors">
+                                    Lưu nháp
+                                </button>
+                                <button class="bg-admin-blue hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors">
+                                    Triển khai ngay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Monitoring & Support -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Real-time Alerts -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Cảnh báo real-time</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg">
+                            <div class="w-2 h-2 bg-admin-red rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-red-800">Nghi ngờ gian lận</div>
+                                <div class="text-xs text-red-600">Học sinh Nguyễn A - Tab switching</div>
+                                <div class="text-xs text-gray-500">2 phút trước</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3 p-3 bg-yellow-50 rounded-lg">
+                            <div class="w-2 h-2 bg-admin-yellow rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-yellow-800">Kết nối chậm</div>
+                                <div class="text-xs text-yellow-600">5 học sinh gặp vấn đề mạng</div>
+                                <div class="text-xs text-gray-500">5 phút trước</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
+                            <div class="w-2 h-2 bg-admin-blue rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-blue-800">Yêu cầu hỗ trợ</div>
+                                <div class="text-xs text-blue-600">Trần B - Không load được câu hỏi</div>
+                                <div class="text-xs text-gray-500">8 phút trước</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full mt-4 text-admin-blue hover:text-blue-700 text-sm font-medium">
+                        Xem tất cả cảnh báo
+                    </button>
+                </div>
+
+                <!-- Support Queue -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Hỗ trợ trực tiếp</h3>
+                        <span class="bg-admin-orange text-white px-2 py-1 rounded-full text-xs font-medium">12</span>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3 p-3 bg-orange-50 rounded-lg">
+                            <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-orange-600 text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-900">Lê Thị C</div>
+                                <div class="text-xs text-orange-600">Không thể submit bài</div>
+                            </div>
+                            <button class="text-admin-blue hover:text-blue-700 text-sm font-medium">
+                                Hỗ trợ
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3 p-3 bg-red-50 rounded-lg">
+                            <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-exclamation text-red-600 text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-900">Phạm Văn D</div>
+                                <div class="text-xs text-red-600">Mất kết nối liên tục</div>
+                            </div>
+                            <button class="text-admin-blue hover:text-blue-700 text-sm font-medium">
+                                Hỗ trợ
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full mt-4 bg-admin-blue text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
+                        Mở chat hỗ trợ
+                    </button>
+                </div>
+
+                <!-- Performance Metrics -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Hiệu suất hệ thống</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-gray-600">CPU Usage</span>
+                                <span class="text-sm font-medium text-gray-900">45%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-admin-blue h-2 rounded-full" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-gray-600">Memory</span>
+                                <span class="text-sm font-medium text-gray-900">67%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-admin-green h-2 rounded-full" style="width: 67%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-gray-600">Network</span>
+                                <span class="text-sm font-medium text-gray-900">23%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-admin-yellow h-2 rounded-full" style="width: 23%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-gray-600">Storage</span>
+                                <span class="text-sm font-medium text-gray-900">89%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-admin-red h-2 rounded-full" style="width: 89%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Hoạt động gần đây</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-admin-green rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <div class="text-sm text-gray-900">Triển khai bài thi mới</div>
+                                <div class="text-xs text-gray-500">TOEIC Mock Test #6 - 5 phút trước</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-admin-blue rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <div class="text-sm text-gray-900">Cập nhật template</div>
+                                <div class="text-xs text-gray-500">Reading Part 7 - 15 phút trước</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-admin-orange rounded-full mt-2"></div>
+                            <div class="flex-1">
+                                <div class="text-sm text-gray-900">Xử lý cảnh báo</div>
+                                <div class="text-xs text-gray-500">Gian lận nghi ngờ - 30 phút trước</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Test Modal -->
+    <div id="createTestModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-900">Tạo bài kiểm tra mới</h2>
+                <button id="closeCreateTestModal" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tên bài kiểm tra</label>
+                        <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-admin-blue focus:border-transparent" placeholder="Nhập tên bài kiểm tra">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Danh mục</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-admin-blue focus:border-transparent">
+                            <option>TOEIC Mock Test</option>
+                            <option>Reading Practice</option>
+                            <option>Listening Practice</option>
+                            <option>Grammar Test</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Mô tả</label>
+                    <textarea class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-admin-blue focus:border-transparent" rows="3" placeholder="Mô tả bài kiểm tra..."></textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Số câu hỏi</label>
+                        <input type="number" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-admin-blue focus:border-transparent" placeholder="200">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Thời gian (phút)</label>
+                        <input type="number" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-admin-blue focus:border-transparent" placeholder="120">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Độ khó</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-admin-blue focus:border-transparent">
+                            <option>Dễ</option>
+                            <option>Trung bình</option>
+                            <option>Khó</option>
+                            <option>Hỗn hợp</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-md font-medium transition-colors">
+                        Hủy
+                    </button>
+                    <button class="bg-admin-blue hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors">
+                        Tạo bài kiểm tra
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Completion Chart
+            const completionCtx = document.getElementById('completionChart').getContext('2d');
+            new Chart(completionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Hoàn thành', 'Đang làm', 'Chưa bắt đầu'],
+                    datasets: [{
+                        data: [75, 20, 5],
+                        backgroundColor: ['#059669', '#3B82F6', '#F59E0B'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Scores Chart
+            const scoresCtx = document.getElementById('scoresChart').getContext('2d');
+            new Chart(scoresCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0-20', '21-40', '41-60', '61-80', '81-100'],
+                    datasets: [{
+                        label: 'Số học sinh',
+                        data: [2, 8, 25, 45, 20],
+                        backgroundColor: '#3B82F6',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        // Tab functionality
+        document.querySelectorAll('.main-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.main-tab').forEach(t => {
+                    t.classList.remove('active', 'border-admin-blue', 'text-admin-blue');
+                    t.classList.add('border-transparent', 'text-gray-500');
+                });
+                
+                // Add active class to clicked tab
+                this.classList.add('active', 'border-admin-blue', 'text-admin-blue');
+                this.classList.remove('border-transparent', 'text-gray-500');
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Show selected tab content
+                const targetTab = this.dataset.tab;
+                document.getElementById(targetTab + 'Tab').classList.remove('hidden');
+            });
+        });
+
+        // Create Test Modal
+        const createTestBtn = document.getElementById('createTestBtn');
+        const createTestModal = document.getElementById('createTestModal');
+        const closeCreateTestModal = document.getElementById('closeCreateTestModal');
+
+        createTestBtn.addEventListener('click', function() {
+            createTestModal.classList.remove('hidden');
+        });
+
+        closeCreateTestModal.addEventListener('click', function() {
+            createTestModal.classList.add('hidden');
+        });
+
+        // Emergency controls
+        document.querySelectorAll('.bg-admin-red, .bg-admin-orange, .bg-admin-yellow').forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.textContent.trim();
+                
+                if (action.includes('Dừng tất cả')) {
+                    if (confirm('Bạn có chắc chắn muốn dừng tất cả bài thi đang diễn ra?')) {
+                        alert('Đã dừng tất cả bài thi!');
+                    }
+                } else if (action.includes('Gia hạn')) {
+                    alert('Mở giao diện gia hạn thời gian...');
+                } else if (action.includes('Thông báo')) {
+                    alert('Soạn thông báo khẩn cấp...');
+                }
+            });
+        });
+
+        // Support and monitoring actions
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                const text = this.textContent.trim();
+                
+                if (text.includes('Chi tiết')) {
+                    alert('Xem chi tiết bài kiểm tra và danh sách học sinh...');
+                } else if (text.includes('Cảnh báo')) {
+                    alert('Xem chi tiết các cảnh báo và hành động khả nghi...');
+                } else if (text.includes('Dừng thi')) {
+                    if (confirm('Bạn có chắc chắn muốn dừng bài thi này?')) {
+                        alert('Đã dừng bài thi!');
+                    }
+                } else if (text.includes('Hỗ trợ')) {
+                    alert('Mở chat hỗ trợ với học sinh...');
+                } else if (text.includes('Triển khai ngay')) {
+                    alert('Đã triển khai bài kiểm tra thành công!');
+                }
+            });
+        });
+
+        // Real-time updates simulation
+        setInterval(function() {
+            // Update live counters randomly
+            const counters = document.querySelectorAll('.text-2xl.font-bold');
+            counters.forEach(counter => {
+                if (counter.textContent.includes('%')) return;
+                const current = parseInt(counter.textContent);
+                const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+                const newValue = Math.max(0, current + change);
+                counter.textContent = newValue;
+            });
+        }, 5000);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dcef51f1440502',t:'MTc1NDk2OTg1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

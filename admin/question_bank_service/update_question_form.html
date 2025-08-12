@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Editor - CHAM TOEIC Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#374151',
+                        accent: '#B91C1C'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-full mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-primary text-white px-3 py-2 rounded-lg font-bold text-lg">CHAM</div>
+                    <h1 class="text-2xl font-bold text-primary">Question Editor</h1>
+                    <div class="flex items-center space-x-2 text-sm text-gray-500">
+                        <span>ID: Q-2024-001847</span>
+                        <span>•</span>
+                        <span>Version 3.2</span>
+                        <span>•</span>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded">Published</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2 text-sm">
+                        <span class="text-gray-500">Auto-saved</span>
+                        <span class="text-green-600">2 minutes ago</span>
+                        <i class="fas fa-check-circle text-green-600"></i>
+                    </div>
+                    <button onclick="showVersionHistory()" class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        <i class="fas fa-history mr-2"></i>History
+                    </button>
+                    <button onclick="validateQuestion()" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-check mr-2"></i>Validate
+                    </button>
+                    <button onclick="saveAndClose()" class="px-3 py-2 bg-primary text-white rounded-lg hover:bg-gray-700">
+                        <i class="fas fa-save mr-2"></i>Save & Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex h-screen">
+        <!-- Left Panel - Editing -->
+        <div class="w-1/2 bg-white border-r border-gray-200 overflow-y-auto">
+            <div class="p-6">
+                <!-- Question Identification -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-primary">Question Information</h2>
+                        <button onclick="showUsageStats()" class="text-sm text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-chart-bar mr-1"></i>View Usage Stats
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <div class="text-gray-600">Used in Tests</div>
+                            <div class="font-semibold text-lg">12 active</div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <div class="text-gray-600">Quality Rating</div>
+                            <div class="font-semibold text-lg text-green-600">4.7/5</div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <div class="text-gray-600">Success Rate</div>
+                            <div class="font-semibold text-lg">68%</div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <div class="text-gray-600">Times Used</div>
+                            <div class="font-semibold text-lg">1,247</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Editing -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-primary mb-4">Question Content</h3>
+                    
+                    <!-- Rich Text Editor -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Question Text</label>
+                        <div class="border border-gray-300 rounded-lg">
+                            <div class="flex items-center space-x-2 p-2 border-b border-gray-200 bg-gray-50">
+                                <button class="p-1 hover:bg-gray-200 rounded" title="Bold">
+                                    <i class="fas fa-bold"></i>
+                                </button>
+                                <button class="p-1 hover:bg-gray-200 rounded" title="Italic">
+                                    <i class="fas fa-italic"></i>
+                                </button>
+                                <button class="p-1 hover:bg-gray-200 rounded" title="Underline">
+                                    <i class="fas fa-underline"></i>
+                                </button>
+                                <div class="w-px h-4 bg-gray-300"></div>
+                                <button class="p-1 hover:bg-gray-200 rounded" title="Insert Image">
+                                    <i class="fas fa-image"></i>
+                                </button>
+                                <button class="p-1 hover:bg-gray-200 rounded" title="Insert Audio">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                                <button class="p-1 hover:bg-gray-200 rounded" title="Special Characters">
+                                    <i class="fas fa-font"></i>
+                                </button>
+                                <div class="w-px h-4 bg-gray-300"></div>
+                                <button onclick="previewTTS()" class="p-1 hover:bg-gray-200 rounded" title="Text-to-Speech Preview">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            </div>
+                            <textarea id="questionText" class="w-full p-3 border-0 resize-none focus:ring-0" rows="4" placeholder="Enter question text...">Look at the picture. What is the woman doing?</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Media Management -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Image</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                                <div class="mb-2">
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='40' viewBox='0 0 60 40'%3E%3Crect width='60' height='40' fill='%23e5e7eb'/%3E%3Ctext x='30' y='22' text-anchor='middle' fill='%23374151' font-size='8'%3EImage%3C/text%3E%3C/svg%3E" alt="Question Image" class="mx-auto mb-2">
+                                </div>
+                                <button class="text-sm text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-upload mr-1"></i>Replace Image
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Audio</label>
+                            <div class="border border-gray-300 rounded-lg p-4">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <button class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center hover:bg-gray-700">
+                                        <i class="fas fa-play text-xs"></i>
+                                    </button>
+                                    <div class="flex-1">
+                                        <div class="text-sm font-medium">question_001.mp3</div>
+                                        <div class="text-xs text-gray-500">Duration: 0:15</div>
+                                    </div>
+                                </div>
+                                <button class="text-sm text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-upload mr-1"></i>Replace Audio
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multi-language Support -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Language Versions</label>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-primary text-white rounded text-sm">English</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">Korean</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">Japanese</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 text-blue-600">
+                                <i class="fas fa-plus mr-1"></i>Add Language
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Answer Management -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-primary mb-4">Answer Choices</h3>
+                    
+                    <div class="space-y-3" id="answerChoices">
+                        <div class="answer-choice flex items-start space-x-3 p-3 border border-gray-200 rounded-lg">
+                            <div class="flex items-center space-x-2">
+                                <input type="radio" name="correctAnswer" value="A" checked class="text-primary">
+                                <span class="font-medium text-primary">A</span>
+                            </div>
+                            <div class="flex-1">
+                                <textarea class="w-full border-0 resize-none focus:ring-0 text-sm" rows="1" placeholder="Answer choice A">She is typing on her computer</textarea>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <button class="p-1 text-gray-400 hover:text-gray-600" title="Move Up">
+                                    <i class="fas fa-chevron-up"></i>
+                                </button>
+                                <button class="p-1 text-gray-400 hover:text-gray-600" title="Move Down">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <button class="p-1 text-red-400 hover:text-red-600" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="answer-choice flex items-start space-x-3 p-3 border border-gray-200 rounded-lg">
+                            <div class="flex items-center space-x-2">
+                                <input type="radio" name="correctAnswer" value="B" class="text-primary">
+                                <span class="font-medium">B</span>
+                            </div>
+                            <div class="flex-1">
+                                <textarea class="w-full border-0 resize-none focus:ring-0 text-sm" rows="1" placeholder="Answer choice B">She is talking on the phone</textarea>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <button class="p-1 text-gray-400 hover:text-gray-600" title="Move Up">
+                                    <i class="fas fa-chevron-up"></i>
+                                </button>
+                                <button class="p-1 text-gray-400 hover:text-gray-600" title="Move Down">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <button class="p-1 text-red-400 hover:text-red-600" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="answer-choice flex items-start space-x-3 p-3 border border-gray-200 rounded-lg">
+                            <div class="flex items-center space-x-2">
+                                <input type="radio" name="correctAnswer" value="C" class="text-primary">
+                                <span class="font-medium">C</span>
+                            </div>
+                            <div class="flex-1">
+                                <textarea class="w-full border-0 resize-none focus:ring-0 text-sm" rows="1" placeholder="Answer choice C">She is reading a document</textarea>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <button class="p-1 text-gray-400 hover:text-gray-600" title="Move Up">
+                                    <i class="fas fa-chevron-up"></i>
+                                </button>
+                                <button class="p-1 text-gray-400 hover:text-gray-600" title="Move Down">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <button class="p-1 text-red-400 hover:text-red-600" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="answer-choice flex items-start space-x-3 p-3 border border-gray-200 rounded-lg">
+                            <div class="flex items-center space-x-2">
+                                <input type="radio" name="correctAnswer" value="D" class="text-primary">
+                                <span class="font-medium">D</span>
+                            </div>
+                            <div class="flex-1">
+                                <textarea class="w-full border-0 resize-none focus:ring-0 text-sm" rows="1" placeholder="Answer choice D">She is writing notes</textarea>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <button class="p-1 text-gray-400 hover:text-gray-600" title="Move Up">
+                                    <i class="fas fa-chevron-up"></i>
+                                </button>
+                                <button class="p-1 text-gray-400 hover:text-gray-600" title="Move Down">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <button class="p-1 text-red-400 hover:text-red-600" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="addAnswerChoice()" class="mt-3 px-3 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50">
+                        <i class="fas fa-plus mr-2"></i>Add Answer Choice
+                    </button>
+
+                    <!-- Answer Explanation -->
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Answer Explanation</label>
+                        <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" rows="3" placeholder="Explain why this is the correct answer...">The woman in the image is clearly positioned at a desk with her hands on a keyboard, indicating she is typing on her computer.</textarea>
+                    </div>
+
+                    <!-- Distractor Analysis -->
+                    <div class="mt-4">
+                        <button onclick="showDistractorAnalysis()" class="text-sm text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-chart-line mr-1"></i>View Distractor Analysis
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metadata Editing -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-primary mb-4">Question Metadata</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">TOEIC Part</label>
+                            <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                                <option value="1" selected>Part 1 - Photographs</option>
+                                <option value="2">Part 2 - Question-Response</option>
+                                <option value="3">Part 3 - Conversations</option>
+                                <option value="4">Part 4 - Short Talks</option>
+                                <option value="5">Part 5 - Incomplete Sentences</option>
+                                <option value="6">Part 6 - Text Completion</option>
+                                <option value="7">Part 7 - Reading Comprehension</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Difficulty Level</label>
+                            <div class="flex items-center space-x-2">
+                                <select class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                                    <option value="1">Level 1 (Beginner)</option>
+                                    <option value="2" selected>Level 2 (Elementary)</option>
+                                    <option value="3">Level 3 (Intermediate)</option>
+                                    <option value="4">Level 4 (Upper-Intermediate)</option>
+                                    <option value="5">Level 5 (Advanced)</option>
+                                </select>
+                                <button onclick="showDifficultyImpact()" class="p-2 text-blue-600 hover:text-blue-800" title="Impact Preview">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Topics & Tags</label>
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                office-work
+                                <button class="ml-1 text-blue-600 hover:text-blue-800">×</button>
+                            </span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                workplace
+                                <button class="ml-1 text-blue-600 hover:text-blue-800">×</button>
+                            </span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                technology
+                                <button class="ml-1 text-blue-600 hover:text-blue-800">×</button>
+                            </span>
+                        </div>
+                        <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Add tags (press Enter to add)">
+                    </div>
+
+                    <!-- Learning Objectives -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Learning Objectives</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2 text-primary" checked>
+                                <span class="text-sm">Identify present continuous actions</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2 text-primary" checked>
+                                <span class="text-sm">Recognize workplace activities</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2 text-primary">
+                                <span class="text-sm">Understand office equipment usage</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Related Questions -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Related Questions</label>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                <span class="text-sm">Q-2024-001845: Office meeting scenario</span>
+                                <button class="text-red-600 hover:text-red-800 text-xs">Remove</button>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                <span class="text-sm">Q-2024-001849: Computer usage context</span>
+                                <button class="text-red-600 hover:text-red-800 text-xs">Remove</button>
+                            </div>
+                        </div>
+                        <button class="mt-2 text-sm text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-plus mr-1"></i>Link Related Question
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Validation Tools -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-primary mb-4">Validation & Quality</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="runContentCheck()" class="flex items-center p-3 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-spell-check text-blue-600 mr-3"></i>
+                            <div class="text-left">
+                                <div class="font-medium text-sm">Content Accuracy</div>
+                                <div class="text-xs text-gray-500">Grammar & spelling check</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="runAccessibilityCheck()" class="flex items-center p-3 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-universal-access text-green-600 mr-3"></i>
+                            <div class="text-left">
+                                <div class="font-medium text-sm">Accessibility</div>
+                                <div class="text-xs text-gray-500">WCAG compliance check</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="runDuplicateCheck()" class="flex items-center p-3 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-copy text-orange-600 mr-3"></i>
+                            <div class="text-left">
+                                <div class="font-medium text-sm">Duplicate Detection</div>
+                                <div class="text-xs text-gray-500">Find similar questions</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="calculateQualityScore()" class="flex items-center p-3 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-star text-yellow-600 mr-3"></i>
+                            <div class="text-left">
+                                <div class="font-medium text-sm">Quality Score</div>
+                                <div class="text-xs text-gray-500">Recalculate rating</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Preview -->
+        <div class="w-1/2 bg-gray-50 overflow-y-auto">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-semibold text-primary">Live Preview</h2>
+                    <div class="flex items-center space-x-2">
+                        <button class="px-3 py-1 bg-white border border-gray-300 rounded text-sm hover:bg-gray-50">Desktop</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">Tablet</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">Mobile</button>
+                    </div>
+                </div>
+
+                <!-- Question Preview -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">Part 1</span>
+                            <span class="text-sm text-gray-500">Question 1 of 10</span>
+                        </div>
+                        <div class="text-sm text-gray-500">Time: 00:15</div>
+                    </div>
+
+                    <!-- Question Image -->
+                    <div class="mb-4 text-center">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23f3f4f6'/%3E%3Ctext x='150' y='100' text-anchor='middle' fill='%23374151' font-size='14'%3EOffice Scene%3C/text%3E%3Ctext x='150' y='120' text-anchor='middle' fill='%23374151' font-size='12'%3EWoman at Computer%3C/text%3E%3C/svg%3E" alt="Question Image" class="mx-auto rounded-lg border border-gray-200">
+                    </div>
+
+                    <!-- Audio Player -->
+                    <div class="mb-4 flex items-center justify-center">
+                        <div class="flex items-center space-x-3 bg-gray-50 rounded-lg p-3">
+                            <button class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center hover:bg-gray-700">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="flex-1">
+                                <div class="w-48 h-2 bg-gray-200 rounded-full">
+                                    <div class="w-0 h-2 bg-primary rounded-full"></div>
+                                </div>
+                            </div>
+                            <span class="text-sm text-gray-500">0:00 / 0:15</span>
+                        </div>
+                    </div>
+
+                    <!-- Question Text -->
+                    <div class="mb-6">
+                        <p class="text-lg text-gray-800">Look at the picture. What is the woman doing?</p>
+                    </div>
+
+                    <!-- Answer Choices -->
+                    <div class="space-y-3">
+                        <label class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="previewAnswer" value="A" class="mt-1 text-primary">
+                            <div>
+                                <span class="font-medium text-primary mr-2">(A)</span>
+                                <span>She is typing on her computer</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="previewAnswer" value="B" class="mt-1 text-primary">
+                            <div>
+                                <span class="font-medium mr-2">(B)</span>
+                                <span>She is talking on the phone</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="previewAnswer" value="C" class="mt-1 text-primary">
+                            <div>
+                                <span class="font-medium mr-2">(C)</span>
+                                <span>She is reading a document</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="previewAnswer" value="D" class="mt-1 text-primary">
+                            <div>
+                                <span class="font-medium mr-2">(D)</span>
+                                <span>She is writing notes</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="flex justify-between mt-6 pt-4 border-t border-gray-200">
+                        <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-arrow-left mr-2"></i>Previous
+                        </button>
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-gray-700">
+                            Next<i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Change Tracking -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-primary">Recent Changes</h3>
+                        <button onclick="showFullChangeLog()" class="text-sm text-blue-600 hover:text-blue-800">View All</button>
+                    </div>
+                    
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-start space-x-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <i class="fas fa-edit text-blue-600 mt-1"></i>
+                            <div class="flex-1">
+                                <div class="font-medium">Question text updated</div>
+                                <div class="text-gray-600">Modified phrasing for clarity</div>
+                                <div class="text-xs text-gray-500 mt-1">2 minutes ago by John Admin</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                            <i class="fas fa-check text-green-600 mt-1"></i>
+                            <div class="flex-1">
+                                <div class="font-medium">Answer explanation added</div>
+                                <div class="text-gray-600">Detailed explanation for correct answer</div>
+                                <div class="text-xs text-gray-500 mt-1">15 minutes ago by John Admin</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                            <i class="fas fa-tag text-yellow-600 mt-1"></i>
+                            <div class="flex-1">
+                                <div class="font-medium">Tags updated</div>
+                                <div class="text-gray-600">Added 'technology' tag</div>
+                                <div class="text-xs text-gray-500 mt-1">1 hour ago by Sarah Editor</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Impact Assessment -->
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">Impact Assessment</span>
+                            <button onclick="showImpactDetails()" class="text-xs text-blue-600 hover:text-blue-800">Details</button>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <div class="flex justify-between">
+                                <span>Tests affected:</span>
+                                <span class="font-medium">12 active tests</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Students impacted:</span>
+                                <span class="font-medium">~2,400 students</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Approval required:</span>
+                                <span class="font-medium text-yellow-600">Yes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals and Overlays -->
+    <div id="versionHistoryModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[80vh] overflow-hidden">
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-primary">Version History</h3>
+                    <button onclick="closeModal('versionHistoryModal')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-6 overflow-y-auto max-h-96">
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3.2</div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="font-medium">Current Version</div>
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">Published</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mt-1">Updated question text and answer explanation</div>
+                                <div class="text-xs text-gray-500 mt-2">2 minutes ago by John Admin</div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded hover:bg-blue-200">Compare</button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg">
+                            <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-sm font-bold">3.1</div>
+                            <div class="flex-1">
+                                <div class="font-medium">Previous Version</div>
+                                <div class="text-sm text-gray-600 mt-1">Added technology tag and related questions</div>
+                                <div class="text-xs text-gray-500 mt-2">1 hour ago by Sarah Editor</div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 border border-gray-300 text-xs rounded hover:bg-gray-50">Compare</button>
+                                <button class="px-3 py-1 border border-gray-300 text-xs rounded hover:bg-gray-50">Restore</button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg">
+                            <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-sm font-bold">3.0</div>
+                            <div class="flex-1">
+                                <div class="font-medium">Major Update</div>
+                                <div class="text-sm text-gray-600 mt-1">Replaced audio file and updated image</div>
+                                <div class="text-xs text-gray-500 mt-2">2 days ago by Mike Content</div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 border border-gray-300 text-xs rounded hover:bg-gray-50">Compare</button>
+                                <button class="px-3 py-1 border border-gray-300 text-xs rounded hover:bg-gray-50">Restore</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-save functionality
+        let autoSaveTimer;
+        let hasUnsavedChanges = false;
+
+        function startAutoSave() {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                if (hasUnsavedChanges) {
+                    saveChanges();
+                }
+            }, 30000); // Auto-save every 30 seconds
+        }
+
+        function saveChanges() {
+            // Simulate saving
+            hasUnsavedChanges = false;
+            updateAutoSaveStatus();
+        }
+
+        function updateAutoSaveStatus() {
+            const statusElement = document.querySelector('.text-green-600');
+            if (statusElement) {
+                statusElement.textContent = 'just now';
+            }
+        }
+
+        // Track changes
+        function trackChange() {
+            hasUnsavedChanges = true;
+            startAutoSave();
+        }
+
+        // Add event listeners to form elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('change', trackChange);
+                input.addEventListener('input', trackChange);
+            });
+        });
+
+        // Modal functions
+        function showVersionHistory() {
+            document.getElementById('versionHistoryModal').classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function showUsageStats() {
+            alert('Usage Statistics:\n\n• Used in 12 active tests\n• 1,247 total attempts\n• 68% success rate\n• Average time: 12 seconds\n• Quality rating: 4.7/5');
+        }
+
+        function previewTTS() {
+            alert('Text-to-speech preview would play here');
+        }
+
+        function addAnswerChoice() {
+            const container = document.getElementById('answerChoices');
+            const choiceCount = container.children.length;
+            const nextLetter = String.fromCharCode(65 + choiceCount); // A, B, C, D, E...
+            
+            const newChoice = document.createElement('div');
+            newChoice.className = 'answer-choice flex items-start space-x-3 p-3 border border-gray-200 rounded-lg';
+            newChoice.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <input type="radio" name="correctAnswer" value="${nextLetter}" class="text-primary">
+                    <span class="font-medium">${nextLetter}</span>
+                </div>
+                <div class="flex-1">
+                    <textarea class="w-full border-0 resize-none focus:ring-0 text-sm" rows="1" placeholder="Answer choice ${nextLetter}"></textarea>
+                </div>
+                <div class="flex items-center space-x-1">
+                    <button class="p-1 text-gray-400 hover:text-gray-600" title="Move Up">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                    <button class="p-1 text-gray-400 hover:text-gray-600" title="Move Down">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <button class="p-1 text-red-400 hover:text-red-600" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            
+            container.appendChild(newChoice);
+            trackChange();
+        }
+
+        function showDistractorAnalysis() {
+            alert('Distractor Analysis:\n\n• Option A (Correct): 68% selected\n• Option B: 15% selected - Common confusion with phone gestures\n• Option C: 12% selected - Document reading misconception\n• Option D: 5% selected - Writing action confusion\n\nRecommendation: Option B is an effective distractor');
+        }
+
+        function showDifficultyImpact() {
+            alert('Difficulty Impact Preview:\n\n• Current Level: 2 (Elementary)\n• Changing to Level 3 would:\n  - Move question to intermediate tests\n  - Affect 8 active test configurations\n  - Impact ~1,200 students\n  - Require approval from 2 supervisors');
+        }
+
+        function runContentCheck() {
+            setTimeout(() => {
+                alert('Content Accuracy Check Results:\n\n✓ Grammar: No issues found\n✓ Spelling: No issues found\n✓ Punctuation: Correct\n⚠ Suggestion: Consider adding article "the" before "computer"\n\nOverall Score: 95/100');
+            }, 1000);
+        }
+
+        function runAccessibilityCheck() {
+            setTimeout(() => {
+                alert('Accessibility Check Results:\n\n✓ Alt text provided for image\n✓ Audio transcript available\n✓ Color contrast sufficient\n⚠ Consider adding audio description\n\nWCAG 2.1 AA Compliance: 90%');
+            }, 1000);
+        }
+
+        function runDuplicateCheck() {
+            setTimeout(() => {
+                alert('Duplicate Detection Results:\n\n• 2 similar questions found:\n  - Q-2024-001845: 78% similarity\n  - Q-2024-001849: 65% similarity\n\n• Differences:\n  - Different workplace settings\n  - Unique answer choices\n\nRecommendation: Questions are sufficiently distinct');
+            }, 1000);
+        }
+
+        function calculateQualityScore() {
+            setTimeout(() => {
+                alert('Quality Score Calculation:\n\n• Content Quality: 4.8/5\n• Answer Clarity: 4.7/5\n• Distractor Effectiveness: 4.5/5\n• Technical Quality: 4.9/5\n• Student Performance: 4.6/5\n\nOverall Quality Score: 4.7/5\n(No change from previous score)');
+            }, 1000);
+        }
+
+        function showFullChangeLog() {
+            alert('Full Change Log:\n\n• 2 min ago: Question text updated (John Admin)\n• 15 min ago: Answer explanation added (John Admin)\n• 1 hour ago: Tags updated (Sarah Editor)\n• 2 hours ago: Difficulty level adjusted (Mike Content)\n• 1 day ago: Audio file replaced (Tech Team)\n• 2 days ago: Image updated (Content Team)');
+        }
+
+        function showImpactDetails() {
+            alert('Impact Assessment Details:\n\n• Active Tests Using This Question:\n  - Practice Test A (450 students)\n  - Diagnostic Test B (380 students)\n  - Weekly Quiz Series (1,200 students)\n  - Custom Test Set (370 students)\n\n• Change Impact:\n  - Low risk: Text/explanation changes\n  - Medium risk: Answer choice modifications\n  - High risk: Correct answer changes\n\n• Approval Required: Yes (affects >1000 students)');
+        }
+
+        function validateQuestion() {
+            alert('Question Validation:\n\n✓ Content accuracy check passed\n✓ Answer choices validated\n✓ Correct answer confirmed\n✓ Metadata complete\n⚠ Minor accessibility improvements suggested\n\nValidation Score: 92/100\nReady for review and approval');
+        }
+
+        function saveAndClose() {
+            if (hasUnsavedChanges) {
+                if (confirm('Save changes before closing?')) {
+                    saveChanges();
+                    alert('Question saved successfully!');
+                    window.close();
+                }
+            } else {
+                window.close();
+            }
+        }
+
+        // Prevent accidental navigation away
+        window.addEventListener('beforeunload', function(e) {
+            if (hasUnsavedChanges) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        // Initialize auto-save
+        startAutoSave();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96dcc7cf61ffb6a7',t:'MTc1NDk2ODIzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
