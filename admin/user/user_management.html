@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý người dùng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background-color: #d1d5db;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background-color: #10b981;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+        
+        .tooltip {
+            position: relative;
+        }
+        
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #374151;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+        
+        .breadcrumb a {
+            color: #3B82F6;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .role-student {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+        
+        .role-teacher {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .role-admin {
+            background-color: #EDE9FE;
+            color: #5B21B6;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Page Header -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-2">
+                <h1 class="text-2xl font-semibold text-gray-900">Quản lý người dùng</h1>
+                <button onclick="openCreateModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg h-9 flex items-center gap-2 transition-colors">
+                    <i class="fas fa-plus text-sm"></i>
+                    Tạo mới
+                </button>
+            </div>
+            <div class="breadcrumb text-xs text-gray-600">
+                <a href="#" class="hover:underline">Trang chủ</a>
+                <span class="mx-1">/</span>
+                <a href="#" class="hover:underline">Bảng điều khiển Admin</a>
+                <span class="mx-1">/</span>
+                <span>Quản lý người dùng</span>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <div>
+                    <input type="text" id="usernameFilter" placeholder="Nhập tên đăng nhập..." 
+                           class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <input type="text" id="generalSearch" placeholder="Tìm theo tên, email..." 
+                           class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <select id="sortOrder" class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <option value="asc" selected>Tăng dần</option>
+                        <option value="desc">Giảm dần</option>
+                    </select>
+                </div>
+                <div>
+                    <select id="sortBy" class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <option value="name" selected>Tên</option>
+                        <option value="username">Tên đăng nhập</option>
+                        <option value="email">Email</option>
+                        <option value="role">Vai trò</option>
+                        <option value="created">Ngày tạo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="clearFilters()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-700 transition-colors">
+                    Xóa
+                </button>
+                <button onclick="applyFilters()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
+                    <i class="fas fa-search text-sm"></i>
+                    Tìm kiếm
+                </button>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-slate-50 border-b border-gray-200">
+                        <tr class="h-11">
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-16">STT</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-44">Họ và tên</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-36">Tên đăng nhập</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-28">Ngày sinh</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-48">Email</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-24">Vai trò</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-44">Ngày tạo</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-28">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <tr class="h-13 hover:bg-blue-50 border-b border-gray-100 transition-colors">
+                            <td class="px-4 py-3 text-sm text-gray-900">1</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 font-medium">Nguyen Van A</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">nguyenvana</td>
+                            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">nguyenvana@gmail.com</td>
+                            <td class="px-4 py-3">
+                                <span class="role-badge role-student">student</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">2025-08-08T02:34:09.920+00:00</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="toggle-switch active" onclick="toggleUserStatus(this, 1)"></div>
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editUser(1)">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeleteUser(1, 'Nguyen Van A')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-13 hover:bg-blue-50 border-b border-gray-100 bg-gray-25 transition-colors">
+                            <td class="px-4 py-3 text-sm text-gray-900">2</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 font-medium">Nguyen Van B</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">nguyenvanb</td>
+                            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">nguyenvanb@gmail.com</td>
+                            <td class="px-4 py-3">
+                                <span class="role-badge role-teacher">teacher</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">2025-08-08T02:34:09.920+00:00</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="toggle-switch active" onclick="toggleUserStatus(this, 2)"></div>
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editUser(2)">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeleteUser(2, 'Nguyen Van B')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-13 hover:bg-blue-50 border-b border-gray-100 transition-colors">
+                            <td class="px-4 py-3 text-sm text-gray-900">3</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 font-medium">Nguyen Van C</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">nguyenvanc</td>
+                            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">nguyenvanc@gmail.com</td>
+                            <td class="px-4 py-3">
+                                <span class="role-badge role-student">student</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">2025-08-08T02:34:09.920+00:00</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="toggle-switch active" onclick="toggleUserStatus(this, 3)"></div>
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editUser(3)">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeleteUser(3, 'Nguyen Van C')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-13 hover:bg-blue-50 border-b border-gray-100 bg-gray-25 transition-colors">
+                            <td class="px-4 py-3 text-sm text-gray-900">4</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 font-medium">Nguyen Van D</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">nguyenvand</td>
+                            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">nguyenvand@gmail.com</td>
+                            <td class="px-4 py-3">
+                                <span class="role-badge role-student">student</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">2025-08-08T02:34:09.920+00:00</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="toggle-switch active" onclick="toggleUserStatus(this, 4)"></div>
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editUser(4)">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeleteUser(4, 'Nguyen Van D')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-13 hover:bg-blue-50 border-b border-gray-100 transition-colors">
+                            <td class="px-4 py-3 text-sm text-gray-900">5</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 font-medium">Nguyen Van E</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">nguyenvane</td>
+                            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">nguyenvane@gmail.com</td>
+                            <td class="px-4 py-3">
+                                <span class="role-badge role-student">student</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">2025-08-08T02:34:09.920+00:00</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="toggle-switch active" onclick="toggleUserStatus(this, 5)"></div>
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editUser(5)">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeleteUser(5, 'Nguyen Van E')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-13 hover:bg-blue-50 border-b border-gray-100 bg-gray-25 transition-colors">
+                            <td class="px-4 py-3 text-sm text-gray-900">6</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 font-medium">Hanh Nguyen Van</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">hanhnguyenvan</td>
+                            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">hanhnguyenvan@gmail.com</td>
+                            <td class="px-4 py-3">
+                                <span class="role-badge role-admin">admin</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">2025-08-08T02:34:09.920+00:00</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="toggle-switch active" onclick="toggleUserStatus(this, 6)"></div>
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editUser(6)">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeleteUser(6, 'Hanh Nguyen Van')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-13 hover:bg-blue-50 border-b border-gray-100 transition-colors">
+                            <td class="px-4 py-3 text-sm text-gray-900">7</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 font-medium">Van Nguyen Viet</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">vannguyenviet</td>
+                            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">vannguyenviet@gmail.com</td>
+                            <td class="px-4 py-3">
+                                <span class="role-badge role-teacher">teacher</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">2025-08-08T02:34:09.920+00:00</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="toggle-switch active" onclick="toggleUserStatus(this, 7)"></div>
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editUser(7)">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeleteUser(7, 'Van Nguyen Viet')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-13 hover:bg-blue-50 border-b border-gray-100 bg-gray-25 transition-colors">
+                            <td class="px-4 py-3 text-sm text-gray-900">8</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 font-medium">Hiep HD</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">hiephd</td>
+                            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">hiephd@gmail.com</td>
+                            <td class="px-4 py-3">
+                                <span class="role-badge role-student">student</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">2025-08-08T02:34:09.920+00:00</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="toggle-switch active" onclick="toggleUserStatus(this, 8)"></div>
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editUser(8)">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeleteUser(8, 'Hiep HD')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-13 hover:bg-blue-50 border-b border-gray-100 transition-colors">
+                            <td class="px-4 py-3 text-sm text-gray-900">9</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 font-medium">Duong Van Du</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">duongvandu</td>
+                            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">duongvandu@gmail.com</td>
+                            <td class="px-4 py-3">
+                                <span class="role-badge role-student">student</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">2025-08-08T02:34:09.920+00:00</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="toggle-switch active" onclick="toggleUserStatus(this, 9)"></div>
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editUser(9)">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeleteUser(9, 'Duong Van Du')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-13 hover:bg-blue-50 border-b border-gray-100 bg-gray-25 transition-colors">
+                            <td class="px-4 py-3 text-sm text-gray-900">10</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 font-medium">Du Duong Van</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">duduongvan</td>
+                            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">duduongvan@gmail.com</td>
+                            <td class="px-4 py-3">
+                                <span class="role-badge role-student">student</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">2025-08-08T02:34:09.920+00:00</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="toggle-switch active" onclick="toggleUserStatus(this, 10)"></div>
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editUser(10)">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeleteUser(10, 'Du Duong Van')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-between items-center mt-6">
+            <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-600">Hiển thị:</span>
+                <select class="h-8 px-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="10" selected>10 mục</option>
+                    <option value="25">25 mục</option>
+                    <option value="50">50 mục</option>
+                    <option value="100">100 mục</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 text-sm" disabled>
+                    Trước
+                </button>
+                <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 text-sm">2</button>
+                <button class="px-3 py-1 border border-gray-300 rounded hover:bg-blue-50 text-blue-600 text-sm">
+                    Tiếp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-exclamation-triangle text-red-600"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900">Xác nhận xóa</h3>
+                    <p class="text-sm text-gray-600">Xác nhận xóa người dùng này?</p>
+                </div>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-3 mb-4">
+                <p class="text-sm font-medium text-gray-900" id="deleteUserName"></p>
+            </div>
+            <div class="flex gap-3 justify-end">
+                <button onclick="closeDeleteModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+                    Hủy
+                </button>
+                <button onclick="deleteUser()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm">
+                    Xóa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit User Modal -->
+    <div id="userModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg w-full max-w-md mx-4">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-900" id="userModalTitle">Tạo người dùng mới</h2>
+                <button onclick="closeUserModal()" class="p-2 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-times text-gray-500"></i>
+                </button>
+            </div>
+            <form id="userForm" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Họ và tên *</label>
+                    <input type="text" id="fullName" required 
+                           class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                           placeholder="Nhập họ và tên...">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tên đăng nhập *</label>
+                    <input type="text" id="username" required 
+                           class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                           placeholder="Nhập tên đăng nhập...">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                    <input type="email" id="email" required 
+                           class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                           placeholder="Nhập email...">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Vai trò *</label>
+                    <select id="role" required 
+                            class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <option value="">Chọn vai trò</option>
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mật khẩu *</label>
+                    <input type="password" id="password" required 
+                           class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                           placeholder="Nhập mật khẩu...">
+                </div>
+            </form>
+            <div class="flex justify-end gap-3 p-6 border-t border-gray-200">
+                <button onclick="closeUserModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+                    Hủy
+                </button>
+                <button onclick="saveUser()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                    Lưu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUserId = null;
+
+        function toggleUserStatus(element, userId) {
+            element.classList.toggle('active');
+            const isActive = element.classList.contains('active');
+            console.log(`User ${userId} status changed to: ${isActive ? 'active' : 'inactive'}`);
+        }
+
+        function confirmDeleteUser(userId, userName) {
+            currentUserId = userId;
+            document.getElementById('deleteUserName').textContent = userName;
+            document.getElementById('deleteModal').classList.remove('hidden');
+            document.getElementById('deleteModal').classList.add('flex');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+            document.getElementById('deleteModal').classList.remove('flex');
+            currentUserId = null;
+        }
+
+        function deleteUser() {
+            if (currentUserId) {
+                // Simulate deletion - in real app, make API call
+                console.log(`Deleting user ${currentUserId}`);
+                alert('Người dùng đã được xóa thành công!');
+                closeDeleteModal();
+                // Remove row from table
+                const row = document.querySelector(`tr:has(button[onclick*="${currentUserId}"])`);
+                if (row) row.remove();
+            }
+        }
+
+        function editUser(userId) {
+            currentUserId = userId;
+            document.getElementById('userModalTitle').textContent = 'Chỉnh sửa người dùng';
+            
+            // In real app, fetch user data and populate form
+            document.getElementById('fullName').value = 'Nguyen Van A';
+            document.getElementById('username').value = 'nguyenvana';
+            document.getElementById('email').value = 'nguyenvana@gmail.com';
+            document.getElementById('role').value = 'student';
+            document.getElementById('password').value = '';
+            
+            document.getElementById('userModal').classList.remove('hidden');
+            document.getElementById('userModal').classList.add('flex');
+        }
+
+        function openCreateModal() {
+            currentUserId = null;
+            document.getElementById('userModalTitle').textContent = 'Tạo người dùng mới';
+            document.getElementById('userForm').reset();
+            document.getElementById('userModal').classList.remove('hidden');
+            document.getElementById('userModal').classList.add('flex');
+        }
+
+        function closeUserModal() {
+            document.getElementById('userModal').classList.add('hidden');
+            document.getElementById('userModal').classList.remove('flex');
+            currentUserId = null;
+        }
+
+        function saveUser() {
+            const form = document.getElementById('userForm');
+            if (form.checkValidity()) {
+                const formData = {
+                    fullName: document.getElementById('fullName').value,
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    role: document.getElementById('role').value,
+                    password: document.getElementById('password').value
+                };
+                
+                console.log('Saving user:', formData);
+                alert(currentUserId ? 'Người dùng đã được cập nhật!' : 'Người dùng mới đã được tạo!');
+                closeUserModal();
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function clearFilters() {
+            document.getElementById('usernameFilter').value = '';
+            document.getElementById('generalSearch').value = '';
+            document.getElementById('sortOrder').value = 'asc';
+            document.getElementById('sortBy').value = 'name';
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const username = document.getElementById('usernameFilter').value.toLowerCase();
+            const search = document.getElementById('generalSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#userTableBody tr');
+            
+            rows.forEach(row => {
+                const usernameCell = row.cells[2]?.textContent.toLowerCase() || '';
+                const nameCell = row.cells[1]?.textContent.toLowerCase() || '';
+                const emailCell = row.cells[4]?.textContent.toLowerCase() || '';
+                
+                const matchesUsername = !username || usernameCell.includes(username);
+                const matchesSearch = !search || nameCell.includes(search) || emailCell.includes(search);
+                
+                if (matchesUsername && matchesSearch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Real-time search
+        document.getElementById('generalSearch').addEventListener('input', applyFilters);
+        document.getElementById('usernameFilter').addEventListener('input', applyFilters);
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'deleteModal') {
+                closeDeleteModal();
+            }
+            if (e.target.id === 'userModal') {
+                closeUserModal();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9709bff0109d0892',t:'MTc1NTQzOTc3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

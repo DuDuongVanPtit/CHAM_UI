@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý quyền</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background-color: #d1d5db;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background-color: #10b981;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+        
+        .tooltip {
+            position: relative;
+        }
+        
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #374151;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+        
+        .breadcrumb a {
+            color: #3B82F6;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .permission-name {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            color: #374151;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Page Header -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-2">
+                <h1 class="text-2xl font-semibold text-gray-900">Quản lý quyền</h1>
+                <button onclick="openCreateModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg h-9 flex items-center gap-2 transition-colors">
+                    <i class="fas fa-plus text-sm"></i>
+                    Tạo mới
+                </button>
+            </div>
+            <div class="breadcrumb text-xs text-gray-600">
+                <a href="#" class="hover:underline">Trang chủ</a>
+                <span class="mx-1">/</span>
+                <a href="#" class="hover:underline">Bảng điều khiển Admin</a>
+                <span class="mx-1">/</span>
+                <span>Quyền</span>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <div>
+                    <input type="text" id="permissionNameFilter" placeholder="Nhập tên quyền..." 
+                           class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <input type="text" id="generalSearch" placeholder="Tìm theo tên hoặc mô tả" 
+                           class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <select id="sortOrder" class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <option value="asc" selected>Tăng dần</option>
+                        <option value="desc">Giảm dần</option>
+                    </select>
+                </div>
+                <div>
+                    <select id="sortBy" class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <option value="name" selected>Tên</option>
+                        <option value="description">Mô tả</option>
+                        <option value="created">Ngày tạo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="clearFilters()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-700 transition-colors">
+                    Xóa
+                </button>
+                <button onclick="applyFilters()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors">
+                    <i class="fas fa-search text-sm"></i>
+                    Tìm kiếm
+                </button>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-slate-50 border-b border-gray-200">
+                        <tr class="h-11">
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-16">STT</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-48">Tên quyền</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700">Mô tả</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-44">Ngày tạo</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium text-gray-700 w-28">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="permissionTableBody">
+                        <tr class="h-13 hover:bg-blue-50 border-b border-gray-100 transition-colors">
+                            <td class="px-4 py-3 text-sm text-gray-900">1</td>
+                            <td class="px-4 py-3">
+                                <span class="permission-name">create.user</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">Create user</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">2025-08-05 20:17:04</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="toggle-switch active" onclick="togglePermissionStatus(this, 1)"></div>
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editPermission(1)">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeletePermission(1, 'create.user')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Empty state indication -->
+                        <tr>
+                            <td colspan="5" class="px-4 py-16 text-center">
+                                <div class="text-gray-400 text-sm">
+                                    <i class="fas fa-shield-alt text-2xl mb-3 block"></i>
+                                    <p>Hệ thống mới được thiết lập với quyền cơ bản</p>
+                                    <p class="text-xs mt-1">Thêm quyền mới để mở rộng chức năng</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-between items-center mt-6">
+            <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-600">Hiển thị:</span>
+                <select class="h-8 px-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="10" selected>10 mục</option>
+                    <option value="25">25 mục</option>
+                    <option value="50">50 mục</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-sm text-gray-600">Hiển thị 1-1 của 1 quyền</span>
+                <div class="flex items-center gap-2">
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-exclamation-triangle text-red-600"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900">Xác nhận xóa</h3>
+                    <p class="text-sm text-gray-600">Xóa quyền này khỏi hệ thống?</p>
+                </div>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-3 mb-4">
+                <p class="text-sm font-medium text-gray-900 font-mono" id="deletePermissionName"></p>
+            </div>
+            <div class="flex gap-3 justify-end">
+                <button onclick="closeDeleteModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+                    Hủy
+                </button>
+                <button onclick="deletePermission()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm">
+                    Xóa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Permission Modal -->
+    <div id="permissionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md mx-4">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-900" id="permissionModalTitle">Tạo Quyền Mới</h2>
+                <button onclick="closePermissionModal()" class="p-2 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-times text-gray-500"></i>
+                </button>
+            </div>
+            <form id="permissionForm" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tên quyền *</label>
+                    <input type="text" id="permissionName" required 
+                           class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-mono"
+                           placeholder="user.create">
+                    <p class="text-xs text-gray-500 mt-1">Sử dụng định dạng: module.action (vd: user.create, content.read)</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Mô tả</label>
+                    <input type="text" id="permissionDescription" 
+                           class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                           placeholder="Mô tả chức năng quyền">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Danh mục</label>
+                    <select id="permissionCategory" 
+                            class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <option value="">Chọn danh mục</option>
+                        <option value="user">Quản lý người dùng</option>
+                        <option value="content">Quản lý nội dung</option>
+                        <option value="system">Hệ thống</option>
+                        <option value="report">Báo cáo</option>
+                        <option value="setting">Cài đặt</option>
+                        <option value="security">Bảo mật</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Mức độ quyền</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="radio" name="permissionLevel" value="read" class="mr-2 text-blue-600">
+                            <span class="text-sm text-gray-700">Đọc (Read)</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="permissionLevel" value="write" class="mr-2 text-blue-600">
+                            <span class="text-sm text-gray-700">Ghi (Write)</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="permissionLevel" value="delete" class="mr-2 text-blue-600">
+                            <span class="text-sm text-gray-700">Xóa (Delete)</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="permissionLevel" value="admin" class="mr-2 text-blue-600">
+                            <span class="text-sm text-gray-700">Quản trị (Admin)</span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+            <div class="flex justify-end gap-3 p-6 border-t border-gray-200">
+                <button onclick="closePermissionModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+                    Hủy
+                </button>
+                <button onclick="savePermission()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                    Lưu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPermissionId = null;
+
+        function togglePermissionStatus(element, permissionId) {
+            element.classList.toggle('active');
+            const isActive = element.classList.contains('active');
+            console.log(`Permission ${permissionId} status changed to: ${isActive ? 'active' : 'inactive'}`);
+        }
+
+        function confirmDeletePermission(permissionId, permissionName) {
+            currentPermissionId = permissionId;
+            document.getElementById('deletePermissionName').textContent = permissionName;
+            document.getElementById('deleteModal').classList.remove('hidden');
+            document.getElementById('deleteModal').classList.add('flex');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+            document.getElementById('deleteModal').classList.remove('flex');
+            currentPermissionId = null;
+        }
+
+        function deletePermission() {
+            if (currentPermissionId) {
+                console.log(`Deleting permission ${currentPermissionId}`);
+                alert('Quyền đã được xóa thành công!');
+                closeDeleteModal();
+                
+                // Remove row from table and show empty state
+                const row = document.querySelector(`tr:has(button[onclick*="${currentPermissionId}"])`);
+                if (row) {
+                    row.remove();
+                    showEmptyState();
+                }
+            }
+        }
+
+        function editPermission(permissionId) {
+            currentPermissionId = permissionId;
+            document.getElementById('permissionModalTitle').textContent = 'Chỉnh Sửa Quyền';
+            
+            // Populate form with existing data
+            document.getElementById('permissionName').value = 'create.user';
+            document.getElementById('permissionDescription').value = 'Create user';
+            document.getElementById('permissionCategory').value = 'user';
+            document.querySelector('input[name="permissionLevel"][value="write"]').checked = true;
+            
+            document.getElementById('permissionModal').classList.remove('hidden');
+            document.getElementById('permissionModal').classList.add('flex');
+        }
+
+        function openCreateModal() {
+            currentPermissionId = null;
+            document.getElementById('permissionModalTitle').textContent = 'Tạo Quyền Mới';
+            document.getElementById('permissionForm').reset();
+            document.getElementById('permissionModal').classList.remove('hidden');
+            document.getElementById('permissionModal').classList.add('flex');
+        }
+
+        function closePermissionModal() {
+            document.getElementById('permissionModal').classList.add('hidden');
+            document.getElementById('permissionModal').classList.remove('flex');
+            currentPermissionId = null;
+        }
+
+        function savePermission() {
+            const form = document.getElementById('permissionForm');
+            const permissionName = document.getElementById('permissionName').value.trim();
+            
+            if (!permissionName) {
+                alert('Vui lòng nhập tên quyền');
+                return;
+            }
+            
+            // Validate permission name format
+            if (!/^[a-z]+\.[a-z]+$/.test(permissionName)) {
+                alert('Tên quyền phải có định dạng: module.action (vd: user.create)');
+                return;
+            }
+            
+            const formData = {
+                name: permissionName,
+                description: document.getElementById('permissionDescription').value.trim(),
+                category: document.getElementById('permissionCategory').value,
+                level: document.querySelector('input[name="permissionLevel"]:checked')?.value
+            };
+            
+            console.log('Saving permission:', formData);
+            alert(currentPermissionId ? 'Quyền đã được cập nhật!' : 'Quyền mới đã được tạo!');
+            closePermissionModal();
+            
+            if (!currentPermissionId) {
+                addNewPermissionToTable(formData);
+            }
+        }
+
+        function addNewPermissionToTable(permissionData) {
+            const tbody = document.getElementById('permissionTableBody');
+            const emptyRow = tbody.querySelector('tr:last-child');
+            
+            // Remove empty state if it exists
+            if (emptyRow && emptyRow.querySelector('.text-gray-400')) {
+                emptyRow.remove();
+            }
+            
+            // Add new row
+            const newRow = document.createElement('tr');
+            newRow.className = 'h-13 hover:bg-blue-50 border-b border-gray-100 transition-colors';
+            newRow.innerHTML = `
+                <td class="px-4 py-3 text-sm text-gray-900">2</td>
+                <td class="px-4 py-3">
+                    <span class="permission-name">${permissionData.name}</span>
+                </td>
+                <td class="px-4 py-3 text-sm text-gray-600">${permissionData.description || '-'}</td>
+                <td class="px-4 py-3 text-sm text-gray-600">${new Date().toLocaleString('sv-SE').replace('T', ' ').substring(0, 19)}</td>
+                <td class="px-4 py-3">
+                    <div class="flex items-center gap-2">
+                        <div class="toggle-switch active" onclick="togglePermissionStatus(this, 2)"></div>
+                        <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Chỉnh sửa" onclick="editPermission(2)">
+                            <i class="fas fa-edit text-sm"></i>
+                        </button>
+                        <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDeletePermission(2, '${permissionData.name}')">
+                            <i class="fas fa-trash text-sm"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(newRow);
+        }
+
+        function showEmptyState() {
+            const tbody = document.getElementById('permissionTableBody');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="px-4 py-16 text-center">
+                        <div class="text-gray-400 text-sm">
+                            <i class="fas fa-shield-alt text-2xl mb-3 block"></i>
+                            <p>Chưa có quyền nào trong hệ thống</p>
+                            <p class="text-xs mt-1">Tạo quyền đầu tiên để bắt đầu</p>
+                            <button onclick="openCreateModal()" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
+                                Tạo Quyền Mới
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function clearFilters() {
+            document.getElementById('permissionNameFilter').value = '';
+            document.getElementById('generalSearch').value = '';
+            document.getElementById('sortOrder').value = 'asc';
+            document.getElementById('sortBy').value = 'name';
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const permissionName = document.getElementById('permissionNameFilter').value.toLowerCase();
+            const search = document.getElementById('generalSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#permissionTableBody tr');
+            
+            rows.forEach(row => {
+                const nameCell = row.cells[1]?.textContent.toLowerCase() || '';
+                const descCell = row.cells[2]?.textContent.toLowerCase() || '';
+                
+                // Skip empty state row
+                if (row.querySelector('.text-gray-400')) {
+                    return;
+                }
+                
+                const matchesName = !permissionName || nameCell.includes(permissionName);
+                const matchesSearch = !search || nameCell.includes(search) || descCell.includes(search);
+                
+                if (matchesName && matchesSearch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Real-time search
+        document.getElementById('generalSearch').addEventListener('input', applyFilters);
+        document.getElementById('permissionNameFilter').addEventListener('input', applyFilters);
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'deleteModal') {
+                closeDeleteModal();
+            }
+            if (e.target.id === 'permissionModal') {
+                closePermissionModal();
+            }
+        });
+
+        // Auto-generate permission name based on category and level
+        document.getElementById('permissionCategory').addEventListener('change', function() {
+            updatePermissionName();
+        });
+
+        document.querySelectorAll('input[name="permissionLevel"]').forEach(radio => {
+            radio.addEventListener('change', updatePermissionName);
+        });
+
+        function updatePermissionName() {
+            const category = document.getElementById('permissionCategory').value;
+            const level = document.querySelector('input[name="permissionLevel"]:checked')?.value;
+            
+            if (category && level) {
+                const nameInput = document.getElementById('permissionName');
+                if (!nameInput.value || nameInput.value.includes('.')) {
+                    nameInput.value = `${category}.${level}`;
+                }
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9709c48fd23bb5bc',t:'MTc1NTQzOTk2MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

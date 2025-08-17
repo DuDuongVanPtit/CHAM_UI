@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC - Báo Cáo Học Tập</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#B91C1C',
+                        success: '#059669',
+                        warning: '#D97706',
+                        error: '#EF4444',
+                        'gray-50': '#F9FAFB',
+                        'gray-100': '#F3F4F6',
+                        'gray-200': '#E5E7EB',
+                        'gray-600': '#6B7280',
+                        'gray-900': '#111827'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-inter">
+    
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto p-6">
+        
+        <!-- Page Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">📊 Báo Cáo Học Tập</h1>
+                <p class="text-gray-600">Theo dõi tiến độ và phân tích kết quả học tập của bạn</p>
+            </div>
+            <div class="flex gap-3 mt-4 lg:mt-0">
+                <select id="dateFilter" class="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                    <option value="30">30 ngày qua</option>
+                    <option value="90">3 tháng qua</option>
+                    <option value="180">6 tháng qua</option>
+                </select>
+                <button id="exportBtn" class="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center gap-2">
+                    📥 Xuất báo cáo
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics Cards Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- TOEIC Score Card -->
+            <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                        <span class="text-xl">📈</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Điểm TOEIC hiện tại</p>
+                        <p class="text-2xl font-bold text-gray-900">650</p>
+                        <p class="text-sm text-success">+25 đã cải thiện</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Progress Card -->
+            <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <span class="text-xl">📚</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Bài học hoàn thành</p>
+                        <p class="text-2xl font-bold text-gray-900">24/32</p>
+                        <p class="text-sm text-blue-600">75% hoàn thành</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accuracy Rate Card -->
+            <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <span class="text-xl">🎯</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Tỷ lệ chính xác</p>
+                        <p class="text-2xl font-bold text-gray-900">73%</p>
+                        <p class="text-sm text-green-600">+8% so với tháng trước</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streak Card -->
+            <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                        <span class="text-xl">🔥</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Streak học tập</p>
+                        <p class="text-lg font-bold text-gray-900">15 ngày</p>
+                        <p class="text-sm text-orange-600">liên tiếp</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column (2/3 width) -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- Score Progress Chart -->
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-1">📈 Tiến Độ Điểm Số</h3>
+                            <p class="text-gray-600">Biểu đồ theo dõi điểm TOEIC theo thời gian</p>
+                        </div>
+                        <div class="flex gap-2 mt-4 sm:mt-0">
+                            <button class="chart-tab active px-3 py-1 text-sm rounded-lg" data-period="week">Tuần</button>
+                            <button class="chart-tab px-3 py-1 text-sm rounded-lg" data-period="month">Tháng</button>
+                            <button class="chart-tab px-3 py-1 text-sm rounded-lg" data-period="quarter">Quý</button>
+                        </div>
+                    </div>
+                    <div class="h-80">
+                        <canvas id="scoreChart"></canvas>
+                    </div>
+                    <div class="flex items-center justify-center gap-6 mt-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-primary rounded-full"></div>
+                            <span class="text-sm text-gray-600">Thực tế</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                            <span class="text-sm text-gray-600">Mục tiêu</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Analysis -->
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">🎯 Phân Tích Kỹ Năng</h3>
+                    
+                    <div class="space-y-6">
+                        <!-- Listening -->
+                        <div class="skill-item" data-skill="listening">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium text-gray-900">Listening</span>
+                                <span class="text-sm font-medium text-success">76% (374)</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-success h-2 rounded-full transition-all duration-500" style="width: 76%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Tốt - Tiếp tục luyện tập Part 3, 4</p>
+                        </div>
+
+                        <!-- Reading -->
+                        <div class="skill-item" data-skill="reading">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium text-gray-900">Reading</span>
+                                <span class="text-sm font-medium text-warning">62% (310)</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-warning h-2 rounded-full transition-all duration-500" style="width: 62%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Trung bình - Cần cải thiện tốc độ đọc</p>
+                        </div>
+
+                        <!-- Grammar -->
+                        <div class="skill-item" data-skill="grammar">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium text-gray-900">Grammar</span>
+                                <span class="text-sm font-medium text-success">82% (164)</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-success h-2 rounded-full transition-all duration-500" style="width: 82%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Xuất sắc - Duy trì phong độ</p>
+                        </div>
+
+                        <!-- Vocabulary -->
+                        <div class="skill-item" data-skill="vocabulary">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-medium text-gray-900">Vocabulary</span>
+                                <span class="text-sm font-medium text-error">35% (70)</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-error h-2 rounded-full transition-all duration-500" style="width: 35%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Yếu - Cần tăng cường học từ vựng</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column (1/3 width) -->
+            <div class="space-y-8">
+                
+                <!-- Goal Progress -->
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">🎯 Tiến Độ Mục Tiêu</h3>
+                    
+                    <div class="text-center mb-6">
+                        <div class="relative w-32 h-32 mx-auto mb-4">
+                            <svg class="w-32 h-32 transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-gray-200" stroke="currentColor" stroke-width="3" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                                <path class="text-primary" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="78.5, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span class="text-2xl font-bold text-gray-900">78.5%</span>
+                            </div>
+                        </div>
+                        <p class="text-lg font-semibold text-gray-900">650/850 điểm</p>
+                        <p class="text-sm text-gray-600">Cần 200 điểm để đạt mục tiêu</p>
+                    </div>
+
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Tiến độ trung bình:</span>
+                            <span class="font-medium">+27 điểm/tháng</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Tuần này:</span>
+                            <span class="font-medium">+5 điểm/tuần</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Dự kiến hoàn thành:</span>
+                            <span class="font-medium text-primary">7 tháng nữa</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <h4 class="font-medium text-gray-900 mb-3">Mục tiêu tuần này:</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" checked class="rounded text-primary">
+                                <span class="text-sm">Hoàn thành 5 bài Listening</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" checked class="rounded text-primary">
+                                <span class="text-sm">Học 50 từ vựng mới</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" class="rounded text-primary">
+                                <span class="text-sm">Làm 1 bài Mock Test</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly Schedule -->
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">📅 Lịch Học Tuần Này</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="schedule-item flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer" data-status="completed">
+                            <span class="text-lg">✅</span>
+                            <div class="flex-1">
+                                <p class="font-medium text-gray-900">Thứ 2</p>
+                                <p class="text-sm text-gray-600">Vocabulary - Part 5</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-item flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer" data-status="completed">
+                            <span class="text-lg">✅</span>
+                            <div class="flex-1">
+                                <p class="font-medium text-gray-900">Thứ 4</p>
+                                <p class="text-sm text-gray-600">Listening - Part 3,4</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-item flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer" data-status="progress">
+                            <span class="text-lg">🕒</span>
+                            <div class="flex-1">
+                                <p class="font-medium text-gray-900">Thứ 6</p>
+                                <p class="text-sm text-gray-600">Reading - Part 6,7</p>
+                            </div>
+                        </div>
+
+                        <div class="schedule-item flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer" data-status="scheduled">
+                            <span class="text-lg">⏰</span>
+                            <div class="flex-1">
+                                <p class="font-medium text-gray-900">Chủ nhật</p>
+                                <p class="text-sm text-gray-600">Mock Test</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Tests Section -->
+        <div class="mt-8">
+            <h3 class="text-xl font-bold text-gray-900 mb-6">📝 Kết Quả Bài Kiểm Tra Gần Đây</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Mock Test -->
+                <div class="test-card bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center">
+                            <span class="text-primary font-bold">📝</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Mock Test #8</h4>
+                            <p class="text-sm text-gray-600">Full Test</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Ngày:</span>
+                            <span>20/11/2024</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Thời gian:</span>
+                            <span>2 giờ</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Điểm:</span>
+                            <span class="font-semibold text-primary">650 (+25)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-xs text-gray-500">
+                        <p>Listening: 340/495</p>
+                        <p>Reading: 310/495</p>
+                    </div>
+                </div>
+
+                <!-- Practice Test -->
+                <div class="test-card bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-bold">📖</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Practice Test</h4>
+                            <p class="text-sm text-gray-600">Part 5,6</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Ngày:</span>
+                            <span>18/11/2024</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Thời gian:</span>
+                            <span>45 phút</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Điểm:</span>
+                            <span class="font-semibold text-warning">72% (36/50)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-xs text-gray-500">
+                        <p>Focus: Prepositions</p>
+                        <p>Conjunctions</p>
+                    </div>
+                </div>
+
+                <!-- Listening Practice -->
+                <div class="test-card bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <span class="text-green-600 font-bold">🎧</span>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">Listening Practice</h4>
+                            <p class="text-sm text-gray-600">Part 3,4</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Ngày:</span>
+                            <span>15/11/2024</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Thời gian:</span>
+                            <span>30 phút</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Điểm:</span>
+                            <span class="font-semibold text-success">85% (34/40)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-xs text-gray-500">
+                        <p>Topics: Conversations</p>
+                        <p>Talks</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-6">
+                <button class="text-primary hover:underline font-medium">Xem tất cả kết quả</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart data for different periods
+        const chartData = {
+            week: {
+                labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+                actual: [620, 625, 630, 635, 640, 645, 650],
+                target: [625, 630, 635, 640, 645, 650, 655]
+            },
+            month: {
+                labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8'],
+                actual: [580, 590, 605, 615, 625, 635, 645, 650],
+                target: [600, 620, 640, 660, 680, 700, 720, 740]
+            },
+            quarter: {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                actual: [550, 600, 625, 650],
+                target: [600, 650, 700, 750]
+            }
+        };
+
+        let currentChart = null;
+        let currentPeriod = 'month';
+
+        // Initialize chart
+        function initChart() {
+            const ctx = document.getElementById('scoreChart').getContext('2d');
+            
+            currentChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartData[currentPeriod].labels,
+                    datasets: [{
+                        label: 'Thực tế',
+                        data: chartData[currentPeriod].actual,
+                        borderColor: '#B91C1C',
+                        backgroundColor: 'rgba(185, 28, 28, 0.1)',
+                        tension: 0.4,
+                        pointBackgroundColor: '#B91C1C',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }, {
+                        label: 'Mục tiêu',
+                        data: chartData[currentPeriod].target,
+                        borderColor: '#3B82F6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        pointBackgroundColor: '#3B82F6',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        borderDash: [5, 5]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 400,
+                            max: 900,
+                            grid: {
+                                color: '#F3F4F6'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: '#F3F4F6'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update chart based on period
+        function updateChart(period) {
+            currentPeriod = period;
+            
+            if (currentChart) {
+                currentChart.data.labels = chartData[period].labels;
+                currentChart.data.datasets[0].data = chartData[period].actual;
+                currentChart.data.datasets[1].data = chartData[period].target;
+                currentChart.update();
+            }
+
+            // Update active tab
+            document.querySelectorAll('.chart-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-period="${period}"]`).classList.add('active');
+        }
+
+        // Chart tab styling
+        function updateTabStyles() {
+            document.querySelectorAll('.chart-tab').forEach(tab => {
+                if (tab.classList.contains('active')) {
+                    tab.className = 'chart-tab active px-3 py-1 text-sm rounded-lg bg-primary text-white';
+                } else {
+                    tab.className = 'chart-tab px-3 py-1 text-sm rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200';
+                }
+            });
+        }
+
+        // Export functionality
+        function exportReport() {
+            // Create a simple text report
+            const reportData = `
+CHAM TOEIC - BÁO CÁO HỌC TẬP
+================================
+
+THỐNG KÊ TỔNG QUAN:
+- Điểm TOEIC hiện tại: 650 (+25 điểm)
+- Bài học hoàn thành: 24/32 (75%)
+- Tỷ lệ chính xác: 73% (+8% so với tháng trước)
+- Streak học tập: 15 ngày liên tiếp
+
+PHÂN TÍCH KỸ NĂNG:
+- Listening: 76% (374/495) - Tốt
+- Reading: 62% (310/495) - Trung bình
+- Grammar: 82% (164/200) - Xuất sắc
+- Vocabulary: 35% (70/200) - Yếu
+
+TIẾN ĐỘ MỤC TIÊU:
+- Hoàn thành: 78.5% (650/850 điểm)
+- Cần thêm: 200 điểm
+- Tiến độ trung bình: +27 điểm/tháng
+- Dự kiến hoàn thành: 7 tháng nữa
+
+KẾT QUẢ KIỂM TRA GẦN ĐÂY:
+1. Mock Test #8 (20/11/2024): 650 điểm (+25)
+2. Practice Test Part 5,6 (18/11/2024): 72% (36/50)
+3. Listening Practice Part 3,4 (15/11/2024): 85% (34/40)
+
+Báo cáo được tạo vào: ${new Date().toLocaleString('vi-VN')}
+            `;
+
+            // Create and download file
+            const blob = new Blob([reportData], { type: 'text/plain;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `TOEIC_Report_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            // Show success message
+            alert('Báo cáo đã được xuất thành công!');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize chart
+            initChart();
+            updateTabStyles();
+
+            // Chart period tabs
+            document.querySelectorAll('.chart-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    updateChart(this.dataset.period);
+                    updateTabStyles();
+                });
+            });
+
+            // Export button
+            document.getElementById('exportBtn').addEventListener('click', exportReport);
+
+            // Date filter
+            document.getElementById('dateFilter').addEventListener('change', function() {
+                // In a real app, this would update all data based on the selected period
+                console.log('Date filter changed to:', this.value);
+            });
+
+            // Skill items click
+            document.querySelectorAll('.skill-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const skill = this.dataset.skill;
+                    alert(`Xem chi tiết phân tích kỹ năng ${skill}`);
+                });
+            });
+
+            // Test cards click
+            document.querySelectorAll('.test-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    alert('Xem chi tiết kết quả bài kiểm tra');
+                });
+            });
+
+            // Schedule items click
+            document.querySelectorAll('.schedule-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const status = this.dataset.status;
+                    if (status === 'scheduled') {
+                        alert('Bắt đầu bài học');
+                    } else if (status === 'progress') {
+                        alert('Tiếp tục bài học');
+                    } else {
+                        alert('Xem lại bài học đã hoàn thành');
+                    }
+                });
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'970690221576f51a',t:'MTc1NTQwNjM1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

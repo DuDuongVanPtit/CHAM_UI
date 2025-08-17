@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC - Hồ Sơ Học Viên</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#B91C1C',
+                        'gray-50': '#F9FAFB',
+                        'gray-100': '#F3F4F6',
+                        'gray-200': '#E5E7EB',
+                        'gray-600': '#6B7280',
+                        'gray-900': '#111827',
+                        success: '#059669',
+                        'red-600': '#DC2626'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-inter min-h-screen py-6">
+    <!-- Main Profile Page -->
+    <div id="profilePage" class="max-w-4xl mx-auto px-6 space-y-6">
+        
+        <!-- Profile Header Card -->
+        <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all duration-300">
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+                <!-- Avatar -->
+                <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                    NV
+                </div>
+                
+                <!-- Profile Info -->
+                <div class="flex-1 space-y-4">
+                    <div>
+                        <h1 id="profileName" class="text-2xl font-bold text-gray-900">Nguyễn Văn An</h1>
+                        <p class="text-gray-600">Học viên TOEIC - Mục tiêu 850 điểm</p>
+                    </div>
+                    
+                    <!-- Contact Info -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <span id="profileEmail" class="text-gray-600">nguyenvanan@email.com</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <span id="profilePhone" class="text-gray-600">0901 234 567</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-gray-900">Tiến độ học tập</span>
+                            <span class="text-sm font-medium text-primary">75%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-primary h-2 rounded-full transition-all duration-500" style="width: 75%"></div>
+                        </div>
+                        <p class="text-sm text-gray-600">12/16 bài học đã hoàn thành</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Information Card -->
+        <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all duration-300">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg font-bold text-gray-900">Thông Tin Cá Nhân</h2>
+                <button id="editProfileBtn" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition-all duration-200 transform hover:scale-105 active:scale-95">
+                    <span class="flex items-center gap-2">
+                        <span>Chỉnh sửa</span>
+                        <div id="editSpinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    </span>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Họ và tên</label>
+                    <p id="displayName" class="text-gray-900">Nguyễn Văn An</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Ngày sinh</label>
+                    <p id="displayDob" class="text-gray-900">15/03/1995</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Giới tính</label>
+                    <p id="displayGender" class="text-gray-900">Nam</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Nghề nghiệp</label>
+                    <p id="displayJob" class="text-gray-900">Kỹ sư phần mềm</p>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Địa chỉ</label>
+                    <p id="displayAddress" class="text-gray-900">123 Đường ABC, Quận 1, TP. Hồ Chí Minh</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Information Card -->
+        <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all duration-300">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg font-bold text-gray-900">Thông Tin Học Tập</h2>
+                <button id="detailsBtn" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition-all duration-200 transform hover:scale-105 active:scale-95">
+                    Chi tiết
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Mục tiêu TOEIC</label>
+                    <p class="text-gray-900">850 điểm</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Điểm hiện tại</label>
+                    <p class="text-gray-900">650 điểm</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Khóa học hiện tại</label>
+                    <p class="text-gray-900">TOEIC 600-850</p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Thời gian học</label>
+                    <p class="text-gray-900">Tối thứ 2, 4, 6</p>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Ghi chú</label>
+                    <p class="text-gray-900">Cần tập trung vào phần Listening và Reading</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Password Card -->
+        <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all duration-300">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg font-bold text-gray-900">Đổi Mật Khẩu</h2>
+                <button id="changePasswordBtn" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition-all duration-200 transform hover:scale-105 active:scale-95">
+                    Đổi mật khẩu
+                </button>
+            </div>
+            
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    <p class="text-gray-700">Mật khẩu được mã hóa và bảo mật</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learning Progress Page -->
+    <div id="learningProgressPage" class="hidden max-w-6xl mx-auto px-6 space-y-6">
+        <div class="flex items-center gap-4 mb-6">
+            <button id="backToProfile" class="text-primary hover:text-red-700 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            <h1 class="text-2xl font-bold text-gray-900">Chi Tiết Tiến Độ Học Tập</h1>
+        </div>
+
+        <!-- Progress Overview -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-6">Tổng Quan Tiến Độ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center p-4 bg-blue-50 rounded-lg">
+                    <div class="text-2xl font-bold text-blue-600">75%</div>
+                    <div class="text-sm text-gray-600">Hoàn thành khóa học</div>
+                </div>
+                <div class="text-center p-4 bg-green-50 rounded-lg">
+                    <div class="text-2xl font-bold text-green-600">650</div>
+                    <div class="text-sm text-gray-600">Điểm TOEIC hiện tại</div>
+                </div>
+                <div class="text-center p-4 bg-red-50 rounded-lg">
+                    <div class="text-2xl font-bold text-primary">850</div>
+                    <div class="text-sm text-gray-600">Mục tiêu điểm số</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Progress Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-6">Tiến Độ Tuần</h2>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600">Listening</span>
+                    <div class="flex-1 mx-4 bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 80%"></div>
+                    </div>
+                    <span class="text-sm font-medium">80%</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600">Reading</span>
+                    <div class="flex-1 mx-4 bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-500 h-2 rounded-full" style="width: 70%"></div>
+                    </div>
+                    <span class="text-sm font-medium">70%</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600">Grammar</span>
+                    <div class="flex-1 mx-4 bg-gray-200 rounded-full h-2">
+                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 85%"></div>
+                    </div>
+                    <span class="text-sm font-medium">85%</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600">Vocabulary</span>
+                    <div class="flex-1 mx-4 bg-gray-200 rounded-full h-2">
+                        <div class="bg-purple-500 h-2 rounded-full" style="width: 75%"></div>
+                    </div>
+                    <span class="text-sm font-medium">75%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300 z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md transform scale-95 transition-transform duration-300">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900">Chỉnh Sửa Thông Tin</h2>
+                <button id="closeEditModal" class="text-gray-400 hover:text-primary transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="editProfileForm" class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Họ</label>
+                        <input type="text" id="editLastName" value="Nguyễn Văn" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 mb-1">Tên</label>
+                        <input type="text" id="editFirstName" value="An" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Email</label>
+                    <input type="email" id="editEmail" value="nguyenvanan@email.com" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Số điện thoại</label>
+                    <input type="tel" id="editPhone" value="0901 234 567" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Ngày sinh</label>
+                    <input type="date" id="editDob" value="1995-03-15" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Giới tính</label>
+                    <select id="editGender" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                        <option value="Khác">Khác</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Nghề nghiệp</label>
+                    <input type="text" id="editJob" value="Kỹ sư phần mềm" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Địa chỉ</label>
+                    <textarea id="editAddress" rows="2" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">123 Đường ABC, Quận 1, TP. Hồ Chí Minh</textarea>
+                </div>
+                
+                <div class="flex gap-3 pt-4">
+                    <button type="button" id="cancelEdit" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                        Hủy
+                    </button>
+                    <button type="submit" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-red-700 transition-colors">
+                        Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300 z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md transform scale-95 transition-transform duration-300">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900">Đổi Mật Khẩu</h2>
+                <button id="closePasswordModal" class="text-gray-400 hover:text-primary transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="changePasswordForm" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Mật khẩu hiện tại</label>
+                    <input type="password" id="currentPassword" required class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Mật khẩu mới</label>
+                    <input type="password" id="newPassword" required class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                    <p class="text-xs text-gray-500 mt-1">Tối thiểu 8 ký tự, bao gồm chữ hoa, chữ thường và số</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Xác nhận mật khẩu mới</label>
+                    <input type="password" id="confirmNewPassword" required class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary">
+                    <p id="passwordMatchMessage" class="text-xs mt-1 hidden"></p>
+                </div>
+                
+                <div class="flex gap-3 pt-4">
+                    <button type="button" id="cancelPasswordChange" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                        Hủy
+                    </button>
+                    <button type="submit" id="submitPasswordChange" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-red-700 transition-colors">
+                        Đổi mật khẩu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Modal elements
+        const editProfileModal = document.getElementById('editProfileModal');
+        const changePasswordModal = document.getElementById('changePasswordModal');
+        const profilePage = document.getElementById('profilePage');
+        const learningProgressPage = document.getElementById('learningProgressPage');
+
+        // Button elements
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const detailsBtn = document.getElementById('detailsBtn');
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const backToProfile = document.getElementById('backToProfile');
+
+        // Modal functions
+        function openModal(modal) {
+            modal.classList.remove('opacity-0', 'invisible');
+            modal.querySelector('.transform').classList.remove('scale-95');
+            modal.querySelector('.transform').classList.add('scale-100');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modal) {
+            modal.classList.add('opacity-0', 'invisible');
+            modal.querySelector('.transform').classList.remove('scale-100');
+            modal.querySelector('.transform').classList.add('scale-95');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Edit Profile Modal
+        editProfileBtn.addEventListener('click', () => {
+            openModal(editProfileModal);
+        });
+
+        document.getElementById('closeEditModal').addEventListener('click', () => {
+            closeModal(editProfileModal);
+        });
+
+        document.getElementById('cancelEdit').addEventListener('click', () => {
+            closeModal(editProfileModal);
+        });
+
+        // Edit Profile Form Submission
+        document.getElementById('editProfileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Show loading spinner
+            const spinner = document.getElementById('editSpinner');
+            const btnText = editProfileBtn.querySelector('span span');
+            spinner.classList.remove('hidden');
+            btnText.textContent = 'Đang lưu...';
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Update profile data
+                const lastName = document.getElementById('editLastName').value;
+                const firstName = document.getElementById('editFirstName').value;
+                const fullName = `${lastName} ${firstName}`;
+                const email = document.getElementById('editEmail').value;
+                const phone = document.getElementById('editPhone').value;
+                const dob = new Date(document.getElementById('editDob').value).toLocaleDateString('vi-VN');
+                const gender = document.getElementById('editGender').value;
+                const job = document.getElementById('editJob').value;
+                const address = document.getElementById('editAddress').value;
+                
+                // Update display
+                document.getElementById('profileName').textContent = fullName;
+                document.getElementById('profileEmail').textContent = email;
+                document.getElementById('profilePhone').textContent = phone;
+                document.getElementById('displayName').textContent = fullName;
+                document.getElementById('displayDob').textContent = dob;
+                document.getElementById('displayGender').textContent = gender;
+                document.getElementById('displayJob').textContent = job;
+                document.getElementById('displayAddress').textContent = address;
+                
+                // Hide spinner and reset button
+                spinner.classList.add('hidden');
+                btnText.textContent = 'Chỉnh sửa';
+                
+                closeModal(editProfileModal);
+                alert('Cập nhật thông tin thành công!');
+            }, 1500);
+        });
+
+        // Change Password Modal
+        changePasswordBtn.addEventListener('click', () => {
+            openModal(changePasswordModal);
+        });
+
+        document.getElementById('closePasswordModal').addEventListener('click', () => {
+            closeModal(changePasswordModal);
+        });
+
+        document.getElementById('cancelPasswordChange').addEventListener('click', () => {
+            closeModal(changePasswordModal);
+        });
+
+        // Password validation
+        document.getElementById('confirmNewPassword').addEventListener('input', (e) => {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = e.target.value;
+            const message = document.getElementById('passwordMatchMessage');
+            
+            if (confirmPassword.length > 0) {
+                message.classList.remove('hidden');
+                if (newPassword === confirmPassword) {
+                    message.textContent = 'Mật khẩu khớp';
+                    message.className = 'text-xs mt-1 text-green-600';
+                } else {
+                    message.textContent = 'Mật khẩu không khớp';
+                    message.className = 'text-xs mt-1 text-red-600';
+                }
+            } else {
+                message.classList.add('hidden');
+            }
+        });
+
+        // Change Password Form Submission
+        document.getElementById('changePasswordForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+            
+            // Validation
+            if (newPassword !== confirmPassword) {
+                alert('Mật khẩu xác nhận không khớp!');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                alert('Mật khẩu mới phải có ít nhất 8 ký tự!');
+                return;
+            }
+            
+            // Simulate password change
+            setTimeout(() => {
+                closeModal(changePasswordModal);
+                document.getElementById('changePasswordForm').reset();
+                document.getElementById('passwordMatchMessage').classList.add('hidden');
+                alert('Đổi mật khẩu thành công!');
+            }, 1000);
+        });
+
+        // Learning Progress Page
+        detailsBtn.addEventListener('click', () => {
+            profilePage.classList.add('hidden');
+            learningProgressPage.classList.remove('hidden');
+        });
+
+        backToProfile.addEventListener('click', () => {
+            learningProgressPage.classList.add('hidden');
+            profilePage.classList.remove('hidden');
+        });
+
+        // Close modals on backdrop click
+        [editProfileModal, changePasswordModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal(modal);
+                }
+            });
+        });
+
+        // Close modals on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (!editProfileModal.classList.contains('invisible')) {
+                    closeModal(editProfileModal);
+                }
+                if (!changePasswordModal.classList.contains('invisible')) {
+                    closeModal(changePasswordModal);
+                }
+            }
+        });
+
+        // Add hover effects for cards
+        document.querySelectorAll('.bg-white').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97067ec774d40489',t:'MTc1NTQwNTY0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

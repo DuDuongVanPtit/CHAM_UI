@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Template Thông Báo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background-color: #d1d5db;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .toggle-switch.active {
+            background-color: #10b981;
+        }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+        .tooltip {
+            position: relative;
+        }
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #374151;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto p-6">
+        <!-- Header Card -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-4">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-2xl font-semibold text-gray-900 mb-2">Quản Lý Template Thông Báo</h1>
+                    <p class="text-sm text-gray-600">Tạo và chỉnh sửa template email, SMS, push notification</p>
+                </div>
+                <button onclick="openTemplateModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg h-10 flex items-center gap-2 transition-colors">
+                    <i class="fas fa-plus text-sm"></i>
+                    Tạo Template Mới
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="bg-white rounded-lg shadow-sm p-5 mb-4">
+            <div class="flex gap-4 items-center">
+                <div class="relative">
+                    <input type="text" placeholder="Tìm kiếm template..." 
+                           class="w-80 h-9 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                </div>
+                
+                <select class="h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    <option>Tất cả danh mục</option>
+                    <option>Email</option>
+                    <option>SMS</option>
+                    <option>Push</option>
+                </select>
+                
+                <select class="h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    <option>Tất cả trạng thái</option>
+                    <option>Hoạt động</option>
+                    <option>Tạm dừng</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-700 text-white">
+                        <tr class="h-11">
+                            <th class="text-left px-4 py-3 text-sm font-medium w-20">ID</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium w-48">Tên</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium w-24">Loại</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium w-28">Danh Mục</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium w-36">Kênh</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium w-24">Trạng Thái</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium w-28">Người Tạo</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium w-28">Ngày Tạo</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium w-28">Cập Nhật</th>
+                            <th class="text-left px-4 py-3 text-sm font-medium w-28">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr class="h-12 hover:bg-gray-50 border-b border-gray-100">
+                            <td class="px-4 py-3 text-xs font-mono text-gray-600">T001</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">Chào mừng khách hàng mới</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Email</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">Marketing</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">email</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">sms</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="toggle-switch active" onclick="toggleStatus(this)"></div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-user-circle text-gray-400"></i>
+                                    Admin User
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">15/08/2025</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">16/08/2025</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Xem chi tiết">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-amber-600 hover:bg-amber-50 rounded" data-tooltip="Chỉnh sửa">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-green-600 hover:bg-green-50 rounded" data-tooltip="Sao chép">
+                                        <i class="fas fa-copy text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDelete('Chào mừng khách hàng mới')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="h-12 hover:bg-gray-50 border-b border-gray-100 bg-gray-25">
+                            <td class="px-4 py-3 text-xs font-mono text-gray-600">T002</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">Thông báo đơn hàng thành công</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">SMS</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">Giao dịch</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">sms</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">push</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="toggle-switch active" onclick="toggleStatus(this)"></div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-user-circle text-gray-400"></i>
+                                    Admin User
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">14/08/2025</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">15/08/2025</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Xem chi tiết">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-amber-600 hover:bg-amber-50 rounded" data-tooltip="Chỉnh sửa">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-green-600 hover:bg-green-50 rounded" data-tooltip="Sao chép">
+                                        <i class="fas fa-copy text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDelete('Thông báo đơn hàng thành công')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-12 hover:bg-gray-50 border-b border-gray-100">
+                            <td class="px-4 py-3 text-xs font-mono text-gray-600">T003</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">Khuyến mãi cuối tuần</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Push</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">Khuyến mãi</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">push</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="toggle-switch" onclick="toggleStatus(this)"></div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-user-circle text-gray-400"></i>
+                                    Marketing Team
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">13/08/2025</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">13/08/2025</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Xem chi tiết">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-amber-600 hover:bg-amber-50 rounded" data-tooltip="Chỉnh sửa">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-green-600 hover:bg-green-50 rounded" data-tooltip="Sao chép">
+                                        <i class="fas fa-copy text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDelete('Khuyến mãi cuối tuần')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-12 hover:bg-gray-50 border-b border-gray-100 bg-gray-25">
+                            <td class="px-4 py-3 text-xs font-mono text-gray-600">T004</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">Xác nhận thanh toán</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Email</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">Giao dịch</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">email</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="toggle-switch active" onclick="toggleStatus(this)"></div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-user-circle text-gray-400"></i>
+                                    Admin User
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">12/08/2025</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">14/08/2025</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Xem chi tiết">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-amber-600 hover:bg-amber-50 rounded" data-tooltip="Chỉnh sửa">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-green-600 hover:bg-green-50 rounded" data-tooltip="Sao chép">
+                                        <i class="fas fa-copy text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDelete('Xác nhận thanh toán')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-12 hover:bg-gray-50 border-b border-gray-100">
+                            <td class="px-4 py-3 text-xs font-mono text-gray-600">T005</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">Nhắc nhở hẹn lịch</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">SMS</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">Nhắc nhở</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">sms</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">push</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="toggle-switch active" onclick="toggleStatus(this)"></div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-user-circle text-gray-400"></i>
+                                    Support Team
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">11/08/2025</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">12/08/2025</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Xem chi tiết">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-amber-600 hover:bg-amber-50 rounded" data-tooltip="Chỉnh sửa">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-green-600 hover:bg-green-50 rounded" data-tooltip="Sao chép">
+                                        <i class="fas fa-copy text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDelete('Nhắc nhở hẹn lịch')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-12 hover:bg-gray-50 border-b border-gray-100 bg-gray-25">
+                            <td class="px-4 py-3 text-xs font-mono text-gray-600">T006</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">Báo cáo hàng tháng</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Email</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">Báo cáo</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">email</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="toggle-switch" onclick="toggleStatus(this)"></div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-user-circle text-gray-400"></i>
+                                    Analytics Team
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">10/08/2025</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">10/08/2025</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Xem chi tiết">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-amber-600 hover:bg-amber-50 rounded" data-tooltip="Chỉnh sửa">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-green-600 hover:bg-green-50 rounded" data-tooltip="Sao chép">
+                                        <i class="fas fa-copy text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDelete('Báo cáo hàng tháng')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-12 hover:bg-gray-50 border-b border-gray-100">
+                            <td class="px-4 py-3 text-xs font-mono text-gray-600">T007</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">Thông báo bảo trì hệ thống</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Push</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">Hệ thống</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">email</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">sms</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">push</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="toggle-switch active" onclick="toggleStatus(this)"></div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-user-circle text-gray-400"></i>
+                                    IT Team
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">09/08/2025</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">11/08/2025</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Xem chi tiết">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-amber-600 hover:bg-amber-50 rounded" data-tooltip="Chỉnh sửa">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-green-600 hover:bg-green-50 rounded" data-tooltip="Sao chép">
+                                        <i class="fas fa-copy text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDelete('Thông báo bảo trì hệ thống')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="h-12 hover:bg-gray-50 border-b border-gray-100 bg-gray-25">
+                            <td class="px-4 py-3 text-xs font-mono text-gray-600">T008</td>
+                            <td class="px-4 py-3 text-sm text-gray-900">Chúc mừng sinh nhật</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Email</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">Cá nhân hóa</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">email</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">push</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="toggle-switch active" onclick="toggleStatus(this)"></div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-user-circle text-gray-400"></i>
+                                    CRM Team
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600">08/08/2025</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">09/08/2025</td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-1">
+                                    <button class="tooltip p-1.5 text-blue-600 hover:bg-blue-50 rounded" data-tooltip="Xem chi tiết">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-amber-600 hover:bg-amber-50 rounded" data-tooltip="Chỉnh sửa">
+                                        <i class="fas fa-edit text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-green-600 hover:bg-green-50 rounded" data-tooltip="Sao chép">
+                                        <i class="fas fa-copy text-sm"></i>
+                                    </button>
+                                    <button class="tooltip p-1.5 text-red-600 hover:bg-red-50 rounded" data-tooltip="Xóa" onclick="confirmDelete('Chúc mừng sinh nhật')">
+                                        <i class="fas fa-trash text-sm"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-between items-center mt-4">
+            <div class="text-sm text-gray-600">
+                Hiển thị 1-8 của 45 kết quả
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50" disabled>
+                    <i class="fas fa-chevron-left text-sm"></i>
+                </button>
+                <button class="px-3 py-1 bg-blue-600 text-white rounded">1</button>
+                <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">2</button>
+                <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">3</button>
+                <span class="px-2 text-gray-500">...</span>
+                <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">6</button>
+                <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">
+                    <i class="fas fa-chevron-right text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Template Modal -->
+    <div id="templateModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-hidden shadow-2xl transform transition-transform duration-300 scale-95" id="modalContent">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-900" id="modalTitle">Tạo Template Mới</h2>
+                <button onclick="closeTemplateModal()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i class="fas fa-times text-gray-500"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="overflow-y-auto max-h-[calc(90vh-140px)]">
+                <form id="templateForm" class="p-6 space-y-6">
+                    <!-- Basic Information -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tên Template *</label>
+                            <input type="text" id="templateName" required 
+                                   class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                   placeholder="Nhập tên template...">
+                            <div class="text-red-500 text-xs mt-1 hidden" id="templateNameError">Vui lòng nhập tên template</div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Danh Mục</label>
+                            <select id="templateCategory" 
+                                    class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                <option value="">Chọn danh mục</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="transaction">Giao dịch</option>
+                                <option value="promotion">Khuyến mãi</option>
+                                <option value="reminder">Nhắc nhở</option>
+                                <option value="report">Báo cáo</option>
+                                <option value="system">Hệ thống</option>
+                                <option value="personal">Cá nhân hóa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Template Type -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Loại Template *</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center">
+                                <input type="radio" name="templateType" value="email" class="mr-2 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Email</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="templateType" value="sms" class="mr-2 text-green-600 focus:ring-green-500">
+                                <span class="text-sm text-gray-700">SMS</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="templateType" value="push" class="mr-2 text-purple-600 focus:ring-purple-500">
+                                <span class="text-sm text-gray-700">Push Notification</span>
+                            </label>
+                        </div>
+                        <div class="text-red-500 text-xs mt-1 hidden" id="templateTypeError">Vui lòng chọn loại template</div>
+                    </div>
+
+                    <!-- Supported Channels -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Kênh Hỗ Trợ</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="channels" value="email" class="mr-2 text-blue-600 focus:ring-blue-500 rounded">
+                                <span class="text-sm text-gray-700">Email</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="channels" value="sms" class="mr-2 text-green-600 focus:ring-green-500 rounded">
+                                <span class="text-sm text-gray-700">SMS</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="channels" value="push" class="mr-2 text-purple-600 focus:ring-purple-500 rounded">
+                                <span class="text-sm text-gray-700">Push</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Mô Tả</label>
+                        <textarea id="templateDescription" rows="3" 
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
+                                  placeholder="Mô tả ngắn về template này..."></textarea>
+                    </div>
+
+                    <!-- Content Tabs -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Nội Dung Template</label>
+                        
+                        <!-- Tab Navigation -->
+                        <div class="border-b border-gray-200 mb-4">
+                            <nav class="flex space-x-8">
+                                <button type="button" onclick="switchTab('subject')" 
+                                        class="tab-button py-2 px-1 border-b-2 font-medium text-sm transition-colors border-blue-500 text-blue-600" 
+                                        id="subjectTab">
+                                    Tiêu Đề
+                                </button>
+                                <button type="button" onclick="switchTab('html')" 
+                                        class="tab-button py-2 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" 
+                                        id="htmlTab">
+                                    HTML Body
+                                </button>
+                                <button type="button" onclick="switchTab('text')" 
+                                        class="tab-button py-2 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" 
+                                        id="textTab">
+                                    Text Body
+                                </button>
+                            </nav>
+                        </div>
+
+                        <!-- Tab Content -->
+                        <div id="subjectContent" class="tab-content">
+                            <input type="text" id="templateSubject" 
+                                   class="w-full h-9 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                   placeholder="Nhập tiêu đề email...">
+                        </div>
+
+                        <div id="htmlContent" class="tab-content hidden">
+                            <textarea id="templateHtml" rows="8" 
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-mono resize-none"
+                                      placeholder="<html>&#10;<body>&#10;  <h1>{{customer_name}}</h1>&#10;  <p>Nội dung email...</p>&#10;</body>&#10;</html>"></textarea>
+                        </div>
+
+                        <div id="textContent" class="tab-content hidden">
+                            <textarea id="templateText" rows="6" 
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm resize-none"
+                                      placeholder="Xin chào {{customer_name}},&#10;&#10;Nội dung tin nhắn..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Variables Section -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Biến Có Sẵn</label>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="text-xs text-gray-600 mb-3">Kéo thả các biến vào nội dung template:</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="variable-tag inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 cursor-pointer hover:bg-blue-200 transition-colors"
+                                      draggable="true" ondragstart="dragStart(event)" data-variable="{{customer_name}}">
+                                    {{customer_name}}
+                                </span>
+                                <span class="variable-tag inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-800 cursor-pointer hover:bg-green-200 transition-colors"
+                                      draggable="true" ondragstart="dragStart(event)" data-variable="{{order_id}}">
+                                    {{order_id}}
+                                </span>
+                                <span class="variable-tag inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-purple-100 text-purple-800 cursor-pointer hover:bg-purple-200 transition-colors"
+                                      draggable="true" ondragstart="dragStart(event)" data-variable="{{amount}}">
+                                    {{amount}}
+                                </span>
+                                <span class="variable-tag inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-yellow-100 text-yellow-800 cursor-pointer hover:bg-yellow-200 transition-colors"
+                                      draggable="true" ondragstart="dragStart(event)" data-variable="{{date}}">
+                                    {{date}}
+                                </span>
+                                <span class="variable-tag inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-red-100 text-red-800 cursor-pointer hover:bg-red-200 transition-colors"
+                                      draggable="true" ondragstart="dragStart(event)" data-variable="{{company_name}}">
+                                    {{company_name}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
+                <button type="button" onclick="closeTemplateModal()" 
+                        class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-700 transition-colors">
+                    Hủy
+                </button>
+                <button type="button" onclick="saveTemplate()" 
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium transition-colors">
+                    Lưu Template
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-exclamation-triangle text-red-600"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900">Xác nhận xóa</h3>
+                    <p class="text-sm text-gray-600">Bạn có chắc chắn muốn xóa template này?</p>
+                </div>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-3 mb-4">
+                <p class="text-sm font-medium text-gray-900" id="templateName"></p>
+            </div>
+            <div class="flex gap-3 justify-end">
+                <button onclick="closeModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    Hủy
+                </button>
+                <button onclick="deleteTemplate()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                    Xóa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleStatus(element) {
+            element.classList.toggle('active');
+        }
+
+        function confirmDelete(templateName) {
+            document.getElementById('templateName').textContent = templateName;
+            document.getElementById('confirmModal').classList.remove('hidden');
+            document.getElementById('confirmModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+            document.getElementById('confirmModal').classList.remove('flex');
+        }
+
+        function deleteTemplate() {
+            // Simulate deletion
+            closeModal();
+            // In a real app, you would make an API call here
+            alert('Template đã được xóa thành công!');
+        }
+
+        // Template Modal Functions
+        function openTemplateModal(templateData = null) {
+            const modal = document.getElementById('templateModal');
+            const modalContent = document.getElementById('modalContent');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            // Reset form
+            document.getElementById('templateForm').reset();
+            clearValidationErrors();
+            
+            if (templateData) {
+                modalTitle.textContent = 'Chỉnh Sửa Template';
+                // Populate form with existing data
+                populateForm(templateData);
+            } else {
+                modalTitle.textContent = 'Tạo Template Mới';
+            }
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Animation
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeTemplateModal() {
+            const modal = document.getElementById('templateModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active state from all tabs
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('border-blue-500', 'text-blue-600');
+                button.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + 'Content').classList.remove('hidden');
+            
+            // Activate selected tab
+            const activeTab = document.getElementById(tabName + 'Tab');
+            activeTab.classList.remove('border-transparent', 'text-gray-500');
+            activeTab.classList.add('border-blue-500', 'text-blue-600');
+        }
+
+        function saveTemplate() {
+            if (validateForm()) {
+                const formData = collectFormData();
+                
+                // Simulate API call
+                setTimeout(() => {
+                    alert('Template đã được lưu thành công!');
+                    closeTemplateModal();
+                    // In a real app, you would refresh the table data here
+                }, 500);
+            }
+        }
+
+        function validateForm() {
+            let isValid = true;
+            
+            // Clear previous errors
+            clearValidationErrors();
+            
+            // Validate template name
+            const templateName = document.getElementById('templateName').value.trim();
+            if (!templateName) {
+                showValidationError('templateNameError', 'Vui lòng nhập tên template');
+                isValid = false;
+            }
+            
+            // Validate template type
+            const templateType = document.querySelector('input[name="templateType"]:checked');
+            if (!templateType) {
+                showValidationError('templateTypeError', 'Vui lòng chọn loại template');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        function clearValidationErrors() {
+            document.querySelectorAll('[id$="Error"]').forEach(error => {
+                error.classList.add('hidden');
+            });
+            
+            document.querySelectorAll('.border-red-500').forEach(input => {
+                input.classList.remove('border-red-500');
+                input.classList.add('border-gray-300');
+            });
+        }
+
+        function showValidationError(errorId, message) {
+            const errorElement = document.getElementById(errorId);
+            errorElement.textContent = message;
+            errorElement.classList.remove('hidden');
+            
+            // Highlight the input field
+            const inputId = errorId.replace('Error', '');
+            const inputElement = document.getElementById(inputId);
+            if (inputElement) {
+                inputElement.classList.remove('border-gray-300');
+                inputElement.classList.add('border-red-500');
+            }
+        }
+
+        function collectFormData() {
+            const templateType = document.querySelector('input[name="templateType"]:checked');
+            const channels = Array.from(document.querySelectorAll('input[name="channels"]:checked')).map(cb => cb.value);
+            
+            return {
+                name: document.getElementById('templateName').value.trim(),
+                category: document.getElementById('templateCategory').value,
+                type: templateType ? templateType.value : '',
+                channels: channels,
+                description: document.getElementById('templateDescription').value.trim(),
+                subject: document.getElementById('templateSubject').value.trim(),
+                htmlBody: document.getElementById('templateHtml').value.trim(),
+                textBody: document.getElementById('templateText').value.trim()
+            };
+        }
+
+        function populateForm(data) {
+            document.getElementById('templateName').value = data.name || '';
+            document.getElementById('templateCategory').value = data.category || '';
+            document.getElementById('templateDescription').value = data.description || '';
+            document.getElementById('templateSubject').value = data.subject || '';
+            document.getElementById('templateHtml').value = data.htmlBody || '';
+            document.getElementById('templateText').value = data.textBody || '';
+            
+            // Set template type
+            if (data.type) {
+                const typeRadio = document.querySelector(`input[name="templateType"][value="${data.type}"]`);
+                if (typeRadio) typeRadio.checked = true;
+            }
+            
+            // Set channels
+            if (data.channels) {
+                data.channels.forEach(channel => {
+                    const channelCheckbox = document.querySelector(`input[name="channels"][value="${channel}"]`);
+                    if (channelCheckbox) channelCheckbox.checked = true;
+                });
+            }
+        }
+
+        // Drag and Drop for Variables
+        function dragStart(event) {
+            event.dataTransfer.setData('text/plain', event.target.dataset.variable);
+        }
+
+        // Add drop functionality to text areas
+        document.addEventListener('DOMContentLoaded', function() {
+            const textAreas = ['templateSubject', 'templateHtml', 'templateText'];
+            
+            textAreas.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                        this.classList.add('border-blue-500');
+                    });
+                    
+                    element.addEventListener('dragleave', function(e) {
+                        this.classList.remove('border-blue-500');
+                    });
+                    
+                    element.addEventListener('drop', function(e) {
+                        e.preventDefault();
+                        this.classList.remove('border-blue-500');
+                        
+                        const variable = e.dataTransfer.getData('text/plain');
+                        const cursorPos = this.selectionStart;
+                        const textBefore = this.value.substring(0, cursorPos);
+                        const textAfter = this.value.substring(cursorPos);
+                        
+                        this.value = textBefore + variable + textAfter;
+                        this.focus();
+                        this.setSelectionRange(cursorPos + variable.length, cursorPos + variable.length);
+                    });
+                }
+            });
+        });
+
+        function showLoadingState() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            for (let i = 0; i < 8; i++) {
+                const row = document.createElement('tr');
+                row.className = 'h-12 border-b border-gray-100';
+                row.innerHTML = `
+                    <td class="px-4 py-3"><div class="h-4 bg-gray-200 rounded shimmer"></div></td>
+                    <td class="px-4 py-3"><div class="h-4 bg-gray-200 rounded shimmer"></div></td>
+                    <td class="px-4 py-3"><div class="h-6 w-16 bg-gray-200 rounded-full shimmer"></div></td>
+                    <td class="px-4 py-3"><div class="h-4 bg-gray-200 rounded shimmer"></div></td>
+                    <td class="px-4 py-3"><div class="h-4 bg-gray-200 rounded shimmer"></div></td>
+                    <td class="px-4 py-3"><div class="h-6 w-11 bg-gray-200 rounded-full shimmer"></div></td>
+                    <td class="px-4 py-3"><div class="h-4 bg-gray-200 rounded shimmer"></div></td>
+                    <td class="px-4 py-3"><div class="h-4 bg-gray-200 rounded shimmer"></div></td>
+                    <td class="px-4 py-3"><div class="h-4 bg-gray-200 rounded shimmer"></div></td>
+                    <td class="px-4 py-3"><div class="h-4 bg-gray-200 rounded shimmer"></div></td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        function showEmptyState() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="10" class="text-center py-16">
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-file-alt text-4xl text-gray-300 mb-4"></i>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">Chưa có template</h3>
+                            <p class="text-gray-600 mb-4">Tạo template đầu tiên để bắt đầu gửi thông báo</p>
+                            <button onclick="openTemplateModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                                Tạo Template Mới
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // Search functionality
+        document.querySelector('input[type="text"]').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#tableBody tr');
+            
+            rows.forEach(row => {
+                const templateName = row.cells[1]?.textContent.toLowerCase() || '';
+                if (templateName.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Filter functionality
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', function() {
+                // Simulate filtering - in a real app, you'd make an API call
+                console.log('Filter changed:', this.value);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9709bccc82630892',t:'MTc1NTQzOTY0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

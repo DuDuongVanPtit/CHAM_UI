@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC - Báo Cáo Học Viên</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#B91C1C',
+                        success: '#059669',
+                        warning: '#D97706',
+                        error: '#EF4444',
+                        'gray-50': '#F9FAFB',
+                        'gray-100': '#F3F4F6',
+                        'gray-200': '#E5E7EB',
+                        'gray-600': '#6B7280',
+                        'gray-900': '#111827'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-inter">
+    
+    <!-- Main Container -->
+    <div class="max-w-[1400px] mx-auto p-4 h-screen flex flex-col">
+        
+        <!-- Compact Header -->
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-6">
+                <h1 class="text-xl font-bold text-gray-900">📊 Báo Cáo Học Viên</h1>
+                <div class="flex items-center gap-2 text-xs text-gray-500">
+                    <span class="bg-success text-white px-2 py-1 rounded">📖 Lớp</span>
+                    <span>→</span>
+                    <span class="bg-success text-white px-2 py-1 rounded">👥 Học viên</span>
+                    <span>→</span>
+                    <span class="bg-success text-white px-2 py-1 rounded">📋 Báo cáo</span>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <select id="classFilter" class="px-3 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:border-primary">
+                    <option value="toeic-600-850">Lớp TOEIC 600-850 (9 HV)</option>
+                    <option value="toeic-450-600">Lớp TOEIC 450-600 (9 HV)</option>
+                    <option value="toeic-750-900">Lớp TOEIC 750-900 (9 HV)</option>
+                </select>
+                <button id="exportClassBtn" class="bg-primary text-white px-3 py-1 text-sm rounded font-medium hover:bg-red-700 transition-colors">
+                    📊 Xuất báo cáo
+                </button>
+            </div>
+        </div>
+
+        <!-- Compact Class Stats -->
+        <div class="grid grid-cols-4 gap-3 mb-4">
+            <!-- Total Students -->
+            <div class="bg-white rounded-lg p-3 shadow-sm text-center">
+                <div class="text-lg">👥</div>
+                <div class="text-lg font-bold text-gray-900">9</div>
+                <div class="text-xs text-gray-600">Tổng HV</div>
+            </div>
+
+            <!-- Average Score -->
+            <div class="bg-white rounded-lg p-3 shadow-sm text-center">
+                <div class="text-lg">📈</div>
+                <div class="text-lg font-bold text-gray-900">672</div>
+                <div class="text-xs text-success">+45 điểm TB</div>
+            </div>
+
+            <!-- Completion Rate -->
+            <div class="bg-white rounded-lg p-3 shadow-sm text-center">
+                <div class="text-lg">⏰</div>
+                <div class="text-lg font-bold text-gray-900">78%</div>
+                <div class="text-xs text-gray-600">Hoàn thành</div>
+            </div>
+
+            <!-- Need Support -->
+            <div class="bg-white rounded-lg p-3 shadow-sm text-center">
+                <div class="text-lg">⚠️</div>
+                <div class="text-lg font-bold text-gray-900">2</div>
+                <div class="text-xs text-gray-600">Cần hỗ trợ</div>
+            </div>
+        </div>
+
+        <!-- Main Content: Two Columns -->
+        <div class="grid grid-cols-10 gap-4 flex-1 overflow-hidden">
+            
+            <!-- Left Sidebar - Student List (30%) -->
+            <div class="col-span-3">
+                <div class="bg-white rounded-lg p-4 shadow-sm h-full flex flex-col">
+                    <h3 class="text-lg font-bold text-gray-900 mb-3">👥 DANH SÁCH HỌC VIÊN</h3>
+                    
+                    <!-- Filter Tabs -->
+                    <div class="flex gap-1 mb-3">
+                        <button class="student-tab active px-2 py-1 text-xs rounded" data-filter="all">Tất cả</button>
+                        <button class="student-tab px-2 py-1 text-xs rounded" data-filter="progress">Tiến độ</button>
+                        <button class="student-tab px-2 py-1 text-xs rounded" data-filter="score">Điểm</button>
+                    </div>
+
+                    <!-- Student List -->
+                    <div class="space-y-2 flex-1 overflow-y-auto" id="studentList">
+                        <!-- Selected Student -->
+                        <div class="student-card selected p-2 rounded border-l-2 border-primary bg-red-50 cursor-pointer" data-student="nguyen-van-an">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xs">
+                                    AN
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm text-gray-900 truncate">Nguyễn Văn An</h4>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs font-medium">650</span>
+                                        <span class="text-xs text-success">(+65)</span>
+                                        <span class="bg-success text-white text-xs px-1 rounded">Tốt</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other Students -->
+                        <div class="student-card p-2 rounded hover:bg-gray-50 cursor-pointer" data-student="tran-thi-mai">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold text-xs">
+                                    MAI
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm text-gray-900 truncate">Trần Thị Mai</h4>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs font-medium">720</span>
+                                        <span class="text-xs text-success">(+80)</span>
+                                        <span class="bg-success text-white text-xs px-1 rounded">Xuất sắc</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-card p-2 rounded hover:bg-gray-50 cursor-pointer" data-student="le-hoang-duc">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold text-xs">
+                                    ĐỨC
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm text-gray-900 truncate">Lê Hoàng Đức</h4>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs font-medium">580</span>
+                                        <span class="text-xs text-warning">(+25)</span>
+                                        <span class="bg-warning text-white text-xs px-1 rounded">Cải thiện</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-card p-2 rounded hover:bg-gray-50 cursor-pointer" data-student="pham-thi-lan">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-xs">
+                                    LAN
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm text-gray-900 truncate">Phạm Thị Lan</h4>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs font-medium">695</span>
+                                        <span class="text-xs text-success">(+70)</span>
+                                        <span class="bg-success text-white text-xs px-1 rounded">Tốt</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-card p-2 rounded hover:bg-gray-50 cursor-pointer" data-student="vo-minh-tuan">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center font-bold text-xs">
+                                    TUẤN
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm text-gray-900 truncate">Võ Minh Tuấn</h4>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs font-medium">520</span>
+                                        <span class="text-xs text-error">(+10)</span>
+                                        <span class="bg-error text-white text-xs px-1 rounded">Hỗ trợ</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-card p-2 rounded hover:bg-gray-50 cursor-pointer" data-student="hoang-thi-linh">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-xs">
+                                    LINH
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm text-gray-900 truncate">Hoàng Thị Linh</h4>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs font-medium">680</span>
+                                        <span class="text-xs text-success">(+55)</span>
+                                        <span class="bg-success text-white text-xs px-1 rounded">Tốt</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-card p-2 rounded hover:bg-gray-50 cursor-pointer" data-student="nguyen-thanh-nam">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-indigo-500 text-white rounded-full flex items-center justify-center font-bold text-xs">
+                                    NAM
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm text-gray-900 truncate">Nguyễn Thanh Nam</h4>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs font-medium">635</span>
+                                        <span class="text-xs text-success">(+40)</span>
+                                        <span class="bg-success text-white text-xs px-1 rounded">Tốt</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-card p-2 rounded hover:bg-gray-50 cursor-pointer" data-student="tran-van-duc">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-pink-500 text-white rounded-full flex items-center justify-center font-bold text-xs">
+                                    ĐỨC
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm text-gray-900 truncate">Trần Văn Đức</h4>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs font-medium">590</span>
+                                        <span class="text-xs text-warning">(+30)</span>
+                                        <span class="bg-warning text-white text-xs px-1 rounded">Cải thiện</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-card p-2 rounded hover:bg-gray-50 cursor-pointer" data-student="le-thi-huong">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-teal-500 text-white rounded-full flex items-center justify-center font-bold text-xs">
+                                    HƯƠNG
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sm text-gray-900 truncate">Lê Thị Hương</h4>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs font-medium">540</span>
+                                        <span class="text-xs text-error">(+15)</span>
+                                        <span class="bg-error text-white text-xs px-1 rounded">Hỗ trợ</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-2">
+                        <span class="text-gray-500 text-xs">Hiển thị đầy đủ 9/9 học viên</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Student Detail (70%) -->
+            <div class="col-span-7">
+                <div class="bg-white rounded-lg p-4 shadow-sm h-full flex flex-col">
+                    
+                    <!-- Class Overview (Default) -->
+                    <div id="classOverview" class="class-overview">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                    📊
+                                </div>
+                                <div>
+                                    <h2 class="text-lg font-bold text-gray-900">Tổng Quan Lớp TOEIC 600-850</h2>
+                                    <div class="flex gap-3 text-xs text-gray-600">
+                                        <span>9 học viên</span>
+                                        <span>Điểm TB: 625</span>
+                                        <span>Cải thiện: +52 điểm</span>
+                                    </div>
+                                    <div class="flex gap-2 mt-1">
+                                        <span class="bg-success text-white text-xs px-2 py-1 rounded">✅ Lớp đang tiến bộ tốt</span>
+                                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">🎯 Mục tiêu chung: 700+</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="exportClassOverviewBtn" class="bg-primary text-white px-3 py-1 text-sm rounded font-medium hover:bg-red-700 transition-colors">
+                                📊 Xuất tổng quan
+                            </button>
+                        </div>
+
+                        <!-- Class Performance Cards -->
+                        <div class="grid grid-cols-4 gap-3 mb-4">
+                            <div class="text-center p-2 bg-blue-50 rounded">
+                                <div class="text-xl font-bold text-blue-600">625</div>
+                                <div class="text-xs text-gray-600">Điểm TB lớp</div>
+                            </div>
+                            <div class="text-center p-2 bg-green-50 rounded">
+                                <div class="text-xl font-bold text-success">78%</div>
+                                <div class="text-xs text-gray-600">Hoàn thành TB</div>
+                            </div>
+                            <div class="text-center p-2 bg-orange-50 rounded">
+                                <div class="text-xl font-bold text-warning">13</div>
+                                <div class="text-xs text-gray-600">Streak TB</div>
+                            </div>
+                            <div class="text-center p-2 bg-purple-50 rounded">
+                                <div class="text-xl font-bold text-purple-600">89%</div>
+                                <div class="text-xs text-gray-600">Tham gia</div>
+                            </div>
+                        </div>
+
+                        <!-- Class Analytics -->
+                        <div class="flex-1 overflow-y-auto">
+                            <!-- Performance Distribution -->
+                            <div class="mb-4">
+                                <h3 class="text-sm font-bold text-gray-900 mb-3">📊 Phân Bố Thành Tích</h3>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="p-3 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg border border-green-100">
+                                        <h4 class="text-sm font-semibold text-gray-900 mb-2">🏆 Top Performers</h4>
+                                        <div class="space-y-1">
+                                            <div class="flex justify-between text-xs">
+                                                <span>Trần Thị Mai</span>
+                                                <span class="text-green-600 font-medium">720</span>
+                                            </div>
+                                            <div class="flex justify-between text-xs">
+                                                <span>Phạm Thị Lan</span>
+                                                <span class="text-green-600 font-medium">695</span>
+                                            </div>
+                                            <div class="flex justify-between text-xs">
+                                                <span>Hoàng Thị Linh</span>
+                                                <span class="text-green-600 font-medium">680</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="p-3 bg-gradient-to-br from-red-50 to-pink-50 rounded-lg border border-red-100">
+                                        <h4 class="text-sm font-semibold text-gray-900 mb-2">⚠️ Cần Hỗ Trợ</h4>
+                                        <div class="space-y-1">
+                                            <div class="flex justify-between text-xs">
+                                                <span>Lê Thị Hương</span>
+                                                <span class="text-red-600 font-medium">540</span>
+                                            </div>
+                                            <div class="flex justify-between text-xs">
+                                                <span>Võ Minh Tuấn</span>
+                                                <span class="text-red-600 font-medium">520</span>
+                                            </div>
+                                            <div class="text-xs text-gray-500 mt-2">
+                                                Cần kế hoạch hỗ trợ đặc biệt
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Class Progress Chart -->
+                            <div class="mb-4">
+                                <h3 class="text-sm font-bold text-gray-900 mb-3">📈 Tiến Độ Lớp Học</h3>
+                                <div class="p-4 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg border border-purple-100">
+                                    <div class="grid grid-cols-4 gap-2 mb-3">
+                                        <div class="text-center">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                <div class="bg-green-500 h-2 rounded-full" style="width: 11%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-600">Xuất sắc</div>
+                                            <div class="text-xs font-bold">1 HV</div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                <div class="bg-blue-500 h-2 rounded-full" style="width: 44%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-600">Tốt</div>
+                                            <div class="text-xs font-bold">4 HV</div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 22%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-600">Cải thiện</div>
+                                            <div class="text-xs font-bold">2 HV</div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                <div class="bg-red-500 h-2 rounded-full" style="width: 22%"></div>
+                                            </div>
+                                            <div class="text-xs text-gray-600">Hỗ trợ</div>
+                                            <div class="text-xs font-bold">2 HV</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Student Detail (Hidden by default) -->
+                    <div id="studentDetail" class="student-detail hidden">
+                        <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                    AN
+                                </div>
+                                <div>
+                                    <h2 class="text-lg font-bold text-gray-900">Nguyễn Văn An</h2>
+                                    <div class="flex gap-3 text-xs text-gray-600">
+                                        <span>ID: HV001</span>
+                                        <span>an.nguyen@email.com</span>
+                                        <span>0901234567</span>
+                                    </div>
+                                    <div class="flex gap-2 mt-1">
+                                        <span class="bg-success text-white text-xs px-2 py-1 rounded">✅ Đang học tốt</span>
+                                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">🎯 Mục tiêu: 850</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="exportStudentBtn" class="bg-primary text-white px-3 py-1 text-sm rounded font-medium hover:bg-red-700 transition-colors">
+                                📄 Xuất báo cáo
+                            </button>
+                        </div>
+
+                    <!-- Performance Cards -->
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <div class="text-2xl font-bold text-gray-900">650</div>
+                            <div class="text-sm text-gray-600">Điểm hiện tại</div>
+                        </div>
+                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                            <div class="text-2xl font-bold text-success">+85</div>
+                            <div class="text-sm text-gray-600">Tăng điểm</div>
+                        </div>
+                        <div class="text-center p-3 bg-blue-50 rounded-lg">
+                            <div class="text-2xl font-bold text-blue-600">75%</div>
+                            <div class="text-sm text-gray-600">Hoàn thành</div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Analytics -->
+                    <div class="flex-1 overflow-y-auto">
+                        
+                        <!-- Score History Chart -->
+                        <div class="mb-4">
+                            <h3 class="text-sm font-bold text-gray-900 mb-3">📈 Lịch Sử Điểm Qua Các Lần Test</h3>
+                            <div class="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="text-sm font-medium text-gray-700">Điểm hiện tại: <span class="text-blue-600 font-bold">650</span></span>
+                                    <span class="text-sm text-success bg-green-100 px-2 py-1 rounded-full">↗️ Tăng +85 điểm</span>
+                                </div>
+                                
+                                <!-- Line Chart -->
+                                <div class="relative h-32 mb-4">
+                                    <!-- Grid lines -->
+                                    <svg class="absolute inset-0 w-full h-full">
+                                        <!-- Horizontal grid lines -->
+                                        <line x1="0" y1="25%" x2="100%" y2="25%" stroke="#E5E7EB" stroke-width="1" opacity="0.5"/>
+                                        <line x1="0" y1="50%" x2="100%" y2="50%" stroke="#E5E7EB" stroke-width="1" opacity="0.5"/>
+                                        <line x1="0" y1="75%" x2="100%" y2="75%" stroke="#E5E7EB" stroke-width="1" opacity="0.5"/>
+                                        
+                                        <!-- Main line chart -->
+                                        <polyline points="50,100 120,85 190,70 260,55 330,40 400,25 470,20" 
+                                                  fill="none" 
+                                                  stroke="url(#lineGradient)" 
+                                                  stroke-width="3" 
+                                                  stroke-linecap="round"/>
+                                        
+                                        <!-- Data points -->
+                                        <circle cx="50" cy="100" r="4" fill="#EF4444" class="hover:r-6 transition-all cursor-pointer"/>
+                                        <circle cx="120" cy="85" r="4" fill="#F97316" class="hover:r-6 transition-all cursor-pointer"/>
+                                        <circle cx="190" cy="70" r="4" fill="#EAB308" class="hover:r-6 transition-all cursor-pointer"/>
+                                        <circle cx="260" cy="55" r="4" fill="#22C55E" class="hover:r-6 transition-all cursor-pointer"/>
+                                        <circle cx="330" cy="40" r="4" fill="#10B981" class="hover:r-6 transition-all cursor-pointer"/>
+                                        <circle cx="400" cy="25" r="4" fill="#059669" class="hover:r-6 transition-all cursor-pointer"/>
+                                        <circle cx="470" cy="20" r="5" fill="#047857" stroke="#fff" stroke-width="2" class="hover:r-7 transition-all cursor-pointer"/>
+                                        
+                                        <!-- Gradient definition -->
+                                        <defs>
+                                            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <stop offset="0%" style="stop-color:#EF4444;stop-opacity:1" />
+                                                <stop offset="50%" style="stop-color:#22C55E;stop-opacity:1" />
+                                                <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                    
+                                    <!-- Hover tooltips -->
+                                    <div class="absolute" style="left: 42px; top: 92px;">
+                                        <div class="opacity-0 hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs px-2 py-1 rounded -translate-y-8 -translate-x-1/2">Test 1: 565</div>
+                                    </div>
+                                    <div class="absolute" style="left: 112px; top: 77px;">
+                                        <div class="opacity-0 hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs px-2 py-1 rounded -translate-y-8 -translate-x-1/2">Test 2: 585</div>
+                                    </div>
+                                    <div class="absolute" style="left: 182px; top: 62px;">
+                                        <div class="opacity-0 hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs px-2 py-1 rounded -translate-y-8 -translate-x-1/2">Test 3: 610</div>
+                                    </div>
+                                    <div class="absolute" style="left: 252px; top: 47px;">
+                                        <div class="opacity-0 hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs px-2 py-1 rounded -translate-y-8 -translate-x-1/2">Test 4: 635</div>
+                                    </div>
+                                    <div class="absolute" style="left: 322px; top: 32px;">
+                                        <div class="opacity-0 hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs px-2 py-1 rounded -translate-y-8 -translate-x-1/2">Test 5: 650</div>
+                                    </div>
+                                    <div class="absolute" style="left: 392px; top: 17px;">
+                                        <div class="opacity-0 hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs px-2 py-1 rounded -translate-y-8 -translate-x-1/2">Test 6: 665</div>
+                                    </div>
+                                    <div class="absolute" style="left: 462px; top: 12px;">
+                                        <div class="opacity-0 hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs px-2 py-1 rounded -translate-y-8 -translate-x-1/2">Test 7: 670</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- X-axis labels -->
+                                <div class="flex justify-between text-xs text-gray-500 mb-3">
+                                    <span>Test 1</span>
+                                    <span>Test 2</span>
+                                    <span>Test 3</span>
+                                    <span>Test 4</span>
+                                    <span>Test 5</span>
+                                    <span>Test 6</span>
+                                    <span>Test 7</span>
+                                </div>
+                                
+                                <div class="flex justify-between items-center pt-3 border-t border-blue-200">
+                                    <span class="text-xs text-gray-500">Cải thiện: <span class="text-green-600 font-semibold">+105 điểm</span></span>
+                                    <span class="text-xs text-gray-500">Mục tiêu: <span class="text-blue-600 font-semibold">850 điểm</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Analysis -->
+                        <div class="mb-4">
+                            <h3 class="text-sm font-bold text-gray-900 mb-3">📊 Phân Tích Kỹ Năng Chi Tiết</h3>
+                            
+                            <div class="grid grid-cols-2 gap-3 mb-3">
+                                <!-- Listening -->
+                                <div class="p-3 bg-gray-50 rounded">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="text-sm font-semibold text-gray-900">🎧 Listening</h4>
+                                        <div class="text-sm font-bold text-success">325/495</div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="flex justify-between text-xs">
+                                            <span>Part 1-2:</span>
+                                            <span class="text-success">85%</span>
+                                        </div>
+                                        <div class="flex justify-between text-xs">
+                                            <span>Part 3-4:</span>
+                                            <span class="text-warning">72%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+                                            <div class="bg-success h-1 rounded-full" style="width: 66%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Reading -->
+                                <div class="p-3 bg-gray-50 rounded">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="text-sm font-semibold text-gray-900">📖 Reading</h4>
+                                        <div class="text-sm font-bold text-success">325/495</div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="flex justify-between text-xs">
+                                            <span>Part 5-6:</span>
+                                            <span class="text-success">78%</span>
+                                        </div>
+                                        <div class="flex justify-between text-xs">
+                                            <span>Part 7:</span>
+                                            <span class="text-warning">68%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+                                            <div class="bg-success h-1 rounded-full" style="width: 66%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Performance Comparison -->
+                            <div class="p-3 bg-blue-50 rounded mb-3">
+                                <h4 class="text-sm font-semibold text-gray-900 mb-2">📊 So Sánh Với Lớp</h4>
+                                <div class="grid grid-cols-3 gap-2 text-xs">
+                                    <div class="text-center">
+                                        <div class="font-bold text-blue-600">650</div>
+                                        <div class="text-gray-600">Điểm của bạn</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="font-bold text-gray-600">625</div>
+                                        <div class="text-gray-600">TB lớp</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="font-bold text-success">+25</div>
+                                        <div class="text-gray-600">Cao hơn</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Student data
+        const studentData = {
+            'nguyen-van-an': {
+                name: 'Nguyễn Văn An',
+                avatar: 'AN',
+                color: 'bg-primary',
+                id: 'HV001',
+                email: 'an.nguyen@email.com',
+                phone: '0901234567',
+                score: 650,
+                improvement: 85,
+                completion: 75,
+                streak: 15,
+                status: 'Đang học tốt',
+                statusColor: 'bg-success'
+            },
+            'tran-thi-mai': {
+                name: 'Trần Thị Mai',
+                avatar: 'MAI',
+                color: 'bg-blue-500',
+                id: 'HV002',
+                email: 'mai.tran@email.com',
+                phone: '0901234568',
+                score: 720,
+                improvement: 95,
+                completion: 85,
+                streak: 22,
+                status: 'Xuất sắc',
+                statusColor: 'bg-success'
+            },
+            'le-hoang-duc': {
+                name: 'Lê Hoàng Đức',
+                avatar: 'ĐỨC',
+                color: 'bg-yellow-500',
+                id: 'HV003',
+                email: 'duc.le@email.com',
+                phone: '0901234569',
+                score: 580,
+                improvement: 45,
+                completion: 60,
+                streak: 8,
+                status: 'Cần cải thiện',
+                statusColor: 'bg-warning'
+            },
+            'pham-thi-lan': {
+                name: 'Phạm Thị Lan',
+                avatar: 'LAN',
+                color: 'bg-purple-500',
+                id: 'HV004',
+                email: 'lan.pham@email.com',
+                phone: '0901234570',
+                score: 695,
+                improvement: 78,
+                completion: 80,
+                streak: 18,
+                status: 'Đang học tốt',
+                statusColor: 'bg-success'
+            },
+            'vo-minh-tuan': {
+                name: 'Võ Minh Tuấn',
+                avatar: 'TUẤN',
+                color: 'bg-red-500',
+                id: 'HV005',
+                email: 'tuan.vo@email.com',
+                phone: '0901234571',
+                score: 520,
+                improvement: 25,
+                completion: 45,
+                streak: 3,
+                status: 'Cần hỗ trợ',
+                statusColor: 'bg-error'
+            },
+            'hoang-thi-linh': {
+                name: 'Hoàng Thị Linh',
+                avatar: 'LINH',
+                color: 'bg-green-500',
+                id: 'HV006',
+                email: 'linh.hoang@email.com',
+                phone: '0901234572',
+                score: 680,
+                improvement: 75,
+                completion: 82,
+                streak: 20,
+                status: 'Đang học tốt',
+                statusColor: 'bg-success'
+            },
+            'nguyen-thanh-nam': {
+                name: 'Nguyễn Thanh Nam',
+                avatar: 'NAM',
+                color: 'bg-indigo-500',
+                id: 'HV007',
+                email: 'nam.nguyen@email.com',
+                phone: '0901234573',
+                score: 635,
+                improvement: 60,
+                completion: 70,
+                streak: 12,
+                status: 'Đang học tốt',
+                statusColor: 'bg-success'
+            },
+            'tran-van-duc': {
+                name: 'Trần Văn Đức',
+                avatar: 'ĐỨC',
+                color: 'bg-pink-500',
+                id: 'HV008',
+                email: 'duc.tran@email.com',
+                phone: '0901234574',
+                score: 590,
+                improvement: 50,
+                completion: 65,
+                streak: 9,
+                status: 'Cần cải thiện',
+                statusColor: 'bg-warning'
+            },
+            'le-thi-huong': {
+                name: 'Lê Thị Hương',
+                avatar: 'HƯƠNG',
+                color: 'bg-teal-500',
+                id: 'HV009',
+                email: 'huong.le@email.com',
+                phone: '0901234575',
+                score: 540,
+                improvement: 30,
+                completion: 50,
+                streak: 5,
+                status: 'Cần hỗ trợ',
+                statusColor: 'bg-error'
+            }
+        };
+
+        // Show class overview
+        function showClassOverview() {
+            document.getElementById('classOverview').classList.remove('hidden');
+            document.getElementById('studentDetail').classList.add('hidden');
+        }
+
+        // Show student detail
+        function showStudentDetail() {
+            document.getElementById('classOverview').classList.add('hidden');
+            document.getElementById('studentDetail').classList.remove('hidden');
+        }
+
+        // Update student detail panel
+        function updateStudentDetail(studentId) {
+            const student = studentData[studentId];
+            if (!student) return;
+
+            // Show student detail panel
+            showStudentDetail();
+
+            // Update header
+            document.querySelector('#studentDetail .w-12').className = `w-12 h-12 ${student.color} text-white rounded-full flex items-center justify-center font-bold text-sm`;
+            document.querySelector('#studentDetail .w-12').textContent = student.avatar;
+            
+            document.querySelector('#studentDetail h2').textContent = student.name;
+            
+            const infoDiv = document.querySelector('#studentDetail .flex.gap-3.text-xs');
+            infoDiv.innerHTML = `
+                <span>ID: ${student.id}</span>
+                <span>${student.email}</span>
+                <span>${student.phone}</span>
+            `;
+
+            const statusDiv = document.querySelector('#studentDetail .flex.gap-2.mt-1');
+            statusDiv.innerHTML = `
+                <span class="${student.statusColor} text-white text-xs px-2 py-1 rounded">✅ ${student.status}</span>
+                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">🎯 Mục tiêu: 850</span>
+            `;
+
+            // Update performance cards
+            const performanceCards = document.querySelectorAll('#studentDetail .grid.grid-cols-4 > div');
+            performanceCards[0].querySelector('.text-xl').textContent = student.score;
+            performanceCards[1].querySelector('.text-xl').textContent = `+${student.improvement}`;
+            performanceCards[2].querySelector('.text-xl').textContent = `${student.completion}%`;
+            performanceCards[3].querySelector('.text-xl').textContent = student.streak;
+        }
+
+        // Tab styling
+        function updateTabStyles() {
+            document.querySelectorAll('.student-tab').forEach(tab => {
+                if (tab.classList.contains('active')) {
+                    tab.className = 'student-tab active px-3 py-1 text-sm rounded-lg bg-primary text-white';
+                } else {
+                    tab.className = 'student-tab px-3 py-1 text-sm rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200';
+                }
+            });
+        }
+
+        // Export functionality
+        function exportStudentReport() {
+            const selectedStudent = document.querySelector('.student-card.selected');
+            const studentId = selectedStudent.dataset.student;
+            const student = studentData[studentId];
+            
+            const reportData = `
+CHAM TOEIC - BÁO CÁO HỌC VIÊN
+================================
+
+THÔNG TIN HỌC VIÊN:
+- Họ tên: ${student.name}
+- ID: ${student.id}
+- Lớp: TOEIC 600-850
+- Email: ${student.email}
+- SĐT: ${student.phone}
+- Trạng thái: ${student.status}
+
+THÀNH TÍCH:
+- Điểm hiện tại: ${student.score}
+- Cải thiện: +${student.improvement} điểm
+- Hoàn thành: ${student.completion}%
+- Streak: ${student.streak} ngày
+
+PHÂN TÍCH KỸ NĂNG:
+- Listening: 325/495 (Cải thiện +45 điểm)
+- Reading: 325/495 (Cải thiện +40 điểm)
+
+HOẠT ĐỘNG GẦN ĐÂY:
+- Hoàn thành Mock Test #8: 650 điểm (+25)
+- Học từ vựng Part 5: 50 từ mới
+- Luyện Listening Part 3,4: 85% chính xác
+
+Báo cáo được tạo vào: ${new Date().toLocaleString('vi-VN')}
+            `;
+
+            const blob = new Blob([reportData], { type: 'text/plain;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `BaoCao_${student.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            alert('Báo cáo học viên đã được xuất thành công!');
+        }
+
+        function exportClassReport() {
+            const reportData = `
+CHAM TOEIC - BÁO CÁO LỚP HỌC
+================================
+
+THÔNG TIN LỚP:
+- Tên lớp: TOEIC 600-850
+- Tổng học viên: 9
+- Điểm trung bình: 625 (+52 điểm)
+- Tỷ lệ hoàn thành: 70%
+- Học viên cần hỗ trợ: 2
+
+DANH SÁCH HỌC VIÊN:
+1. Trần Thị Mai: 720 điểm (Xuất sắc)
+2. Phạm Thị Lan: 695 điểm (Đang học tốt)
+3. Hoàng Thị Linh: 680 điểm (Đang học tốt)
+4. Nguyễn Văn An: 650 điểm (Đang học tốt)
+5. Nguyễn Thanh Nam: 635 điểm (Đang học tốt)
+6. Trần Văn Đức: 590 điểm (Cần cải thiện)
+7. Lê Hoàng Đức: 580 điểm (Cần cải thiện)
+8. Lê Thị Hương: 540 điểm (Cần hỗ trợ)
+9. Võ Minh Tuấn: 520 điểm (Cần hỗ trợ)
+
+THỐNG KÊ CHUNG:
+- Học viên xuất sắc: 1 (11%)
+- Học viên đang học tốt: 4 (44%)
+- Học viên cần cải thiện: 2 (22%)
+- Học viên cần hỗ trợ: 2 (22%)
+
+Báo cáo được tạo vào: ${new Date().toLocaleString('vi-VN')}
+            `;
+
+            const blob = new Blob([reportData], { type: 'text/plain;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `BaoCao_Lop_TOEIC_600-850_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            alert('Báo cáo lớp học đã được xuất thành công!');
+        }
+
+        function exportClassOverview() {
+            const reportData = `
+CHAM TOEIC - TỔNG QUAN LỚP HỌC
+================================
+
+THÔNG TIN LỚP:
+- Tên lớp: TOEIC 600-850
+- Tổng học viên: 9
+- Điểm trung bình: 625 (+52 điểm)
+- Tỷ lệ hoàn thành trung bình: 78%
+- Tỷ lệ tham gia: 89%
+
+TOP PERFORMERS:
+1. Trần Thị Mai: 720 điểm
+2. Phạm Thị Lan: 695 điểm  
+3. Hoàng Thị Linh: 680 điểm
+
+HỌC VIÊN CẦN HỖ TRỢ:
+- Lê Thị Hương: 540 điểm
+- Võ Minh Tuấn: 520 điểm
+
+PHÂN BỐ THÀNH TÍCH:
+- Xuất sắc: 1 học viên (11%)
+- Tốt: 4 học viên (44%)
+- Cần cải thiện: 2 học viên (22%)
+- Cần hỗ trợ: 2 học viên (22%)
+
+HOẠT ĐỘNG GẦN ĐÂY:
+- Mock Test #8: 9/9 học viên hoàn thành
+- Bài tập từ vựng: 7/9 học viên hoàn thành
+- Buổi học nhóm: 6/9 học viên tham gia
+
+Báo cáo được tạo vào: ${new Date().toLocaleString('vi-VN')}
+            `;
+
+            const blob = new Blob([reportData], { type: 'text/plain;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `TongQuan_Lop_TOEIC_600-850_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            alert('Tổng quan lớp học đã được xuất thành công!');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTabStyles();
+
+            // Student selection
+            document.querySelectorAll('.student-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // Check if clicking on already selected card
+                    if (this.classList.contains('selected')) {
+                        // Deselect and show class overview
+                        document.querySelectorAll('.student-card').forEach(c => {
+                            c.classList.remove('selected', 'border-l-2', 'border-primary', 'bg-red-50');
+                        });
+                        showClassOverview();
+                        return;
+                    }
+
+                    // Remove selected class from all cards
+                    document.querySelectorAll('.student-card').forEach(c => {
+                        c.classList.remove('selected', 'border-l-2', 'border-primary', 'bg-red-50');
+                    });
+                    
+                    // Add selected class to clicked card
+                    this.classList.add('selected', 'border-l-2', 'border-primary', 'bg-red-50');
+                    
+                    // Update detail panel
+                    updateStudentDetail(this.dataset.student);
+                });
+            });
+
+            // Filter tabs
+            document.querySelectorAll('.student-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.student-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    updateTabStyles();
+                    
+                    // In a real app, this would filter the student list
+                    console.log('Filter by:', this.dataset.filter);
+                });
+            });
+
+            // Export buttons
+            document.getElementById('exportStudentBtn').addEventListener('click', exportStudentReport);
+            document.getElementById('exportClassBtn').addEventListener('click', exportClassReport);
+            document.getElementById('exportClassOverviewBtn').addEventListener('click', exportClassOverview);
+
+            // Class filter
+            document.getElementById('classFilter').addEventListener('change', function() {
+                console.log('Class changed to:', this.value);
+            });
+
+            // Initially remove selection from first student and show class overview
+            document.querySelectorAll('.student-card').forEach(c => {
+                c.classList.remove('selected', 'border-l-2', 'border-primary', 'bg-red-50');
+            });
+            showClassOverview();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97075ebd105a0b53',t:'MTc1NTQxNDgxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

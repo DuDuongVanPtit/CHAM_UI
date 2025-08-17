@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .login-container {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .input-group input {
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15);
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.4);
+        }
+        
+        .forgot-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .forgot-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: #3B82F6;
+            transition: width 0.3s ease;
+        }
+        
+        .forgot-link:hover::after {
+            width: 100%;
+        }
+        
+        .error-message {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .success-message {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="login-container w-full max-w-md rounded-2xl p-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-shield-alt text-white text-2xl"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Đăng nhập</h1>
+            <p class="text-gray-600 text-sm">Vui lòng đăng nhập để tiếp tục</p>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-6">
+            <!-- Email Input -->
+            <div class="input-group">
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                    Email <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-envelope text-gray-400 text-sm"></i>
+                    </div>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email"
+                        required
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        placeholder="Nhập địa chỉ email của bạn"
+                    >
+                </div>
+                <div id="emailError" class="text-red-500 text-xs mt-1 hidden"></div>
+            </div>
+
+            <!-- Password Input -->
+            <div class="input-group">
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                    Mật khẩu <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-lock text-gray-400 text-sm"></i>
+                    </div>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password"
+                        required
+                        class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        placeholder="Nhập mật khẩu của bạn"
+                    >
+                    <button 
+                        type="button" 
+                        onclick="togglePassword()"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    >
+                        <i id="passwordToggle" class="fas fa-eye text-gray-400 text-sm hover:text-gray-600"></i>
+                    </button>
+                </div>
+                <div id="passwordError" class="text-red-500 text-xs mt-1 hidden"></div>
+            </div>
+
+            <!-- Forgot Password Link -->
+            <div class="text-right">
+                <button 
+                    type="button" 
+                    onclick="openForgotPasswordModal()"
+                    class="forgot-link text-sm text-blue-600 hover:text-blue-800 font-medium"
+                >
+                    Quên mật khẩu?
+                </button>
+            </div>
+
+            <!-- Login Button -->
+            <button 
+                type="submit" 
+                class="login-btn w-full py-3 text-white font-semibold rounded-lg text-sm"
+            >
+                <span id="loginBtnText">Đăng nhập</span>
+                <i id="loginSpinner" class="fas fa-spinner fa-spin ml-2 hidden"></i>
+            </button>
+
+            <!-- Error Message -->
+            <div id="loginError" class="error-message bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm hidden">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span id="loginErrorText"></span>
+            </div>
+        </form>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center">
+            <p class="text-xs text-gray-500">
+                © 2025 Hệ thống quản lý. Tất cả quyền được bảo lưu.
+            </p>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl w-full max-w-md">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-900">Quên mật khẩu</h2>
+                <button onclick="closeForgotPasswordModal()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <i class="fas fa-times text-gray-500"></i>
+                </button>
+            </div>
+            
+            <div class="p-6">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-key text-blue-600 text-lg"></i>
+                    </div>
+                    <p class="text-sm text-gray-600">
+                        Nhập địa chỉ email của bạn và chúng tôi sẽ gửi liên kết đặt lại mật khẩu
+                    </p>
+                </div>
+
+                <form id="forgotPasswordForm" class="space-y-4">
+                    <div>
+                        <label for="forgotEmail" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-envelope text-gray-400 text-sm"></i>
+                            </div>
+                            <input 
+                                type="email" 
+                                id="forgotEmail" 
+                                name="forgotEmail"
+                                required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                placeholder="Nhập địa chỉ email của bạn"
+                            >
+                        </div>
+                        <div id="forgotEmailError" class="text-red-500 text-xs mt-1 hidden"></div>
+                    </div>
+
+                    <div class="flex gap-3 pt-2">
+                        <button 
+                            type="button" 
+                            onclick="closeForgotPasswordModal()"
+                            class="flex-1 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-700 transition-colors"
+                        >
+                            Hủy
+                        </button>
+                        <button 
+                            type="submit" 
+                            class="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium transition-colors"
+                        >
+                            <span id="forgotBtnText">Gửi liên kết</span>
+                            <i id="forgotSpinner" class="fas fa-spinner fa-spin ml-2 hidden"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Success Message -->
+                <div id="forgotSuccess" class="success-message bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm mt-4 hidden">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <span>Liên kết đặt lại mật khẩu đã được gửi đến email của bạn!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordToggle = document.getElementById('passwordToggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.className = 'fas fa-eye-slash text-gray-400 text-sm hover:text-gray-600';
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.className = 'fas fa-eye text-gray-400 text-sm hover:text-gray-600';
+            }
+        }
+
+        // Validate email format
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Show error message
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.remove('hidden');
+        }
+
+        // Hide error message
+        function hideError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.classList.add('hidden');
+        }
+
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous errors
+            hideError('emailError');
+            hideError('passwordError');
+            hideError('loginError');
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            let hasError = false;
+            
+            // Validate email
+            if (!email) {
+                showError('emailError', 'Vui lòng nhập địa chỉ email');
+                hasError = true;
+            } else if (!validateEmail(email)) {
+                showError('emailError', 'Địa chỉ email không hợp lệ');
+                hasError = true;
+            }
+            
+            // Validate password
+            if (!password) {
+                showError('passwordError', 'Vui lòng nhập mật khẩu');
+                hasError = true;
+            } else if (password.length < 6) {
+                showError('passwordError', 'Mật khẩu phải có ít nhất 6 ký tự');
+                hasError = true;
+            }
+            
+            if (hasError) return;
+            
+            // Show loading state
+            const loginBtn = document.querySelector('.login-btn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loginSpinner = document.getElementById('loginSpinner');
+            
+            loginBtn.disabled = true;
+            loginBtnText.textContent = 'Đang đăng nhập...';
+            loginSpinner.classList.remove('hidden');
+            
+            // Simulate login process
+            setTimeout(() => {
+                // Reset button state
+                loginBtn.disabled = false;
+                loginBtnText.textContent = 'Đăng nhập';
+                loginSpinner.classList.add('hidden');
+                
+                // Simulate login result (in real app, this would be an API call)
+                if (email === 'admin@example.com' && password === 'password') {
+                    alert('Đăng nhập thành công! Chuyển hướng đến trang chủ...');
+                    // In real app: window.location.href = '/dashboard';
+                } else {
+                    document.getElementById('loginErrorText').textContent = 'Email hoặc mật khẩu không chính xác';
+                    document.getElementById('loginError').classList.remove('hidden');
+                }
+            }, 2000);
+        });
+
+        // Forgot password modal functions
+        function openForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').classList.remove('hidden');
+            document.getElementById('forgotPasswordModal').classList.add('flex');
+            document.getElementById('forgotEmail').focus();
+        }
+
+        function closeForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').classList.add('hidden');
+            document.getElementById('forgotPasswordModal').classList.remove('flex');
+            document.getElementById('forgotPasswordForm').reset();
+            hideError('forgotEmailError');
+            document.getElementById('forgotSuccess').classList.add('hidden');
+        }
+
+        // Forgot password form submission
+        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            hideError('forgotEmailError');
+            document.getElementById('forgotSuccess').classList.add('hidden');
+            
+            const email = document.getElementById('forgotEmail').value.trim();
+            
+            if (!email) {
+                showError('forgotEmailError', 'Vui lòng nhập địa chỉ email');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                showError('forgotEmailError', 'Địa chỉ email không hợp lệ');
+                return;
+            }
+            
+            // Show loading state
+            const forgotBtn = document.querySelector('#forgotPasswordForm button[type="submit"]');
+            const forgotBtnText = document.getElementById('forgotBtnText');
+            const forgotSpinner = document.getElementById('forgotSpinner');
+            
+            forgotBtn.disabled = true;
+            forgotBtnText.textContent = 'Đang gửi...';
+            forgotSpinner.classList.remove('hidden');
+            
+            // Simulate sending reset email
+            setTimeout(() => {
+                forgotBtn.disabled = false;
+                forgotBtnText.textContent = 'Gửi liên kết';
+                forgotSpinner.classList.add('hidden');
+                
+                // Show success message
+                document.getElementById('forgotSuccess').classList.remove('hidden');
+                
+                // Auto close modal after 3 seconds
+                setTimeout(() => {
+                    closeForgotPasswordModal();
+                }, 3000);
+            }, 2000);
+        });
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'forgotPasswordModal') {
+                closeForgotPasswordModal();
+            }
+        });
+
+        // Handle Enter key in inputs
+        document.getElementById('email').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('password').focus();
+            }
+        });
+
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Clear errors when user starts typing
+        document.getElementById('email').addEventListener('input', function() {
+            hideError('emailError');
+            hideError('loginError');
+        });
+
+        document.getElementById('password').addEventListener('input', function() {
+            hideError('passwordError');
+            hideError('loginError');
+        });
+
+        document.getElementById('forgotEmail').addEventListener('input', function() {
+            hideError('forgotEmailError');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9709d188e3e90705',t:'MTc1NTQ0MDQ5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

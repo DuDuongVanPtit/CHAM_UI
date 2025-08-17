@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC - Notification Dropdown</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#B91C1C',
+                        success: '#059669',
+                        warning: '#D97706',
+                        error: '#EF4444',
+                        'gray-50': '#F9FAFB',
+                        'gray-100': '#F3F4F6',
+                        'gray-200': '#E5E7EB',
+                        'gray-600': '#6B7280',
+                        'gray-900': '#111827'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-inter min-h-screen">
+    
+    <!-- Demo Page Content -->
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-900 mb-4">🔔 CHAM TOEIC - Notification System Demo</h1>
+            <p class="text-gray-600 mb-6">Click the notification bell in the top-right corner to see the dropdown modal in action!</p>
+            
+            <!-- Demo Content -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-4 bg-blue-50 rounded-lg">
+                    <h3 class="font-semibold text-gray-900 mb-2">📚 Recent Activity</h3>
+                    <p class="text-sm text-gray-600">Your latest mock test results and teacher feedback are available in notifications.</p>
+                </div>
+                <div class="p-4 bg-green-50 rounded-lg">
+                    <h3 class="font-semibold text-gray-900 mb-2">🎯 Progress Update</h3>
+                    <p class="text-sm text-gray-600">Check your notification for the latest score improvements and study recommendations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Bell (Fixed Position) -->
+    <div class="fixed top-6 right-6 z-50">
+        <button id="notificationBell" class="relative bg-white p-3 rounded-full shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-200 hover:scale-105">
+            <!-- Bell Icon -->
+            <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+            </svg>
+            
+            <!-- Notification Badge -->
+            <div id="notificationBadge" class="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+                3
+            </div>
+        </button>
+    </div>
+
+    <!-- Notification Dropdown Modal -->
+    <div id="notificationModal" class="fixed top-20 right-6 z-50 w-80 max-w-[90vw] bg-white rounded-xl shadow-2xl border border-gray-200 transform scale-95 opacity-0 transition-all duration-200 pointer-events-none">
+        
+        <!-- Arrow Pointer -->
+        <div class="absolute -top-2 right-8 w-4 h-4 bg-white border-l border-t border-gray-200 transform rotate-45"></div>
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-200">
+            <h3 class="text-lg font-bold text-gray-900">Thông báo</h3>
+            <button id="markAllRead" class="text-sm font-medium text-primary hover:text-red-700 transition-colors">
+                Đánh dấu đã đọc tất cả
+            </button>
+        </div>
+
+        <!-- Notifications List -->
+        <div class="max-h-96 overflow-y-auto">
+            
+            <!-- Notification 1 - Teacher Feedback -->
+            <div class="notification-item flex items-start gap-3 p-4 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-100" data-id="1">
+                <!-- Avatar -->
+                <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+                    TM
+                </div>
+                
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-900">Thầy Minh</h4>
+                            <p class="text-sm text-gray-600 mt-1 line-clamp-2">
+                                Em đã có tiến bộ rõ rệt trong Listening Part 1,2. Tuy nhiên cần tập trung hơn vào Reading Part 7...
+                            </p>
+                            <span class="text-xs text-gray-500 mt-2 block">10 phút trước</span>
+                        </div>
+                        <!-- Unread Indicator -->
+                        <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 ml-2 mt-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification 2 - Test Result -->
+            <div class="notification-item flex items-start gap-3 p-4 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-100" data-id="2">
+                <!-- Success Icon -->
+                <div class="w-10 h-10 bg-success text-white rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-900">Kết quả Mock Test #8</h4>
+                            <p class="text-sm text-gray-600 mt-1 line-clamp-2">
+                                Chúc mừng! Bạn đạt 650 điểm (+25 điểm so với lần trước). Listening: 325, Reading: 325
+                            </p>
+                            <span class="text-xs text-gray-500 mt-2 block">30 phút trước</span>
+                        </div>
+                        <!-- Unread Indicator -->
+                        <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 ml-2 mt-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification 3 - Schedule Reminder -->
+            <div class="notification-item flex items-start gap-3 p-4 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-100" data-id="3">
+                <!-- Clock Icon -->
+                <div class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-900">Nhắc nhở lịch học</h4>
+                            <p class="text-sm text-gray-600 mt-1 line-clamp-2">
+                                Lớp TOEIC 600-850 sẽ bắt đầu lúc 14:00 hôm nay. Đừng quên chuẩn bị tài liệu!
+                            </p>
+                            <span class="text-xs text-gray-500 mt-2 block">2 giờ trước</span>
+                        </div>
+                        <!-- Unread Indicator -->
+                        <div class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 ml-2 mt-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification 4 - Assignment Due -->
+            <div class="notification-item flex items-start gap-3 p-4 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-100" data-id="4">
+                <!-- Warning Icon -->
+                <div class="w-10 h-10 bg-yellow-500 text-white rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-900">Bài tập sắp hết hạn</h4>
+                            <p class="text-sm text-gray-600 mt-1 line-clamp-2">
+                                Bài tập từ vựng Part 5-6 sẽ hết hạn nộp vào 18:00 hôm nay. Hiện tại bạn đã hoàn thành 80%.
+                            </p>
+                            <span class="text-xs text-gray-500 mt-2 block">4 giờ trước</span>
+                        </div>
+                        <!-- Read (no indicator) -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification 5 - Study Group -->
+            <div class="notification-item flex items-start gap-3 p-4 hover:bg-gray-50 cursor-pointer transition-colors" data-id="5">
+                <!-- Group Icon -->
+                <div class="w-10 h-10 bg-indigo-500 text-white rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                        <path d="M6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                    </svg>
+                </div>
+                
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-900">Nhóm học mới</h4>
+                            <p class="text-sm text-gray-600 mt-1 line-clamp-2">
+                                Bạn đã được mời tham gia nhóm học "TOEIC Speaking & Writing" với 5 thành viên khác.
+                            </p>
+                            <span class="text-xs text-gray-500 mt-2 block">1 ngày trước</span>
+                        </div>
+                        <!-- Read (no indicator) -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="p-4 border-t border-gray-200 text-center">
+            <a href="#" class="text-sm font-medium text-primary hover:text-red-700 transition-colors">
+                Xem tất cả thông báo
+            </a>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-20 z-40 opacity-0 pointer-events-none transition-opacity duration-200"></div>
+
+    <!-- Success Toast -->
+    <div id="successToast" class="fixed top-6 left-1/2 transform -translate-x-1/2 bg-success text-white px-4 py-2 rounded-lg shadow-lg z-50 opacity-0 pointer-events-none transition-all duration-300 -translate-y-4">
+        <div class="flex items-center gap-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-sm font-medium">Đã đánh dấu tất cả thông báo là đã đọc</span>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const notificationBell = document.getElementById('notificationBell');
+        const notificationModal = document.getElementById('notificationModal');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const markAllReadBtn = document.getElementById('markAllRead');
+        const notificationBadge = document.getElementById('notificationBadge');
+        const successToast = document.getElementById('successToast');
+        const notificationItems = document.querySelectorAll('.notification-item');
+
+        let isModalOpen = false;
+
+        // Toggle Modal
+        function toggleModal() {
+            isModalOpen = !isModalOpen;
+            
+            if (isModalOpen) {
+                openModal();
+            } else {
+                closeModal();
+            }
+        }
+
+        // Open Modal
+        function openModal() {
+            notificationModal.classList.remove('scale-95', 'opacity-0', 'pointer-events-none');
+            notificationModal.classList.add('scale-100', 'opacity-100');
+            modalOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            modalOverlay.classList.add('opacity-100');
+            
+            // Add animation class
+            notificationModal.style.animation = 'slideDown 0.2s ease-out';
+        }
+
+        // Close Modal
+        function closeModal() {
+            notificationModal.classList.remove('scale-100', 'opacity-100');
+            notificationModal.classList.add('scale-95', 'opacity-0', 'pointer-events-none');
+            modalOverlay.classList.remove('opacity-100');
+            modalOverlay.classList.add('opacity-0', 'pointer-events-none');
+            isModalOpen = false;
+        }
+
+        // Mark notification as read
+        function markAsRead(notificationElement) {
+            const unreadIndicator = notificationElement.querySelector('.bg-blue-500');
+            if (unreadIndicator) {
+                unreadIndicator.remove();
+                updateBadgeCount();
+            }
+        }
+
+        // Mark all notifications as read
+        function markAllAsRead() {
+            const unreadIndicators = document.querySelectorAll('.notification-item .bg-blue-500');
+            unreadIndicators.forEach(indicator => {
+                indicator.remove();
+            });
+            
+            updateBadgeCount();
+            showSuccessToast();
+        }
+
+        // Update badge count
+        function updateBadgeCount() {
+            const unreadCount = document.querySelectorAll('.notification-item .bg-blue-500').length;
+            
+            if (unreadCount === 0) {
+                notificationBadge.style.display = 'none';
+            } else {
+                notificationBadge.textContent = unreadCount;
+                notificationBadge.style.display = 'flex';
+            }
+        }
+
+        // Show success toast
+        function showSuccessToast() {
+            successToast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
+            successToast.classList.add('opacity-100', 'translate-y-0');
+            
+            setTimeout(() => {
+                successToast.classList.remove('opacity-100', 'translate-y-0');
+                successToast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
+            }, 3000);
+        }
+
+        // Event Listeners
+        notificationBell.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleModal();
+        });
+
+        modalOverlay.addEventListener('click', closeModal);
+
+        markAllReadBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            markAllAsRead();
+        });
+
+        // Notification item clicks
+        notificationItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                markAsRead(item);
+                
+                // Simulate navigation to relevant page
+                const notificationId = item.dataset.id;
+                console.log(`Navigating to notification ${notificationId}`);
+                
+                // Close modal after click
+                setTimeout(() => {
+                    closeModal();
+                }, 150);
+            });
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isModalOpen) {
+                closeModal();
+            }
+        });
+
+        // Prevent modal from closing when clicking inside
+        notificationModal.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from {
+                    transform: translateY(-10px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            .line-clamp-2 {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            
+            /* Mobile responsive adjustments */
+            @media (max-width: 640px) {
+                #notificationModal {
+                    width: 90vw;
+                    right: 5vw;
+                }
+                
+                .notification-item {
+                    padding: 12px;
+                }
+                
+                .notification-item .w-10.h-10 {
+                    width: 44px;
+                    height: 44px;
+                    min-width: 44px;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize badge count
+        updateBadgeCount();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97078f4f1282037d',t:'MTc1NTQxNjgwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

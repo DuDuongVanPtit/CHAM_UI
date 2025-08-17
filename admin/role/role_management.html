@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý vai trò</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#374151',
+                        secondary: '#6B7280',
+                        background: '#F8FAFC',
+                        card: '#FFFFFF',
+                        blue: '#3B82F6',
+                        success: '#10B981',
+                        danger: '#EF4444',
+                        textPrimary: '#111827',
+                        textSecondary: '#6B7280',
+                        border: '#E5E7EB'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter bg-background text-textPrimary">
+    <!-- Main Content -->
+    <div class="p-6">
+        <!-- Page Header -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-2">
+                <h1 class="text-2xl font-semibold text-textPrimary">Quản lý vai trò</h1>
+                <button onclick="openCreateModal()" class="bg-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors h-9 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Tạo mới
+                </button>
+            </div>
+            <nav class="text-xs text-secondary">
+                <a href="#" class="text-blue hover:underline">Trang chủ</a> / 
+                <a href="#" class="text-blue hover:underline">Bảng điều khiển Admin</a> / 
+                <span>Quản lý vai trò</span>
+            </nav>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="bg-card p-4 rounded-lg shadow-sm mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                <input type="text" placeholder="Nhập tên vai trò..." class="border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent">
+                <input type="text" placeholder="Tìm theo bất kỳ trường nào..." class="border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent">
+                <select class="border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent">
+                    <option>Tăng dần</option>
+                    <option>Giảm dần</option>
+                </select>
+                <select class="border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent">
+                    <option>Tên vai trò</option>
+                    <option>Ngày tạo</option>
+                </select>
+            </div>
+            <div class="flex gap-3">
+                <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors text-sm">Xóa</button>
+                <button class="bg-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    Tìm kiếm
+                </button>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="bg-card rounded-lg shadow-sm overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-background">
+                    <tr class="h-11">
+                        <th class="text-left px-4 py-3 text-sm font-medium text-textPrimary w-16">STT</th>
+                        <th class="text-left px-4 py-3 text-sm font-medium text-textPrimary w-36">Tên vai trò</th>
+                        <th class="text-left px-4 py-3 text-sm font-medium text-textPrimary">Mô tả</th>
+                        <th class="text-left px-4 py-3 text-sm font-medium text-textPrimary w-44">Ngày tạo</th>
+                        <th class="text-left px-4 py-3 text-sm font-medium text-textPrimary w-32">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t border-border hover:bg-blue-50 transition-colors">
+                        <td class="px-4 py-3 text-sm">1</td>
+                        <td class="px-4 py-3">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">user</span>
+                        </td>
+                        <td class="px-4 py-3 text-sm text-textSecondary">User</td>
+                        <td class="px-4 py-3 text-sm text-textSecondary">2025-08-05 20:44:38</td>
+                        <td class="px-4 py-3">
+                            <div class="flex items-center gap-2">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" checked class="sr-only peer">
+                                    <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-success"></div>
+                                </label>
+                                <button onclick="openEditModal('user')" class="text-blue hover:text-blue-700 p-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="confirmDelete('user')" class="text-danger hover:text-red-700 p-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="border-t border-border hover:bg-blue-50 transition-colors bg-gray-50">
+                        <td class="px-4 py-3 text-sm">2</td>
+                        <td class="px-4 py-3">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">teacher</span>
+                        </td>
+                        <td class="px-4 py-3 text-sm text-textSecondary">Responsible for managing courses and students. Can create and update course content, review submissions, and access student performance data.</td>
+                        <td class="px-4 py-3 text-sm text-textSecondary">2025-08-05 16:53:43</td>
+                        <td class="px-4 py-3">
+                            <div class="flex items-center gap-2">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" checked class="sr-only peer">
+                                    <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-success"></div>
+                                </label>
+                                <button onclick="openEditModal('teacher')" class="text-blue hover:text-blue-700 p-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="confirmDelete('teacher')" class="text-danger hover:text-red-700 p-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="border-t border-border hover:bg-blue-50 transition-colors">
+                        <td class="px-4 py-3 text-sm">3</td>
+                        <td class="px-4 py-3">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">student</span>
+                        </td>
+                        <td class="px-4 py-3 text-sm text-textSecondary">Limited access to academic resources and personal data. Can view their own information, course content, and submit assignments.</td>
+                        <td class="px-4 py-3 text-sm text-textSecondary">2025-08-05 16:52:39</td>
+                        <td class="px-4 py-3">
+                            <div class="flex items-center gap-2">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" checked class="sr-only peer">
+                                    <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-success"></div>
+                                </label>
+                                <button onclick="openEditModal('student')" class="text-blue hover:text-blue-700 p-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="confirmDelete('student')" class="text-danger hover:text-red-700 p-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="border-t border-border hover:bg-blue-50 transition-colors bg-gray-50">
+                        <td class="px-4 py-3 text-sm">4</td>
+                        <td class="px-4 py-3">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">admin</span>
+                        </td>
+                        <td class="px-4 py-3 text-sm text-textSecondary">Full system access. Can manage users, roles, settings, and perform administrative tasks.</td>
+                        <td class="px-4 py-3 text-sm text-textSecondary">2025-07-30 21:03:52</td>
+                        <td class="px-4 py-3">
+                            <div class="flex items-center gap-2">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" checked class="sr-only peer">
+                                    <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-success"></div>
+                                </label>
+                                <button onclick="openEditModal('admin')" class="text-blue hover:text-blue-700 p-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="confirmDelete('admin')" class="text-danger hover:text-red-700 p-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-between items-center mt-6">
+            <div class="flex items-center gap-2">
+                <span class="text-sm text-textSecondary">Hiển thị:</span>
+                <select class="border border-border rounded px-2 py-1 text-sm">
+                    <option>10 mục</option>
+                    <option>25 mục</option>
+                    <option>50 mục</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="px-3 py-1 text-sm text-secondary border border-border rounded hover:bg-gray-50">Trước</button>
+                <button class="px-3 py-1 text-sm bg-blue text-white rounded">1</button>
+                <button class="px-3 py-1 text-sm text-blue border border-blue rounded hover:bg-blue-50">Tiếp</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Modal -->
+    <div id="roleModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl w-full max-w-lg mx-4">
+            <div class="p-6 border-b border-border">
+                <h2 id="modalTitle" class="text-lg font-semibold text-textPrimary">Tạo Vai Trò Mới</h2>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-textPrimary mb-2">Tên vai trò *</label>
+                        <input id="roleName" type="text" class="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent" placeholder="Nhập tên vai trò">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-textPrimary mb-2">Mô tả</label>
+                        <textarea id="roleDescription" rows="4" class="w-full border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue focus:border-transparent" placeholder="Nhập mô tả vai trò"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-textPrimary mb-3">Quyền hạn</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-blue focus:ring-blue">
+                                <span class="ml-2 text-sm text-textSecondary">Quản lý người dùng</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-blue focus:ring-blue">
+                                <span class="ml-2 text-sm text-textSecondary">Quản lý khóa học</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-blue focus:ring-blue">
+                                <span class="ml-2 text-sm text-textSecondary">Xem báo cáo</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-blue focus:ring-blue">
+                                <span class="ml-2 text-sm text-textSecondary">Cài đặt hệ thống</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 border-t border-border flex justify-end gap-3">
+                <button onclick="closeModal()" class="px-4 py-2 text-sm text-secondary border border-border rounded-lg hover:bg-gray-50">Hủy</button>
+                <button onclick="saveRole()" class="px-4 py-2 text-sm bg-blue text-white rounded-lg hover:bg-blue-600">Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 text-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-textPrimary">Xác nhận xóa</h3>
+                        <p class="text-sm text-textSecondary">Bạn có chắc chắn muốn xóa vai trò này không?</p>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button onclick="closeDeleteModal()" class="px-4 py-2 text-sm text-secondary border border-border rounded-lg hover:bg-gray-50">Hủy</button>
+                    <button onclick="deleteRole()" class="px-4 py-2 text-sm bg-danger text-white rounded-lg hover:bg-red-600">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentRole = null;
+        let isEditMode = false;
+
+        function openCreateModal() {
+            document.getElementById('modalTitle').textContent = 'Tạo Vai Trò Mới';
+            document.getElementById('roleName').value = '';
+            document.getElementById('roleDescription').value = '';
+            isEditMode = false;
+            document.getElementById('roleModal').classList.remove('hidden');
+            document.getElementById('roleModal').classList.add('flex');
+        }
+
+        function openEditModal(roleName) {
+            document.getElementById('modalTitle').textContent = 'Chỉnh Sửa Vai Trò';
+            document.getElementById('roleName').value = roleName;
+            
+            // Set description based on role
+            const descriptions = {
+                'user': 'User',
+                'teacher': 'Responsible for managing courses and students. Can create and update course content, review submissions, and access student performance data.',
+                'student': 'Limited access to academic resources and personal data. Can view their own information, course content, and submit assignments.',
+                'admin': 'Full system access. Can manage users, roles, settings, and perform administrative tasks.'
+            };
+            
+            document.getElementById('roleDescription').value = descriptions[roleName] || '';
+            currentRole = roleName;
+            isEditMode = true;
+            document.getElementById('roleModal').classList.remove('hidden');
+            document.getElementById('roleModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('roleModal').classList.add('hidden');
+            document.getElementById('roleModal').classList.remove('flex');
+        }
+
+        function saveRole() {
+            const roleName = document.getElementById('roleName').value;
+            const roleDescription = document.getElementById('roleDescription').value;
+            
+            if (!roleName.trim()) {
+                alert('Vui lòng nhập tên vai trò');
+                return;
+            }
+            
+            if (isEditMode) {
+                alert(`Đã cập nhật vai trò "${roleName}" thành công!`);
+            } else {
+                alert(`Đã tạo vai trò "${roleName}" thành công!`);
+            }
+            
+            closeModal();
+        }
+
+        function confirmDelete(roleName) {
+            currentRole = roleName;
+            document.getElementById('deleteModal').classList.remove('hidden');
+            document.getElementById('deleteModal').classList.add('flex');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+            document.getElementById('deleteModal').classList.remove('flex');
+        }
+
+        function deleteRole() {
+            alert(`Đã xóa vai trò "${currentRole}" thành công!`);
+            closeDeleteModal();
+        }
+
+        // Close modals when clicking outside
+        document.getElementById('roleModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9709c0e2f4030514',t:'MTc1NTQzOTgxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
