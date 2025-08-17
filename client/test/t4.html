@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC Practice Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .audio-player {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .question-card {
+            transition: all 0.2s ease;
+        }
+        .question-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .answer-option {
+            transition: all 0.2s ease;
+        }
+        .answer-option:hover {
+            background-color: #f0f9ff;
+            border-color: #3b82f6;
+        }
+        .answer-option.selected {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 1px #3b82f6;
+        }
+        .nav-button {
+            transition: all 0.2s ease;
+        }
+        .nav-button.answered {
+            background-color: #10b981;
+            color: white;
+        }
+        .nav-button.flagged {
+            background-color: #f59e0b;
+            color: white;
+        }
+        .nav-button.current {
+            background-color: #3b82f6;
+            color: white;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">T</span>
+                    </div>
+                    <span class="ml-3 text-gray-600 text-sm">TOEIC Prep</span>
+                </div>
+                <h1 class="text-xl font-semibold text-gray-900">TOEIC Practice Test</h1>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <div class="text-2xl font-mono font-bold text-gray-900" id="timer">02:00:00</div>
+                        <div class="text-xs text-gray-500">Time Remaining</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-gray-700" id="part-title">Part 1 - Photographs</span>
+                <span class="text-sm text-gray-500" id="progress-text">Question 1 of 6</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 16.67%" id="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex gap-6">
+            <!-- Main Content Area -->
+            <div class="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div id="question-content">
+                    <!-- Part 1 Content (Default) -->
+                    <div id="part1" class="part-content">
+                        <div class="mb-6">
+                            <div class="audio-player rounded-lg p-4 mb-6">
+                                <div class="flex items-center justify-center text-white">
+                                    <svg class="w-8 h-8 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.816L4.846 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.846l3.537-3.816a1 1 0 011.617.816zM16 8a2 2 0 11-4 0 2 2 0 014 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="font-medium">Audio Player - Click to play</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <div class="bg-gray-100 rounded-lg p-4 flex items-center justify-center" style="height: 300px;">
+                                <div class="text-center text-gray-500">
+                                    <svg class="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <p class="font-medium">Sample Photograph</p>
+                                    <p class="text-sm">Office meeting scene</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="answer-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectAnswer(this)">
+                                <span class="font-semibold text-blue-600 mr-3">(A)</span>
+                                <span>The people are sitting around a table.</span>
+                            </div>
+                            <div class="answer-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectAnswer(this)">
+                                <span class="font-semibold text-blue-600 mr-3">(B)</span>
+                                <span>The woman is standing by the window.</span>
+                            </div>
+                            <div class="answer-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectAnswer(this)">
+                                <span class="font-semibold text-blue-600 mr-3">(C)</span>
+                                <span>The documents are being distributed.</span>
+                            </div>
+                            <div class="answer-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectAnswer(this)">
+                                <span class="font-semibold text-blue-600 mr-3">(D)</span>
+                                <span>The meeting room is empty.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 2 Content -->
+                    <div id="part2" class="part-content hidden">
+                        <div class="mb-6">
+                            <div class="audio-player rounded-lg p-4 mb-6">
+                                <div class="flex items-center justify-center text-white">
+                                    <svg class="w-8 h-8 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.816L4.846 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.846l3.537-3.816a1 1 0 011.617.816zM16 8a2 2 0 11-4 0 2 2 0 014 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="font-medium">Question Audio - "Where is the nearest bank?"</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="answer-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectAnswer(this)">
+                                <span class="font-semibold text-blue-600 mr-3">(A)</span>
+                                <span>It's on Main Street, next to the post office.</span>
+                            </div>
+                            <div class="answer-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectAnswer(this)">
+                                <span class="font-semibold text-blue-600 mr-3">(B)</span>
+                                <span>Yes, I have an account there.</span>
+                            </div>
+                            <div class="answer-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectAnswer(this)">
+                                <span class="font-semibold text-blue-600 mr-3">(C)</span>
+                                <span>The bank opens at 9 AM.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 3 Content -->
+                    <div id="part3" class="part-content hidden">
+                        <div class="mb-6">
+                            <div class="audio-player rounded-lg p-4 mb-6">
+                                <div class="flex items-center justify-center text-white">
+                                    <svg class="w-8 h-8 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.816L4.846 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.846l3.537-3.816a1 1 0 011.617.816zM16 8a2 2 0 11-4 0 2 2 0 014 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="font-medium">Conversation Audio - Office Discussion</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="question-card border border-gray-200 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 mb-3">32. What is the main topic of the conversation?</h3>
+                                <div class="space-y-2">
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                        <span>A project deadline</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                        <span>Office renovation</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                        <span>Budget planning</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                        <span>Staff meeting</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-card border border-gray-200 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 mb-3">33. When will the speakers meet again?</h3>
+                                <div class="space-y-2">
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                        <span>Tomorrow morning</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                        <span>Next week</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                        <span>This afternoon</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                        <span>Friday</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-card border border-gray-200 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 mb-3">34. What does the woman suggest?</h3>
+                                <div class="space-y-2">
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                        <span>Hiring more staff</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                        <span>Extending the deadline</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                        <span>Working overtime</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                        <span>Canceling the project</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 4 Content -->
+                    <div id="part4" class="part-content hidden">
+                        <div class="mb-6">
+                            <div class="audio-player rounded-lg p-4 mb-6">
+                                <div class="flex items-center justify-center text-white">
+                                    <svg class="w-8 h-8 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.816L4.846 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.846l3.537-3.816a1 1 0 011.617.816zM16 8a2 2 0 11-4 0 2 2 0 014 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="font-medium">Short Talk Audio - Company Announcement</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="question-card border border-gray-200 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 mb-3">71. What is the purpose of this announcement?</h3>
+                                <div class="space-y-2">
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                        <span>To introduce new policies</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                        <span>To announce a promotion</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                        <span>To schedule a meeting</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                        <span>To report quarterly results</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-card border border-gray-200 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 mb-3">72. When will the changes take effect?</h3>
+                                <div class="space-y-2">
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                        <span>Immediately</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                        <span>Next month</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                        <span>Next quarter</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                        <span>Next year</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-card border border-gray-200 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 mb-3">73. What should employees do if they have questions?</h3>
+                                <div class="space-y-2">
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                        <span>Contact HR department</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                        <span>Attend a meeting</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                        <span>Read the company manual</span>
+                                    </div>
+                                    <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                        <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                        <span>Email their supervisor</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 5 Content -->
+                    <div id="part5" class="part-content hidden">
+                        <div class="question-card border border-gray-200 rounded-lg p-6">
+                            <h3 class="font-semibold text-gray-900 mb-4">101. Complete the sentence:</h3>
+                            <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                                <p class="text-lg leading-relaxed">
+                                    The marketing team will _______ the new campaign strategy during next week's presentation.
+                                </p>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="answer-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectAnswer(this)">
+                                    <span class="font-semibold text-blue-600 mr-3">(A)</span>
+                                    <span>present</span>
+                                </div>
+                                <div class="answer-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectAnswer(this)">
+                                    <span class="font-semibold text-blue-600 mr-3">(B)</span>
+                                    <span>presentation</span>
+                                </div>
+                                <div class="answer-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectAnswer(this)">
+                                    <span class="font-semibold text-blue-600 mr-3">(C)</span>
+                                    <span>presenting</span>
+                                </div>
+                                <div class="answer-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" onclick="selectAnswer(this)">
+                                    <span class="font-semibold text-blue-600 mr-3">(D)</span>
+                                    <span>presented</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 6 Content -->
+                    <div id="part6" class="part-content hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h3 class="font-semibold text-gray-900 mb-4">Email Message</h3>
+                                <div class="space-y-4 text-sm leading-relaxed">
+                                    <p>Dear Team,</p>
+                                    <p>I hope this message finds you well. I wanted to update you on our quarterly progress and share some exciting news about our upcoming projects.</p>
+                                    <p>First, I'm pleased to announce that we have _______ (131) our sales targets for this quarter by 15%. This achievement is a testament to everyone's hard work and dedication.</p>
+                                    <p>_______ (132), we will be launching a new product line next month. The marketing campaign will begin on the 15th, and we expect significant customer interest.</p>
+                                    <p>Please _______ (133) to review the attached documents before our meeting on Friday. If you have any questions, don't hesitate to contact me.</p>
+                                    <p>_______ (134),<br>Sarah Johnson<br>Sales Manager</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="question-card border border-gray-200 rounded-lg p-4">
+                                    <h3 class="font-semibold text-gray-900 mb-3">131.</h3>
+                                    <div class="space-y-2">
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                            <span>exceeded</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                            <span>exceeding</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                            <span>exceed</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                            <span>exceedingly</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-card border border-gray-200 rounded-lg p-4">
+                                    <h3 class="font-semibold text-gray-900 mb-3">132.</h3>
+                                    <div class="space-y-2">
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                            <span>However</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                            <span>Additionally</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                            <span>Therefore</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                            <span>Nevertheless</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-card border border-gray-200 rounded-lg p-4">
+                                    <h3 class="font-semibold text-gray-900 mb-3">133.</h3>
+                                    <div class="space-y-2">
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                            <span>remember</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                            <span>remembering</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                            <span>remembered</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                            <span>to remember</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-card border border-gray-200 rounded-lg p-4">
+                                    <h3 class="font-semibold text-gray-900 mb-3">134.</h3>
+                                    <div class="space-y-2">
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                            <span>Sincerely</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                            <span>Regards</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                            <span>Best wishes</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                            <span>Best regards</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 7 Content -->
+                    <div id="part7" class="part-content hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 rounded-lg p-6">
+                                    <h3 class="font-semibold text-gray-900 mb-4">Company Memo</h3>
+                                    <div class="space-y-3 text-sm leading-relaxed">
+                                        <p><strong>TO:</strong> All Employees<br>
+                                        <strong>FROM:</strong> Human Resources Department<br>
+                                        <strong>DATE:</strong> March 15, 2024<br>
+                                        <strong>SUBJECT:</strong> New Health Insurance Benefits</p>
+                                        
+                                        <p>We are pleased to announce that effective April 1, 2024, all full-time employees will be eligible for enhanced health insurance coverage. The new plan includes dental and vision benefits at no additional cost to employees.</p>
+                                        
+                                        <p>Key features of the new plan:</p>
+                                        <ul class="list-disc list-inside ml-4 space-y-1">
+                                            <li>100% coverage for preventive care</li>
+                                            <li>Reduced co-payments for specialist visits</li>
+                                            <li>Expanded network of healthcare providers</li>
+                                            <li>Prescription drug coverage with lower deductibles</li>
+                                        </ul>
+                                        
+                                        <p>Enrollment forms must be submitted to HR by March 30. Information sessions will be held in Conference Room A on March 20 and 22 at 2:00 PM.</p>
+                                        
+                                        <p>For questions, contact the HR department at extension 2150.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="question-card border border-gray-200 rounded-lg p-4">
+                                    <h3 class="font-semibold text-gray-900 mb-3">147. What is the main purpose of this memo?</h3>
+                                    <div class="space-y-2">
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                            <span>To announce new health benefits</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                            <span>To schedule information sessions</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                            <span>To increase insurance premiums</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                            <span>To change HR policies</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-card border border-gray-200 rounded-lg p-4">
+                                    <h3 class="font-semibold text-gray-900 mb-3">148. When do the new benefits take effect?</h3>
+                                    <div class="space-y-2">
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                            <span>March 15</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                            <span>March 30</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                            <span>April 1</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                            <span>April 15</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-card border border-gray-200 rounded-lg p-4">
+                                    <h3 class="font-semibold text-gray-900 mb-3">149. What must employees do by March 30?</h3>
+                                    <div class="space-y-2">
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                            <span>Attend an information session</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                            <span>Submit enrollment forms</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                            <span>Contact HR department</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                            <span>Choose a healthcare provider</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="question-card border border-gray-200 rounded-lg p-4">
+                                    <h3 class="font-semibold text-gray-900 mb-3">150. Which benefit is NOT mentioned in the memo?</h3>
+                                    <div class="space-y-2">
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(A)</span>
+                                            <span>Dental coverage</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(B)</span>
+                                            <span>Vision benefits</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(C)</span>
+                                            <span>Life insurance</span>
+                                        </div>
+                                        <div class="answer-option border border-gray-200 rounded p-3 cursor-pointer" onclick="selectAnswer(this)">
+                                            <span class="font-semibold text-blue-600 mr-2">(D)</span>
+                                            <span>Prescription coverage</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flag Button -->
+                <div class="mt-6 flex justify-end">
+                    <button class="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" onclick="toggleFlag()">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path>
+                        </svg>
+                        Flag for Review
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="w-80 bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-24 h-fit">
+                <h3 class="font-semibold text-gray-900 mb-4">Question Navigation</h3>
+                
+                <!-- Part Selector -->
+                <div class="mb-6">
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="changePart(this.value)">
+                        <option value="1">Part 1 - Photographs</option>
+                        <option value="2">Part 2 - Question-Response</option>
+                        <option value="3">Part 3 - Conversations</option>
+                        <option value="4">Part 4 - Short Talks</option>
+                        <option value="5">Part 5 - Incomplete Sentences</option>
+                        <option value="6">Part 6 - Text Completion</option>
+                        <option value="7">Part 7 - Reading Comprehension</option>
+                    </select>
+                </div>
+
+                <!-- Question Grid -->
+                <div class="grid grid-cols-5 gap-2 mb-6" id="question-grid">
+                    <button class="nav-button w-10 h-10 text-sm font-medium border border-gray-300 rounded bg-white hover:bg-gray-50 current">1</button>
+                    <button class="nav-button w-10 h-10 text-sm font-medium border border-gray-300 rounded bg-white hover:bg-gray-50">2</button>
+                    <button class="nav-button w-10 h-10 text-sm font-medium border border-gray-300 rounded bg-white hover:bg-gray-50">3</button>
+                    <button class="nav-button w-10 h-10 text-sm font-medium border border-gray-300 rounded bg-white hover:bg-gray-50">4</button>
+                    <button class="nav-button w-10 h-10 text-sm font-medium border border-gray-300 rounded bg-white hover:bg-gray-50">5</button>
+                    <button class="nav-button w-10 h-10 text-sm font-medium border border-gray-300 rounded bg-white hover:bg-gray-50">6</button>
+                </div>
+
+                <!-- Legend -->
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-green-500 rounded mr-2"></div>
+                        <span class="text-gray-600">Answered</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-yellow-500 rounded mr-2"></div>
+                        <span class="text-gray-600">Flagged</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-gray-300 rounded mr-2"></div>
+                        <span class="text-gray-600">Unanswered</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-blue-600 rounded mr-2"></div>
+                        <span class="text-gray-600">Current</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="mt-6 flex justify-between items-center bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <button class="px-6 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Previous
+            </button>
+            <div class="flex space-x-3">
+                <button class="px-6 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Next
+                </button>
+                <button class="px-6 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    Submit Part
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPart = 1;
+        let timer = 7200; // 2 hours in seconds
+        let flagged = false;
+
+        // Timer functionality
+        function updateTimer() {
+            const hours = Math.floor(timer / 3600);
+            const minutes = Math.floor((timer % 3600) / 60);
+            const seconds = timer % 60;
+            
+            document.getElementById('timer').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timer > 0) {
+                timer--;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+        updateTimer();
+
+        // Part switching functionality
+        function changePart(partNumber) {
+            // Hide all parts
+            document.querySelectorAll('.part-content').forEach(part => {
+                part.classList.add('hidden');
+            });
+            
+            // Show selected part
+            document.getElementById(`part${partNumber}`).classList.remove('hidden');
+            
+            // Update part title and progress
+            const partTitles = {
+                1: 'Part 1 - Photographs',
+                2: 'Part 2 - Question-Response', 
+                3: 'Part 3 - Conversations',
+                4: 'Part 4 - Short Talks',
+                5: 'Part 5 - Incomplete Sentences',
+                6: 'Part 6 - Text Completion',
+                7: 'Part 7 - Reading Comprehension'
+            };
+            
+            document.getElementById('part-title').textContent = partTitles[partNumber];
+            document.getElementById('progress-text').textContent = `Question 1 of 6`;
+            
+            // Update progress bar (simplified)
+            const progress = (partNumber / 7) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            
+            currentPart = partNumber;
+        }
+
+        // Answer selection functionality
+        function selectAnswer(element) {
+            // Remove selection from siblings
+            const siblings = element.parentNode.querySelectorAll('.answer-option');
+            siblings.forEach(sibling => {
+                sibling.classList.remove('selected');
+            });
+            
+            // Add selection to clicked element
+            element.classList.add('selected');
+            
+            // Mark question as answered in navigation
+            const currentButton = document.querySelector('.nav-button.current');
+            if (currentButton && !currentButton.classList.contains('flagged')) {
+                currentButton.classList.add('answered');
+            }
+        }
+
+        // Flag functionality
+        function toggleFlag() {
+            flagged = !flagged;
+            const currentButton = document.querySelector('.nav-button.current');
+            const flagButton = document.querySelector('button[onclick="toggleFlag()"]');
+            
+            if (flagged) {
+                currentButton.classList.add('flagged');
+                currentButton.classList.remove('answered');
+                flagButton.innerHTML = `
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path>
+                    </svg>
+                    Remove Flag
+                `;
+            } else {
+                currentButton.classList.remove('flagged');
+                flagButton.innerHTML = `
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path>
+                    </svg>
+                    Flag for Review
+                `;
+            }
+        }
+
+        // Audio player simulation
+        document.querySelectorAll('.audio-player').forEach(player => {
+            player.addEventListener('click', function() {
+                this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                this.querySelector('span').textContent = 'Playing... Click to pause';
+                
+                setTimeout(() => {
+                    this.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    this.querySelector('span').textContent = 'Audio Player - Click to play';
+                }, 3000);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96f7074f341004f8',t:'MTc1NTI0MzQ2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

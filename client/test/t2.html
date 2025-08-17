@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC Practice Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Plyr.js for Audio Player -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.8/plyr.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.8/plyr.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Fixed layout styles */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .main-container {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+        }
+        
+        .content-area {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .media-panel {
+            width: 50%;
+            overflow-y: auto;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+        }
+        
+        .question-panel {
+            flex: 1;
+            overflow-y: auto;
+            background: white;
+        }
+        
+        .sidebar {
+            width: 200px;
+            background: white;
+            border-left: 1px solid #e5e7eb;
+            overflow-y: auto;
+            transition: width 0.3s ease, margin-right 0.3s ease;
+            position: relative;
+        }
+        
+        .sidebar.collapsed {
+            width: 60px;
+        }
+        
+        .sidebar-content {
+            padding: 0.5rem;
+            padding-top: 3.5rem;
+            opacity: 1;
+            transition: opacity 0.2s ease;
+        }
+        
+        .sidebar.collapsed .sidebar-content {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .collapse-toggle {
+            position: sticky;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            width: 32px;
+            height: 32px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .collapse-toggle:hover {
+            background: #f3f4f6;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        
+        /* Plyr audio player customization */
+        .plyr {
+            border-radius: 12px;
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+            background-color: #fff;
+        }
+        
+        .plyr--audio .plyr__controls {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            /* padding: 8px 16px; */
+            /* margin: 8px; */
+        }
+        
+        .plyr__control {
+            color: #333 !important; 
+        }
+
+        .plyr__menu__container{
+            top: 105% !important;
+            
+        }
+        .plyr__menu__container div{
+            background-color: #fff;
+            border-radius: 5px;
+        }
+        
+        .plyr__control:hover {
+            background: rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        .plyr__progress input[type=range] {
+            /* background: rgba(255, 255, 255, 0.3); */
+        }
+        
+        .plyr__progress__buffer {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .plyr__volume input[type=range] {
+            /* background: rgba(255, 255, 255, 0.3); */
+        }
+        
+        .plyr__time {
+            color: #333 !important;
+        }
+
+        .audio-player {
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+        }
+
+
+        
+        /* Compact question card styles */
+        .question-card-compact {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .question-card-compact:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+        }
+        
+        .question-header-compact {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px 8px 16px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .question-number {
+            font-weight: 600;
+            color: #1f2937;
+            min-width: 32px;
+            font-size: 14px;
+        }
+        
+        .question-text {
+            flex: 1;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #374151;
+            margin-left: 8px;
+        }
+        
+        .flag-btn-compact {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            padding: 4px;
+            border-radius: 4px;
+        }
+        
+        .question-card-compact:hover .flag-btn-compact {
+            opacity: 1;
+        }
+        
+        .flag-btn-compact.flagged {
+            opacity: 1;
+            color: #f59e0b;
+        }
+        
+        .options-grid {
+            padding: 8px 16px 12px 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+        
+        .option-single-column .options-grid {
+            grid-template-columns: 1fr;
+            gap: 4px;
+        }
+        
+        .answer-option-compact {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 13px;
+            line-height: 1.3;
+        }
+        
+        .answer-option-compact:hover {
+            background-color: #f0f9ff;
+            border-color: #93c5fd;
+        }
+        
+        .answer-option-compact.selected {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 1px #3b82f6;
+        }
+        
+        .option-letter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background-color: #f3f4f6;
+            border-radius: 50%;
+            font-weight: 600;
+            color: #6b7280;
+            margin-right: 8px;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+        
+        .answer-option-compact.selected .option-letter {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .option-text {
+            flex: 1;
+            word-break: break-word;
+        }
+        
+        .nav-button {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .nav-button.answered {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .nav-button.flagged {
+            background-color: #f59e0b;
+            color: white;
+        }
+        
+        .nav-button.current {
+            background-color: #3b82f6;
+            color: white;
+            /* transform: scale(1.1); */
+        }
+        
+        .nav-button.current-group {
+            background-color: #60a5fa;
+            color: white;
+        }
+        
+        .part-button {
+            transition: all 0.2s ease;
+        }
+        
+        .part-button.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        /* Custom scrollbar */
+        .scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .scrollbar::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        .scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Image placeholder styling */
+        .image-placeholder {
+            background: linear-gradient(45deg, #f3f4f6 25%, transparent 25%), 
+                        linear-gradient(-45deg, #f3f4f6 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #f3f4f6 75%), 
+                        linear-gradient(-45deg, transparent 75%, #f3f4f6 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 overflow-hidden">
+    <!-- Fixed Header Navigation -->
+    <div class="fixed-header">
+        <div class="flex justify-between items-center px-6 py-4">
+            <div class="text-center">
+            <div class="text-3xl font-bold tracking-wide font-sans text-gray-800" id="timer">02:00:00</div>
+            </div>
+            <div class="flex space-x-3">
+                <button onclick="changePart(1)" class="part-button px-3 py-1.5 rounded-lg bg-gray-100 text-sm font-semibold text-black hover:bg-gray-200" data-part="1">Part 1</button>
+                <button onclick="changePart(2)" class="part-button px-3 py-1.5 rounded-lg bg-gray-100 text-sm font-semibold text-black hover:bg-gray-200" data-part="2">Part 2</button>
+                <button onclick="changePart(3)" class="part-button px-3 py-1.5 rounded-lg bg-gray-100 text-sm font-semibold text-black hover:bg-gray-200" data-part="3">Part 3</button>
+                <button onclick="changePart(4)" class="part-button px-3 py-1.5 rounded-lg bg-gray-100 text-sm font-semibold text-black hover:bg-gray-200" data-part="4">Part 4</button>
+                <button onclick="changePart(5)" class="part-button px-3 py-1.5 rounded-lg bg-gray-100 text-sm font-semibold text-black hover:bg-gray-200" data-part="5">Part 5</button>
+                <button onclick="changePart(6)" class="part-button px-3 py-1.5 rounded-lg bg-gray-100 text-sm font-semibold text-black hover:bg-gray-200" data-part="6">Part 6</button>
+                <button onclick="changePart(7)" class="part-button px-3 py-1.5 rounded-lg bg-gray-100 text-sm font-semibold text-black hover:bg-gray-200" data-part="7">Part 7</button>
+            </div>
+            <div class="flex space-x-3">
+            <button class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors" onclick="previousGroup()">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Previous
+            </button>
+            <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" onclick="nextGroup()">
+                Next <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+            <button class="px-6 py-2 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-colors" 
+                onclick="submitTest()">
+                Submit Test
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Media Panel -->
+            <div class="media-panel scrollbar" id="media-panel">
+                <div class="p-4" id="media-content">
+                    <!-- Media content will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Question Panel -->
+            <div class="question-panel scrollbar" id="question-panel">
+                <div class="p-3" id="question-content">
+                    <!-- Question content will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="sidebar scrollbar" id="sidebar">
+            <div style="position: fixed; background-color: #fff; height: fit-content; width: 100%; z-index: 10; padding: 0.5rem;">
+                <div class="collapse-toggle" onclick="toggleSidebar()">
+                    <svg class="w-5 h-5 transition-transform duration-200" id="collapse-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            
+            <div class="sidebar-content">
+                
+                <div class="space-y-4" id="navigation-grid">
+                    <!-- Navigation grid will be generated by JavaScript -->
+                </div>
+
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    <div class="flex items-center justify-between text-sm">
+                        <div class="flex flex-col space-y-2">
+                            <!-- <div class="flex items-center space-x-1">
+                                <div class="w-3 h-3 bg-green-500 rounded"></div>
+                                <span class="text-gray-600">Answered</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <div class="w-3 h-3 bg-yellow-500 rounded"></div>
+                                <span class="text-gray-600">Flagged</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <div class="w-3 h-3 bg-blue-500 rounded"></div>
+                                <span class="text-gray-600">Current</span>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600" id="current-info">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced TOEIC structure with question groupings
+        const TOEIC_STRUCTURE = {
+            1: { name: 'Part 1', questions: 6, startQ: 1, groupSize: 1 },
+            2: { name: 'Part 2', questions: 25, startQ: 7, groupSize: 1 },
+            3: { name: 'Part 3', questions: 39, startQ: 32, groupSize: 3 },
+            4: { name: 'Part 4', questions: 30, startQ: 71, groupSize: 3 },
+            5: { name: 'Part 5', questions: 30, startQ: 101, groupSize: 1 },
+            6: { name: 'Part 6', questions: 16, startQ: 131, groupSize: 4 },
+            7: { name: 'Part 7', questions: 54, startQ: 147, groupSize: 'variable' }
+        };
+
+        // Part 7 question groupings (more complex structure)
+        const PART7_GROUPS = [
+            { start: 147, count: 2 }, { start: 149, count: 3 }, { start: 152, count: 2 },
+            { start: 154, count: 3 }, { start: 157, count: 3 }, { start: 160, count: 2 },
+            { start: 162, count: 3 }, { start: 165, count: 2 }, { start: 167, count: 3 },
+            { start: 170, count: 2 }, { start: 172, count: 3 }, { start: 175, count: 5 }, // Double passage starts
+            { start: 180, count: 5 }, { start: 185, count: 5 }, { start: 190, count: 5 }, // Triple passage
+            { start: 195, count: 5 } // Triple passage
+        ];
+
+        let currentGroup = 1;
+        let currentPart = 1;
+        let currentQuestions = [1]; // Array of questions in current group
+        let answers = {};
+        let flaggedQuestions = new Set();
+        let sidebarCollapsed = false;
+        let audioPlayers = {}; // Store audio player instances
+        
+        // Audio file mapping for different parts and questions
+        const AUDIO_FILES = {
+            1: { // Part 1 - Photos
+                1: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3',
+                2: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3',
+                3: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3',
+                4: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3',
+                5: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3',
+                6: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3'
+            },
+            2: { // Part 2 - Question-Response
+                7: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3',
+                8: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3'
+                // Add more as needed...
+            },
+            3: { // Part 3 - Conversations (group-based)
+                32: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3',
+                35: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3'
+                // Add more group audio files...
+            },
+            4: { // Part 4 - Short Talks (group-based)
+                71: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3',
+                74: 'https://s4-media1.study4.com/media/tez_media/sound/eco_toeic_1000_test_1_1.mp3'
+                // Add more group audio files...
+            }
+        };
+
+        // Initialize audio player with Plyr.js
+        function initializeAudioPlayer(audioId, audioSource) {
+            // Clean up existing player if it exists
+            if (audioPlayers[audioId]) {
+                audioPlayers[audioId].destroy();
+                delete audioPlayers[audioId];
+            }
+            
+            const audioElement = document.getElementById(audioId);
+            if (!audioElement) return null;
+            
+            // Set the audio source
+            audioElement.src = audioSource;
+            
+            const player = new Plyr(audioElement, {
+                controls: ['play', 'progress', 'current-time', 'duration', 'mute', 'volume', 'settings', 'fullscreen'],
+                settings: ['speed'],
+                speed: { 
+                    selected: 1, 
+                    options: [0.5, 0.75, 0.9, 1, 1.1, 1.25, 1.5, 2] 
+                },
+                tooltips: { controls: true, seek: true },
+                displayDuration: true,
+                invertTime: false
+            });
+            
+            // Store player instance
+            audioPlayers[audioId] = player;
+            
+            // Add event listeners for better UX
+            player.on('loadstart', () => {
+                console.log('Audio loading started');
+            });
+            
+            player.on('canplay', () => {
+                console.log('Audio can start playing');
+            });
+            
+            player.on('error', (event) => {
+                console.error('Audio error:', event);
+                // Fallback to a working audio file or show error message
+                showAudioError(audioId);
+            });
+            
+            return player;
+        }
+        
+        // Show audio error fallback
+        function showAudioError(audioId) {
+            const container = document.getElementById(audioId + '-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="bg-red-100 border border-red-300 rounded-lg p-4 text-center">
+                        <div class="text-red-700 mb-2">
+                            <svg class="w-8 h-8 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <p class="text-sm text-red-700">Audio file not available</p>
+                        <p class="text-xs text-red-500 mt-1">This is a demo version</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Get audio source for current question/group
+        function getAudioSource(part, questionNum) {
+            if (AUDIO_FILES[part] && AUDIO_FILES[part][questionNum]) {
+                return AUDIO_FILES[part][questionNum];
+            }
+            // Return a demo audio file (you should replace with actual audio files)
+            return 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav';
+        }
+
+        // Timer functionality
+        let timeRemaining = 7200; // 2 hours in seconds
+        function updateTimer() {
+            const hours = Math.floor(timeRemaining / 3600);
+            const minutes = Math.floor((timeRemaining % 3600) / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timer').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeRemaining > 0) {
+                timeRemaining--;
+                setTimeout(updateTimer, 1000);
+            } else {
+                alert('Time is up! The test will be submitted automatically.');
+                submitTest();
+            }
+        }
+
+        // Sidebar toggle function
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const icon = document.getElementById('collapse-icon');
+            
+            sidebarCollapsed = !sidebarCollapsed;
+            
+            if (sidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+                // Change to expand icon (plus or arrow)
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
+            } else {
+                sidebar.classList.remove('collapsed');
+                // Change back to hamburger menu
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
+            }
+        }
+
+        // Get question group based on question number
+        function getQuestionGroup(questionNumber) {
+            // Find which part this question belongs to
+            let part = getPartFromQuestion(questionNumber);
+            
+            if (part === 7) {
+                // Special handling for Part 7
+                let groupIndex = 0;
+                for (let i = 0; i < PART7_GROUPS.length; i++) {
+                    let group = PART7_GROUPS[i];
+                    if (questionNumber >= group.start && questionNumber < group.start + group.count) {
+                        let questions = [];
+                        for (let j = 0; j < group.count; j++) {
+                            questions.push(group.start + j);
+                        }
+                        return { part: 7, questions: questions, groupIndex: i };
+                    }
+                }
+            } else {
+                // Regular parts with fixed group sizes
+                let startQ = TOEIC_STRUCTURE[part].startQ;
+                let groupSize = TOEIC_STRUCTURE[part].groupSize;
+                let relativeQ = questionNumber - startQ;
+                let groupStart = startQ + Math.floor(relativeQ / groupSize) * groupSize;
+                
+                let questions = [];
+                for (let i = 0; i < groupSize; i++) {
+                    questions.push(groupStart + i);
+                }
+                
+                return { part: part, questions: questions };
+            }
+            
+            return { part: 1, questions: [1] };
+        }
+
+        // Get part number from question number
+        function getPartFromQuestion(questionNumber) {
+            for (let part = 1; part <= 7; part++) {
+                const startQ = TOEIC_STRUCTURE[part].startQ;
+                const endQ = startQ + TOEIC_STRUCTURE[part].questions - 1;
+                if (questionNumber >= startQ && questionNumber <= endQ) {
+                    return part;
+                }
+            }
+            return 1;
+        }
+
+        // Initialize navigation grid
+        function initializeNavigation() {
+            const navGrid = document.getElementById('navigation-grid');
+            navGrid.innerHTML = '';
+
+            for (let part = 1; part <= 7; part++) {
+                const partDiv = document.createElement('div');
+                partDiv.innerHTML = `
+                    <h4 class="text-base font-semibold text-gray-800 mb-2">${TOEIC_STRUCTURE[part].name}</h4>
+                    <div class="grid grid-cols-5 gap-2 mb-4" id="part-${part}-nav">
+                    </div>
+                `;
+                navGrid.appendChild(partDiv);
+
+                const grid = document.getElementById(`part-${part}-nav`);
+                const startQ = TOEIC_STRUCTURE[part].startQ;
+                const endQ = startQ + TOEIC_STRUCTURE[part].questions - 1;
+
+                for (let q = startQ; q <= endQ; q++) {
+                    const button = document.createElement('button');
+                    button.className = 'nav-button w-8 h-8 rounded text-xs font-semibold bg-gray-100 hover:bg-gray-200 transition-colors';
+                    button.textContent = q;
+                    button.onclick = () => goToQuestion(q);
+                    grid.appendChild(button);
+                }
+            }
+        }
+
+        // Update current display
+        function updateCurrentDisplay() {
+            let group = getQuestionGroup(currentQuestions[0]);
+            currentPart = group.part;
+            currentQuestions = group.questions;
+
+            // Update current info
+            const currentInfo = document.getElementById('current-info');
+            if (currentQuestions.length > 1) {
+                currentInfo.innerHTML = `
+                    <div>Questions ${currentQuestions[0]}-${currentQuestions[currentQuestions.length-1]} of 200</div>
+                    <div>Part ${currentPart}</div>
+                `;
+            } else {
+                currentInfo.innerHTML = `
+                    <div>Question ${currentQuestions[0]} of 200</div>
+                    <div>Part ${currentPart}</div>
+                `;
+            }
+
+            // Update navigation buttons
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('current', 'current-group', 'answered', 'flagged');
+                const questionNum = parseInt(btn.textContent);
+                
+                if (currentQuestions.includes(questionNum)) {
+                    btn.classList.add('current-group');
+                }
+                
+                if (questionNum === currentQuestions[0]) {
+                    btn.classList.add('current');
+                }
+                
+                if (answers[questionNum]) {
+                    btn.classList.add('answered');
+                }
+                
+                if (flaggedQuestions.has(questionNum)) {
+                    btn.classList.add('flagged');
+                }
+            });
+
+            // Update part buttons
+            document.querySelectorAll('.part-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.part) === currentPart) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Load question content
+            loadQuestionContent();
+        }
+
+        // Helper function to create compact flag button
+        function createCompactFlagButton(questionNum) {
+            const isFlagged = flaggedQuestions.has(questionNum);
+            return `
+                <button class="flag-btn-compact ${isFlagged ? 'flagged' : ''} hover:bg-gray-100 rounded" onclick="toggleFlag(${questionNum})" title="${isFlagged ? 'Remove flag' : 'Flag question'}">
+                    <svg class="w-4 h-4" fill="${isFlagged ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 2h7a2 2 0 012 2v6a2 2 0 01-2 2H12l-1-2H5a2 2 0 00-2 2z"></path>
+                    </svg>
+                </button>
+            `;
+        }
+
+        // Load question content based on current group
+        function loadQuestionContent() {
+            const mediaContent = document.getElementById('media-content');
+            const questionContent = document.getElementById('question-content');
+            const part = currentPart;
+            
+            if (part === 1 || part === 2) {
+                // Single question display for Parts 1 and 2
+                const questionNum = currentQuestions[0];
+                if (part === 1) {
+                    const audioSource = getAudioSource(1, questionNum);
+                    
+                    mediaContent.innerHTML = `
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold">Part 1 - Question ${questionNum}</h2>
+                        </div>
+                        <div class="space-y-4">
+                            <div id="audio-${questionNum}-container" class="audio-player rounded-lg p-3">
+                                <audio id="audio-${questionNum}" controls preload="metadata" class="w-full">
+                                    <source src="${audioSource}" type="audio/mpeg">
+                                    <source src="${audioSource}" type="audio/wav">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                            
+                            <div class="image-placeholder rounded-lg p-4">
+                                <div class="bg-gray-200 rounded-lg h-48 flex items-center justify-center">
+                                    <div class="text-center text-gray-500">
+                                        <svg class="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <p class="text-sm">Photograph ${questionNum}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Initialize the audio player after DOM update
+                    setTimeout(() => {
+                        initializeAudioPlayer(`audio-${questionNum}`, audioSource);
+                    }, 100);
+
+                    questionContent.innerHTML = `
+                        <div class="question-card-compact option-single-column">
+                            <div class="question-header-compact">
+                                <span class="question-number">${questionNum}.</span>
+                                ${createCompactFlagButton(questionNum)}
+                            </div>
+                            <div class="options-grid">
+                                ${['A', 'B', 'C', 'D'].map(option => `
+                                    <div class="answer-option-compact ${answers[questionNum] === option ? 'selected' : ''}" onclick="selectAnswer(${questionNum}, '${option}')">
+                                        <div class="option-letter">${option}</div>
+                                        <span class="option-text">Answer choice ${option}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const questionNum = currentQuestions[0];
+                    const audioSource = getAudioSource(2, questionNum);
+                    
+                    mediaContent.innerHTML = `
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold">Part 2 - Question ${questionNum}</h2>
+                        </div>
+                        <div id="audio-${questionNum}-container" class="audio-player rounded-lg p-3">
+                            <audio id="audio-${questionNum}" controls preload="metadata" class="w-full">
+                                <source src="${audioSource}" type="audio/mpeg">
+                                <source src="${audioSource}" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    `;
+                    
+                    // Initialize the audio player after DOM update
+                    setTimeout(() => {
+                        initializeAudioPlayer(`audio-${questionNum}`, audioSource);
+                    }, 100);
+
+                    questionContent.innerHTML = `
+                        <div class="question-card-compact option-single-column">
+                            <div class="question-header-compact">
+                                <span class="question-number">${questionNum}.</span>
+                                ${createCompactFlagButton(questionNum)}
+                            </div>
+                            <div class="options-grid">
+                                ${['A', 'B', 'C'].map(option => `
+                                    <div class="answer-option-compact ${answers[questionNum] === option ? 'selected' : ''}" onclick="selectAnswer(${questionNum}, '${option}')">
+                                        <div class="option-letter">${option}</div>
+                                        <span class="option-text">Response ${option}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            } else if (part === 3 || part === 4) {
+                // 3 questions per group for Parts 3 and 4
+                const audioTitle = part === 3 ? 'Conversation' : 'Short Talk';
+                const groupId = currentQuestions[0]; // Use first question number as group ID
+                const audioSource = getAudioSource(part, groupId);
+                
+                mediaContent.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold">Part ${part} - Questions ${currentQuestions[0]}-${currentQuestions[2]}</h2>
+                    </div>
+                    <div class="space-y-4">
+                        <div id="audio-${groupId}-container" class="audio-player rounded-lg p-3">
+                            <audio id="audio-${groupId}" controls preload="metadata" class="w-full">
+                                <source src="${audioSource}" type="audio/mpeg">
+                                <source src="${audioSource}" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        
+                        ${part === 3 ? `
+                            <div class="image-placeholder rounded-lg p-4">
+                                <div class="bg-gray-200 rounded-lg h-32 flex items-center justify-center">
+                                    <div class="text-center text-gray-500">
+                                        <svg class="w-10 h-10 mx-auto mb-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                                        </svg>
+                                        <p class="text-xs">Context Image</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                // Initialize the audio player after DOM update
+                setTimeout(() => {
+                    initializeAudioPlayer(`audio-${groupId}`, audioSource);
+                }, 100);
+                
+                questionContent.innerHTML = `
+                    <div class="space-y-3">
+                        ${currentQuestions.map((questionNum, index) => {
+                            const sampleQuestions = [
+                                'What is the main topic of the discussion?',
+                                'What does the speaker suggest?',
+                                'What will the listeners probably do next?'
+                            ];
+                            const sampleAnswers = [
+                                ['Office renovation', 'Product launch', 'Staff meeting', 'Budget review'],
+                                ['Delay the project', 'Hire more staff', 'Use alternative space', 'Cancel the plan'],
+                                ['Move to new office', 'Continue working', 'Take a break', 'Call for help']
+                            ];
+                            return `
+                                <div class="question-card-compact option-single-column">
+                                    <div class="question-header-compact">
+                                        <span class="question-number">${questionNum}.</span>
+                                        <span class="question-text">${sampleQuestions[index] || 'Sample question ' + (index + 1)}</span>
+                                        ${createCompactFlagButton(questionNum)}
+                                    </div>
+                                    <div class="options-grid">
+                                        ${['A', 'B', 'C', 'D'].map((option, optIndex) => `
+                                            <div class="answer-option-compact ${answers[questionNum] === option ? 'selected' : ''}" onclick="selectAnswer(${questionNum}, '${option}')">
+                                                <div class="option-letter">${option}</div>
+                                                <span class="option-text">${sampleAnswers[index] ? sampleAnswers[index][optIndex] : 'Sample answer ' + option}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            } else if (part === 5) {
+                // Single question for Part 5
+                const questionNum = currentQuestions[0];
+                
+                mediaContent.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold">Part 5</h2>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-700 mb-3 text-sm">Grammar Focus</h3>
+                        <div class="text-gray-600 text-xs">
+                            <p>Choose the word or phrase that best completes the sentence.</p>
+                        </div>
+                    </div>
+                `;
+                
+                questionContent.innerHTML = `
+                    <div class="question-card-compact option-single-column">
+                        <div class="question-header-compact">
+                            <span class="question-number">${questionNum}.</span>
+                            <span class="question-text">The company's new marketing strategy has been _______ successful in attracting younger customers to our stores.</span>
+                            ${createCompactFlagButton(questionNum)}
+                        </div>
+                        <div class="options-grid">
+                            ${['A', 'B', 'C', 'D'].map((option, index) => {
+                                const options = ['remarkable', 'remarkably', 'remarking', 'to remark'];
+                                return `
+                                    <div class="answer-option-compact ${answers[questionNum] === option ? 'selected' : ''}" onclick="selectAnswer(${questionNum}, '${option}')">
+                                        <div class="option-letter">${option}</div>
+                                        <span class="option-text">${options[index]}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (part === 6) {
+                // 4 questions per passage for Part 6
+                mediaContent.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold">Part 6 - Questions ${currentQuestions[0]}-${currentQuestions[3]}</h2>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-900 mb-3 text-sm">Email Message</h3>
+                        <div class="space-y-3 text-gray-800 leading-relaxed text-sm">
+                            <p>Dear Team,</p>
+                            <p>I hope this message finds you well. I wanted to update you on our quarterly sales performance and share some exciting news about our upcoming product launch.</p>
+                            <p>First, I'm pleased to report that we have <span class="bg-yellow-200 px-1 rounded">[${currentQuestions[0]}]</span> exceeded our sales targets for this quarter by 15%. This achievement is a testament to your hard work and <span class="bg-yellow-200 px-1 rounded">[${currentQuestions[1]}]</span>.</p>
+                            <p>Additionally, I'm excited to announce that our new product line will be <span class="bg-yellow-200 px-1 rounded">[${currentQuestions[2]}]</span> next month. We believe this will significantly boost our market position.</p>
+                            <p><span class="bg-yellow-200 px-1 rounded">[${currentQuestions[3]}]</span></p>
+                            <p>Best regards,<br>Sarah Johnson</p>
+                        </div>
+                    </div>
+                `;
+                
+                questionContent.innerHTML = `
+                    <div class="space-y-3">
+                        ${currentQuestions.map((questionNum, index) => {
+                            const sampleOptions = [
+                                ['success', 'successful', 'successfully', 'succeed'],
+                                ['dedicate', 'dedicated', 'dedication', 'dedicating'],
+                                ['launch', 'launched', 'launching', 'to launch'],
+                                ['Thank you for your attention.', 'Please review the attached files.', 'I look forward to your feedback.', 'Meeting details will follow.']
+                            ];
+                            return `
+                                <div class="question-card-compact option-single-column">
+                                    <div class="question-header-compact">
+                                        <span class="question-number">${questionNum}.</span>
+                                        ${createCompactFlagButton(questionNum)}
+                                    </div>
+                                    <div class="options-grid">
+                                        ${['A', 'B', 'C', 'D'].map((option, optIndex) => `
+                                            <div class="answer-option-compact ${answers[questionNum] === option ? 'selected' : ''}" onclick="selectAnswer(${questionNum}, '${option}')">
+                                                <div class="option-letter">${option}</div>
+                                                <span class="option-text">${sampleOptions[index] ? sampleOptions[index][optIndex] : 'Sample option ' + option}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            } else if (part === 7) {
+                // Variable questions per passage for Part 7
+                const groupInfo = PART7_GROUPS.find(g => g.start === currentQuestions[0]);
+                const passageCount = currentQuestions.length <= 3 ? 1 : (currentQuestions.length === 5 && currentQuestions[0] >= 175) ? 3 : 2;
+                
+                mediaContent.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold">Part 7 - Questions ${currentQuestions[0]}-${currentQuestions[currentQuestions.length-1]} ${passageCount > 1 ? '(' + passageCount + ' passages)' : ''}</h2>
+                    </div>
+                    <div class="space-y-3">
+                        ${Array.from({length: passageCount}, (_, passageIndex) => {
+                            const passageTypes = ['Company Notice', 'Email Message', 'Advertisement'];
+                            const passageTitle = passageTypes[passageIndex] || `Passage ${passageIndex + 1}`;
+                            return `
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <h3 class="font-semibold text-gray-900 mb-3 text-sm">${passageTitle}</h3>
+                                    <div class="space-y-3 text-gray-800 leading-relaxed text-sm">
+                                        ${passageIndex === 0 ? `
+                                            <p class="font-semibold">OFFICE RENOVATION SCHEDULE</p>
+                                            <p>Dear All Staff,</p>
+                                            <p>We are pleased to announce that the long-awaited office renovation project will begin on Monday, March 15th. The renovation is expected to take approximately 6 weeks to complete and will include updates to the lobby, conference rooms, and employee break areas.</p>
+                                            <p>During this period, some areas may be temporarily inaccessible. We appreciate your patience and cooperation.</p>
+                                            <p>For questions, contact Facilities Management at ext. 2847.</p>
+                                        ` : passageIndex === 1 ? `
+                                            <p>Subject: Follow-up on Renovation Project</p>
+                                            <p>Dear Team,</p>
+                                            <p>Following our previous announcement about the office renovation, I wanted to provide additional details about the timeline and temporary arrangements.</p>
+                                            <p>The project will be completed in phases to minimize disruption to our daily operations. Phase 1 will focus on the lobby area during weeks 1-2.</p>
+                                            <p>Best regards,<br>Project Manager</p>
+                                        ` : `
+                                            <p class="font-semibold">TEMPORARY OFFICE SPACE RENTAL</p>
+                                            <p>Need flexible office solutions during renovations?</p>
+                                            <p>QuickSpace offers fully furnished temporary offices available for short-term rental. Our packages include high-speed internet, meeting rooms, and 24/7 access.</p>
+                                            <p>Contact us at 555-0123 for competitive rates and availability.</p>
+                                        `}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+                
+                questionContent.innerHTML = `
+                    <div class="space-y-3">
+                        ${currentQuestions.map((questionNum, index) => {
+                            const sampleQuestions = [
+                                'How long will the renovation project take?',
+                                'What should employees do if they have questions?',
+                                'When will the project begin?',
+                                'What areas will be renovated?',
+                                'What is the main purpose of the advertisement?'
+                            ];
+                            const sampleAnswers = [
+                                ['4 weeks', '6 weeks', '8 weeks', '10 weeks'],
+                                ['Call extension 2847', 'Email the manager', 'Visit the lobby', 'Wait for updates'],
+                                ['March 1st', 'March 15th', 'March 30th', 'April 1st'],
+                                ['Only the lobby', 'Lobby and break areas', 'Lobby, conference rooms, and break areas', 'The entire building'],
+                                ['To rent office equipment', 'To offer temporary office space', 'To sell furniture', 'To provide renovation services']
+                            ];
+                            return `
+                                <div class="question-card-compact option-single-column">
+                                    <div class="question-header-compact">
+                                        <span class="question-number">${questionNum}.</span>
+                                        <span class="question-text">${sampleQuestions[index] || 'What can be inferred from the passage?'}</span>
+                                        ${createCompactFlagButton(questionNum)}
+                                    </div>
+                                    <div class="options-grid">
+                                        ${['A', 'B', 'C', 'D'].map((option, optIndex) => `
+                                            <div class="answer-option-compact ${answers[questionNum] === option ? 'selected' : ''}" onclick="selectAnswer(${questionNum}, '${option}')">
+                                                <div class="option-letter">${option}</div>
+                                                <span class="option-text">${sampleAnswers[index] ? sampleAnswers[index][optIndex] : 'Sample answer ' + option}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+        }
+
+        // Select answer function
+        function selectAnswer(questionNum, answer) {
+            answers[questionNum] = answer;
+            
+            // Update visual selection for this specific question
+            const clickedCard = event.target.closest('.question-card-compact') || document.querySelector('.question-panel');
+            if (clickedCard) {
+                const allOptionsForQuestion = clickedCard.querySelectorAll(`[onclick*="selectAnswer(${questionNum}"]`);
+                allOptionsForQuestion.forEach(option => {
+                    option.classList.remove('selected');
+                });
+                event.target.closest('.answer-option-compact').classList.add('selected');
+            }
+            
+            // Update navigation buttons only (don't reload entire content)
+            updateNavigationOnly();
+        }
+        
+        // New function to update only navigation without reloading content
+        function updateNavigationOnly() {
+            // Update navigation buttons
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('current', 'current-group', 'answered', 'flagged');
+                const questionNum = parseInt(btn.textContent);
+                
+                if (currentQuestions.includes(questionNum)) {
+                    btn.classList.add('current-group');
+                }
+                
+                if (questionNum === currentQuestions[0]) {
+                    btn.classList.add('current');
+                }
+                
+                if (answers[questionNum]) {
+                    btn.classList.add('answered');
+                }
+                
+                if (flaggedQuestions.has(questionNum)) {
+                    btn.classList.add('flagged');
+                }
+            });
+        }
+
+        // Clean up audio players when changing questions
+        function cleanupAudioPlayers() {
+            Object.keys(audioPlayers).forEach(playerId => {
+                if (audioPlayers[playerId]) {
+                    audioPlayers[playerId].destroy();
+                    delete audioPlayers[playerId];
+                }
+            });
+        }
+
+        // Navigation functions
+        function nextGroup() {
+            // Cleanup current audio players before changing
+            cleanupAudioPlayers();
+            
+            let nextQuestionNum;
+            
+            if (currentPart === 7) {
+                // Special handling for Part 7
+                let currentGroupIndex = PART7_GROUPS.findIndex(g => g.start === currentQuestions[0]);
+                if (currentGroupIndex < PART7_GROUPS.length - 1) {
+                    nextQuestionNum = PART7_GROUPS[currentGroupIndex + 1].start;
+                } else {
+                    return; // No more groups
+                }
+            } else {
+                // Regular parts
+                let groupSize = TOEIC_STRUCTURE[currentPart].groupSize;
+                nextQuestionNum = currentQuestions[currentQuestions.length - 1] + 1;
+                if (nextQuestionNum > 200) return;
+            }
+            
+            let nextGroup = getQuestionGroup(nextQuestionNum);
+            currentQuestions = nextGroup.questions;
+            updateCurrentDisplay();
+        }
+
+        function previousGroup() {
+            // Cleanup current audio players before changing
+            cleanupAudioPlayers();
+            
+            let prevQuestionNum;
+            
+            if (currentPart === 7) {
+                // Special handling for Part 7
+                let currentGroupIndex = PART7_GROUPS.findIndex(g => g.start === currentQuestions[0]);
+                if (currentGroupIndex > 0) {
+                    prevQuestionNum = PART7_GROUPS[currentGroupIndex - 1].start;
+                } else {
+                    // Go to end of Part 6
+                    prevQuestionNum = 147 - 1; // Last question of Part 6
+                }
+            } else {
+                let groupSize = TOEIC_STRUCTURE[currentPart].groupSize;
+                prevQuestionNum = currentQuestions[0] - groupSize;
+                if (prevQuestionNum < 1) return;
+            }
+            
+            let prevGroup = getQuestionGroup(prevQuestionNum);
+            currentQuestions = prevGroup.questions;
+            updateCurrentDisplay();
+        }
+
+        function goToQuestion(questionNumber) {
+            // Cleanup current audio players before changing
+            cleanupAudioPlayers();
+            
+            let group = getQuestionGroup(questionNumber);
+            currentQuestions = group.questions;
+            updateCurrentDisplay();
+        }
+
+        function changePart(partNumber) {
+            // Cleanup current audio players before changing
+            cleanupAudioPlayers();
+            
+            let startQ = TOEIC_STRUCTURE[partNumber].startQ;
+            let group = getQuestionGroup(startQ);
+            currentQuestions = group.questions;
+            updateCurrentDisplay();
+        }
+
+        function toggleFlag(questionNum) {
+            if (flaggedQuestions.has(questionNum)) {
+                flaggedQuestions.delete(questionNum);
+            } else {
+                flaggedQuestions.add(questionNum);
+            }
+            // Update flag button display and navigation
+            updateCurrentDisplay();
+        }
+
+        function submitTest() {
+            const answeredCount = Object.keys(answers).length;
+            const flaggedCount = flaggedQuestions.size;
+            
+            if (confirm(`Are you sure you want to submit the test?\n\nAnswered: ${answeredCount}/200 questions\nFlagged: ${flaggedCount} questions\n\nYou cannot change your answers after submitting.`)) {
+                alert('Test submitted successfully! Thank you for taking the TOEIC practice test.');
+                console.log('Answers:', answers);
+                console.log('Flagged questions:', Array.from(flaggedQuestions));
+            }
+        }
+
+        // Initialize the application
+        function initializeApp() {
+            initializeNavigation();
+            updateCurrentDisplay();
+            updateTimer();
+            
+            // Cleanup audio players when page is unloaded
+            window.addEventListener('beforeunload', cleanupAudioPlayers);
+        }
+
+        // Start the app when page loads
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>
