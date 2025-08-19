@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC - 500+ TOEIC chỉ trong 3 tháng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui'],
+                        'display': ['Roboto', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        'primary': {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            200: '#fecaca',
+                            300: '#fca5a5',
+                            400: '#f87171',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c', // Main brand color
+                            800: '#991b1b',
+                            900: '#7f1d1d',
+                        },
+                        'secondary': {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+                    },
+                    backgroundSize: {
+                        '400%': '400% 400%',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-white text-secondary-800 antialiased">
+<!-- Fixed Header Design -->
+<header class="bg-white/95 backdrop-blur-xl shadow-lg border-b border-secondary-100 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap justify-between items-center py-3 border-b border-secondary-100">
+            <!-- Logo and Contact Info -->
+            <div class="flex items-center space-x-6">
+                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2023/10/LOGO.png" alt="CHAM TOEIC" class="h-10 w-auto">
+                <div class="hidden md:flex items-center space-x-4 text-sm text-secondary-600">
+                        <span class="flex items-center hover:text-primary-700 transition-colors duration-300">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                            </svg>
+                            034 334 8239
+                        </span>
+                    <span class="flex items-center hover:text-primary-700 transition-colors duration-300">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                            </svg>
+                            chamtoeic@gmail.com
+                        </span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center space-x-3">
+                <button class="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-5 py-2 rounded-full text-sm font-semibold hover:from-primary-700 hover:to-primary-800 transition-all duration-300 transform hover:scale-105 shadow-md">
+                    <svg class="w-5 h-5 mr-2 inline flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                    </svg>
+                    Test Online
+                </button>
+                <button class="border-2 border-primary-700 text-primary-700 hover:bg-primary-700 hover:text-white px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 transform hover:scale-105">
+                    <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    Đăng nhập
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Navigation -->
+        <div class="flex justify-center items-center h-16">
+            <nav class="hidden lg:flex space-x-8">
+                <div class="relative group">
+                    <a href="#about" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 flex items-center py-2 px-3 rounded-lg hover:bg-primary-50">
+                        Về chúng tôi
+                        <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180 duration-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="relative group">
+                    <a href="#team" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 flex items-center py-2 px-3 rounded-lg hover:bg-primary-50">
+                        Đội ngũ đào tạo
+                        <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180 duration-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="relative group">
+                    <a href="#students" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 flex items-center py-2 px-3 rounded-lg hover:bg-primary-50">
+                        Học viên
+                        <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180 duration-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </div>
+                <a href="#schedule" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 py-2 px-3 rounded-lg hover:bg-primary-50">Lịch khai giảng</a>
+                <div class="relative group">
+                    <a href="#courses" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 flex items-center py-2 px-3 rounded-lg hover:bg-primary-50">
+                        Khóa học
+                        <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180 duration-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </div>
+                <a href="#news" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 py-2 px-3 rounded-lg hover:bg-primary-50">Tin tức</a>
+                <a href="#resources" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 py-2 px-3 rounded-lg hover:bg-primary-50">Tài liệu</a>
+            </nav>
+
+            <button class="lg:hidden p-2 hover:bg-secondary-50 rounded-xl transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main class="bg-gradient-to-br from-white via-gray-50 to-secondary-50">
+    <!-- Breadcrumbs -->
+    <section class="py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex items-center text-sm text-secondary-600">
+                <a href="https://chamtoeic.edu.vn/" class="hover:text-primary-700 transition-colors">Trang chủ</a>
+                <span class="mx-2 text-secondary-400">/</span>
+                <span class="text-secondary-800">Cảm nhận học viên</span>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="h-px bg-secondary-200"></div>
+
+    <!-- Grid: Bài nổi bật + Danh sách cảm nhận -->
+    <section class="py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-8">
+            <!-- Left: Bài nổi bật -->
+            <div class="lg:col-span-7">
+                <article class="bg-white rounded-2xl shadow-md overflow-hidden border border-secondary-100">
+                    <a href="https://chamtoeic.edu.vn/cam-nhan-hoc-vien/hoc-vien-danh-gia-gi-ve-cham-toeic/" class="block">
+                        <img class="w-full aspect-[16/9] object-cover" src="https://chamtoeic.edu.vn/wp-content/uploads/2025/04/Anh-bia.png" alt="Học viên đánh giá gì về CHAM TOEIC">
+                    </a>
+                    <div class="p-6">
+                        <h2 class="font-display text-2xl font-bold text-secondary-900 mb-3">
+                            <a href="https://chamtoeic.edu.vn/cam-nhan-hoc-vien/hoc-vien-danh-gia-gi-ve-cham-toeic/" class="hover:text-primary-700 transition-colors">
+                                Học viên đánh giá gì về CHAM TOEIC
+                            </a>
+                        </h2>
+                        <p class="text-secondary-700">
+                            Sau hơn 9 năm thành lập, CHAM tự hào là trung tâm giúp hàng ngàn sinh viên nắm vững kiến thức và kỹ năng cần thiết để đạt được điểm số TOEIC cao qua các buổi giảng dạy chất lượng, sự nhiệt tình, tận tâm của từng giáo viên...
+                        </p>
+                        <div class="mt-5">
+                            <a href="https://chamtoeic.edu.vn/cam-nhan-hoc-vien/hoc-vien-danh-gia-gi-ve-cham-toeic/"
+                               class="inline-flex items-center px-4 py-2 rounded-lg bg-primary-700 text-white font-semibold hover:bg-primary-800 transition-colors">
+                                Xem thêm
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Right: Danh sách cảm nhận (2 item) -->
+            <div class="lg:col-span-5">
+                <div class="space-y-6">
+                    <!-- Card 1 -->
+                    <article class="bg-white rounded-2xl shadow-md overflow-hidden border border-secondary-100">
+                        <a href="https://chamtoeic.edu.vn/cam-nhan-hoc-vien/cam-dong-khi-doc-nhung-dong-chia-se-cua-hoc-vien-tai-cham-toeic/" class="block">
+                            <img class="w-full aspect-[16/9] object-cover" src="https://chamtoeic.edu.vn/wp-content/uploads/2024/06/z5579845747781_cd648f7af7ef0fdac2c592e65dca4e4b-1024x814.jpg" alt="Cảm động khi đọc những dòng chia sẻ của học viên tại CHAM TOEIC">
+                        </a>
+                        <div class="p-5">
+                            <h3 class="font-display text-lg font-bold text-secondary-900">
+                                <a class="hover:text-primary-700 transition-colors" href="https://chamtoeic.edu.vn/cam-nhan-hoc-vien/cam-dong-khi-doc-nhung-dong-chia-se-cua-hoc-vien-tai-cham-toeic/">
+                                    CẢM ĐỘNG KHI ĐỌC NHỮNG DÒNG CHIA SẺ CỦA HỌC VIÊN TẠI CHAM TOEIC
+                                </a>
+                            </h3>
+                            <div class="flex items-center text-xs text-secondary-500 mt-2">
+                                <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2h-3V3M8 5H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                Tháng sáu 28, 2024
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 2 -->
+                    <article class="bg-white rounded-2xl shadow-md overflow-hidden border border-secondary-100">
+                        <a href="https://chamtoeic.edu.vn/cam-nhan-hoc-vien/ket-thuc-hanh-trinh-chinh-phuc-toeic-voi-ovip1-tai-cham-toeic/" class="block">
+                            <img class="w-full aspect-[16/9] object-cover" src="https://chamtoeic.edu.vn/wp-content/uploads/2024/04/z5572594474389_3154a19539d57c8eb600a0ce2fd4da9b-1024x768.jpg" alt="Kết thúc hành trình chinh phục TOEIC với OVIP1 tại CHAM TOEIC">
+                        </a>
+                        <div class="p-5">
+                            <h3 class="font-display text-lg font-bold text-secondary-900">
+                                <a class="hover:text-primary-700 transition-colors" href="https://chamtoeic.edu.vn/cam-nhan-hoc-vien/ket-thuc-hanh-trinh-chinh-phuc-toeic-voi-ovip1-tai-cham-toeic/">
+                                    KẾT THÚC HÀNH TRÌNH CHINH PHỤC TOEIC VỚI OVIP1 TẠI CHAM TOEIC
+                                </a>
+                            </h3>
+                            <div class="flex items-center text-xs text-secondary-500 mt-2">
+                                <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2h-3V3M8 5H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                Tháng tư 26, 2024 <span class="mx-2">•</span> cập nhật Tháng sáu 25, 2024
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Đội ngũ đào tạo: Testimonial Carousel -->
+    <section class="py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="font-display text-2xl font-bold text-primary-700 mb-6">Đội ngũ đào tạo :</h3>
+
+            <div class="swiper testimonial-swiper bg-white rounded-2xl shadow-md border border-secondary-100">
+                <div class="swiper-wrapper">
+                    <!-- Slide 1 -->
+                    <div class="swiper-slide">
+                        <div class="p-8">
+                            <p class="text-secondary-800 leading-relaxed">
+                                Hơn ai hết cô hiểu sự khó khăn vất vả của một người mới bắt đầu tiếp cận một ngôn ngữ mới. Nhưng các em ạ, đề thi TOEIC không có gì quá đánh đố, chỉ là do chúng ta chưa có chiến lược làm bài phù hợp thôi...
+                            </p>
+                            <div class="mt-6 flex items-center">
+                                <img class="w-12 h-12 rounded-full mr-3" src="https://chamtoeic.edu.vn/wp-content/uploads/2023/11/13.png" alt="Ms. Huệ">
+                                <div>
+                                    <div class="font-semibold text-secondary-900">Ms. Huệ</div>
+                                    <div class="text-sm text-secondary-600">Caring Messenger</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="swiper-slide">
+                        <div class="p-8">
+                            <p class="text-secondary-800 leading-relaxed">
+                                Với cô, tình yêu của cô dành cho ngôn ngữ này ngày một lớn dần là nhờ vào các em... khiến các em một phần nào đó giảm bớt được nỗi lo lắng khi đi học tiếng Anh.
+                            </p>
+                            <div class="mt-6 flex items-center">
+                                <img class="w-12 h-12 rounded-full mr-3" src="https://chamtoeic.edu.vn/wp-content/uploads/2023/11/7.png" alt="Ms. Hương">
+                                <div>
+                                    <div class="font-semibold text-secondary-900">Ms. Hương</div>
+                                    <div class="text-sm text-secondary-600">Caring Messenger</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Controls -->
+                <div class="swiper-pagination"></div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Bài viết liên quan: Slider -->
+    <section class="pb-14">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="font-display text-2xl font-bold text-secondary-900 mb-6">Bài viết liên quan:</h3>
+
+            <div class="swiper related-swiper">
+                <div class="swiper-wrapper">
+                    <!-- Item 1 -->
+                    <div class="swiper-slide">
+                        <article class="bg-white rounded-xl shadow-md overflow-hidden border border-secondary-100 h-full flex flex-col">
+                            <a href="https://chamtoeic.edu.vn/chien-thuat-lam-bai/500-toeic-chi-trong-3-thang-1-may-ra-truong-dung-han-cung-cham-toeic/">
+                                <img class="w-full aspect-[16/9] object-cover" src="https://chamtoeic.edu.vn/wp-content/uploads/2025/04/Anh-bia-1-300x150.png" alt="500+ TOEIC chỉ trong 3 tháng">
+                            </a>
+                            <div class="p-4 flex-1 flex flex-col">
+                                <h4 class="font-semibold text-secondary-900">
+                                    <a class="hover:text-primary-700 transition-colors" href="https://chamtoeic.edu.vn/chien-thuat-lam-bai/500-toeic-chi-trong-3-thang-1-may-ra-truong-dung-han-cung-cham-toeic/">
+                                        500+ TOEIC chỉ trong 3 tháng +1 máy ra trường đúng hạn cùng CHAM TOEIC
+                                    </a>
+                                </h4>
+                                <p class="text-sm text-secondary-700 mt-2 line-clamp-2">Tháng 6 cận kề, mùa của lễ tốt nghiệp là thời điểm ...</p>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="swiper-slide">
+                        <article class="bg-white rounded-xl shadow-md overflow-hidden border border-secondary-100 h-full flex flex-col">
+                            <a href="https://chamtoeic.edu.vn/cam-nhan-hoc-vien/hoc-vien-danh-gia-gi-ve-cham-toeic/">
+                                <img class="w-full aspect-[16/9] object-cover" src="https://chamtoeic.edu.vn/wp-content/uploads/2025/04/Anh-bia-300x150.png" alt="Học viên đánh giá gì về CHAM TOEIC">
+                            </a>
+                            <div class="p-4 flex-1 flex flex-col">
+                                <h4 class="font-semibold text-secondary-900">
+                                    <a class="hover:text-primary-700 transition-colors" href="https://chamtoeic.edu.vn/cam-nhan-hoc-vien/hoc-vien-danh-gia-gi-ve-cham-toeic/">
+                                        Học viên đánh giá gì về CHAM TOEIC
+                                    </a>
+                                </h4>
+                                <p class="text-sm text-secondary-700 mt-2 line-clamp-2">Sau hơn 9 năm thành lập, CHAM tự hào là trung tâm ...</p>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="swiper-slide">
+                        <article class="bg-white rounded-xl shadow-md overflow-hidden border border-secondary-100 h-full flex flex-col">
+                            <a href="https://chamtoeic.edu.vn/chien-thuat-lam-bai/tonghopdethitienganhdauvaodaihoctheotungtruong/">
+                                <img class="w-full aspect-[16/9] object-cover" src="https://chamtoeic.edu.vn/wp-content/uploads/2024/06/de-thi-tieng-anh-dau-vao-dai-hoc-0-1024x1024-1-300x241.jpg" alt="Tổng hợp đề thi...">
+                            </a>
+                            <div class="p-4 flex-1 flex flex-col">
+                                <h4 class="font-semibold text-secondary-900">
+                                    <a class="hover:text-primary-700 transition-colors" href="https://chamtoeic.edu.vn/chien-thuat-lam-bai/tonghopdethitienganhdauvaodaihoctheotungtruong/">
+                                        TỔNG HỢP ĐỀ THI TIẾNG ANH ĐẦU VÀO ĐẠI HỌC THEO TỪNG TRƯỜNG
+                                    </a>
+                                </h4>
+                                <p class="text-sm text-secondary-700 mt-2 line-clamp-2">Hiện nay, có rất nhiều trường tổ chức thi đánh giá năng ...</p>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="swiper-slide">
+                        <article class="bg-white rounded-xl shadow-md overflow-hidden border border-secondary-100 h-full flex flex-col">
+                            <a href="https://chamtoeic.edu.vn/chien-thuat-lam-bai/quan-ly-thoi-gian-hieu-qua-trong-bai-thi-toeic/">
+                                <img class="w-full aspect-[16/9] object-cover" src="https://chamtoeic.edu.vn/wp-content/uploads/2024/06/Blue-Red-Comic-Creative-Versus-YouTube-thumbnail-2-300x169.png" alt="Quản lý thời gian hiệu quả">
+                            </a>
+                            <div class="p-4 flex-1 flex flex-col">
+                                <h4 class="font-semibold text-secondary-900">
+                                    <a class="hover:text-primary-700 transition-colors" href="https://chamtoeic.edu.vn/chien-thuat-lam-bai/quan-ly-thoi-gian-hieu-qua-trong-bai-thi-toeic/">
+                                        QUẢN LÝ THỜI GIAN HIỆU QUẢ TRONG BÀI THI TOEIC
+                                    </a>
+                                </h4>
+                                <p class="text-sm text-secondary-700 mt-2 line-clamp-2">1. Để tối ưu hóa việc làm bài và phân chia thời ...</p>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="swiper-slide">
+                        <article class="bg-white rounded-xl shadow-md overflow-hidden border border-secondary-100 h-full flex flex-col">
+                            <a href="https://chamtoeic.edu.vn/chien-thuat-lam-bai/luu-y-khi-lam-part-3-va-4-tren-giay/">
+                                <img class="w-full aspect-[16/9] object-cover" src="https://chamtoeic.edu.vn/wp-content/uploads/2024/06/Blue-Red-Comic-Creative-Versus-YouTube-thumbnail-1-300x169.png" alt="Lưu ý khi làm Part 3 & 4">
+                            </a>
+                            <div class="p-4 flex-1 flex flex-col">
+                                <h4 class="font-semibold text-secondary-900">
+                                    <a class="hover:text-primary-700 transition-colors" href="https://chamtoeic.edu.vn/chien-thuat-lam-bai/luu-y-khi-lam-part-3-va-4-tren-giay/">
+                                        LƯU Ý KHI LÀM PART 3 VÀ 4 TRÊN GIẤY
+                                    </a>
+                                </h4>
+                                <p class="text-sm text-secondary-700 mt-2 line-clamp-2">Khi tham dự bài thi TOEIC trên giấy, thí sinh sẽ chuyển ...</p>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Item 6 -->
+                    <div class="swiper-slide">
+                        <article class="bg-white rounded-xl shadow-md overflow-hidden border border-secondary-100 h-full flex flex-col">
+                            <a href="https://chamtoeic.edu.vn/chien-thuat-lam-bai/so-sanh-uu-nhuoc-diem-cua-thi-toeic-tren-giay-va-tren-may/">
+                                <img class="w-full aspect-[16/9] object-cover" src="https://chamtoeic.edu.vn/wp-content/uploads/2024/06/Blue-Red-Comic-Creative-Versus-YouTube-thumbnail-300x169.png" alt="So sánh ưu nhược điểm thi giấy và thi máy">
+                            </a>
+                            <div class="p-4 flex-1 flex flex-col">
+                                <h4 class="font-semibold text-secondary-900">
+                                    <a class="hover:text-primary-700 transition-colors" href="https://chamtoeic.edu.vn/chien-thuat-lam-bai/so-sanh-uu-nhuoc-diem-cua-thi-toeic-tren-giay-va-tren-may/">
+                                        SO SÁNH ƯU – NHƯỢC ĐIỂM CỦA THI TOEIC TRÊN GIẤY VÀ TRÊN MÁY
+                                    </a>
+                                </h4>
+                                <p class="text-sm text-secondary-700 mt-2 line-clamp-2">1. Thi trên giấy: Ưu điểm: Thí sinh có thời gian để ...</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="swiper-pagination mt-4"></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Modern Footer with Google Map Integration -->
+<!-- Modern Footer with Google Map Integration -->
+<footer class="bg-secondary-900 text-secondary-100 py-16 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-secondary-900 to-secondary-800"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div class="grid md:grid-cols-4 gap-10 mb-12">
+            <div class="space-y-4">
+                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2023/10/LOGO.png" alt="CHAM TOEIC" class="h-12 w-auto brightness-0 invert">
+                <h4 class="font-display font-bold text-xl text-white">Về CHAM TOEIC</h4>
+                <p class="text-secondary-300 leading-relaxed">
+                    CHAM TOEIC luôn nỗ lực trở thành đơn vị đào tạo TOEIC chuyên nghiệp và chất lượng nhất Việt Nam.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 bg-primary-700 rounded-full flex items-center justify-center hover:bg-primary-800 transition-colors">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="w-10 h-10 bg-primary-700 rounded-full flex items-center justify-center hover:bg-primary-800 transition-colors">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="font-display font-bold text-xl text-white">Liên hệ</h4>
+                <ul class="space-y-3 text-secondary-300">
+                    <li class="flex items-center">
+                        <svg class="w-4 h-4 mr-3 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                        </svg>
+                        <span><strong class="text-white">Hotline:</strong> 034 334 8239</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-4 h-4 mr-3 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                        </svg>
+                        <span><strong class="text-white">Email:</strong> chamtoeic@gmail.com</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-4 h-4 mr-3 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm5.5 3a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm0 2a4 4 0 00-3.465 6.002A1 1 0 006 16h5a1 1 0 00.965-.738A4 4 0 008.5 10z" clip-rule="evenodd"/>
+                        </svg>
+                        <span><strong class="text-white">Fanpage:</strong> CHAM Toeic</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Made location sections clickable to show Google Maps -->
+            <div class="space-y-4">
+                <h4 class="font-display font-bold text-xl text-white">Cơ sở Hà Nội</h4>
+                <ul class="space-y-2 text-secondary-300 text-sm">
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 6, Số 16, Ngõ 304 Hồ Tùng Mậu, Hà Nội')">
+                                <span class="flex items-center">
+                                    <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Cơ sở 1: Tầng 6, Số 16, Ngõ 304 Hồ Tùng Mậu
+                                </span>
+                    </li>
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Số 62A, Ngõ 59 Dương Khuê, Hà Nội')">
+                                <span class="flex items-center">
+                                    <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Cơ sở 2: Số 62A, Ngõ 59 Dương Khuê
+                                </span>
+                    </li>
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 3, Số 3 Dương Quảng Hàm, Hà Nội')">
+                                <span class="flex items-center">
+                                    <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Cơ sở 3: Tầng 3, Số 3 Dương Quảng Hàm
+                                </span>
+                    </li>
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 3, số 60, Ngõ 41 Thái Hà, Hà Nội')">
+                                <span class="flex items-center">
+                                    <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Cơ sở 4: Tầng 3, số 60, Ngõ 41 Thái Hà
+                                </span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="font-display font-bold text-xl text-white">Thêm cơ sở</h4>
+                <ul class="space-y-2 text-secondary-300 text-sm">
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 4, LK04 KĐT Bắc Hà, Hà Nội')">
+                                <span class="flex items-center">
+                                    <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Cơ sở 5: Tầng 4, LK04 KĐT Bắc Hà
+                                </span>
+                    </li>
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 1, Số 15, Ngõ 11 Thái Hà, Hà Nội')">
+                                <span class="flex items-center">
+                                    <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Cơ sở 6: Tầng 1, Số 15, Ngõ 11 Thái Hà
+                                </span>
+                    </li>
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 5, Số 233 Trần Quốc Hoàn, Hà Nội')">
+                                <span class="flex items-center">
+                                    <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Cơ sở 7: Tầng 5, Số 233 Trần Quốc Hoàn
+                                </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-secondary-700 pt-6 text-center text-secondary-400">
+            <p>&copy; 2025 CHAM TOEIC. Tất cả quyền được bảo lưu.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
+<script>
+    // Testimonial (1 slide / view)
+    new Swiper('.testimonial-swiper', {
+        loop: true,
+        speed: 500,
+        autoplay: { delay: 5000, disableOnInteraction: true },
+        pagination: { el: '.testimonial-swiper .swiper-pagination', clickable: true },
+        navigation: {
+            nextEl: '.testimonial-swiper .swiper-button-next',
+            prevEl: '.testimonial-swiper .swiper-button-prev'
+        },
+        spaceBetween: 10
+    });
+
+    // Related posts (responsive)
+    new Swiper('.related-swiper', {
+        loop: false,
+        autoHeight: true,
+        speed: 500,
+        autoplay: { delay: 5000, disableOnInteraction: true },
+        pagination: { el: '.related-swiper .swiper-pagination', clickable: true },
+        spaceBetween: 20,
+        slidesPerView: 1,
+        breakpoints: {
+            640: { slidesPerView: 2 },
+            1024:{ slidesPerView: 3 }
+        }
+    });
+</script>
+
+<!-- Line clamp utility (optional, if Tailwind plugin not in use) -->
+<style>
+    .line-clamp-2{
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    /* Adjusting the banner size */
+    .swiper-slide img {
+        height: auto;
+        max-height: 500px; /* Set a reasonable height for the banner */
+        object-fit: cover;
+    }
+
+    /* Changing pagination dots to red */
+    .swiper-pagination-bullet {
+        background-color: #b91c1c; /* Red color */
+    }
+
+    /* Removing arrows */
+    .swiper-button-prev,
+    .swiper-button-next {
+        display: none;
+    }
+</style>

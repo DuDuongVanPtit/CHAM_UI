@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAM TOEIC - Lịch khai giảng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui'],
+                        'display': ['Roboto', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        'primary': {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            200: '#fecaca',
+                            300: '#fca5a5',
+                            400: '#f87171',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                            800: '#991b1b',
+                            900: '#7f1d1d',
+                        },
+                        'secondary': {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+                    },
+                    backgroundSize: {
+                        '400%': '400% 400%',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-white text-secondary-800 antialiased">
+<!-- Fixed Header Design -->
+<header class="bg-white/95 backdrop-blur-xl shadow-lg border-b border-secondary-100 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap justify-between items-center py-3 border-b border-secondary-100">
+            <!-- Logo and Contact Info -->
+            <div class="flex items-center space-x-6">
+                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2023/10/LOGO.png" alt="CHAM TOEIC" class="h-10 w-auto">
+                <div class="hidden md:flex items-center space-x-4 text-sm text-secondary-600">
+                    <span class="flex items-center hover:text-primary-700 transition-colors duration-300">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                        </svg>
+                        034 334 8239
+                    </span>
+                    <span class="flex items-center hover:text-primary-700 transition-colors duration-300">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                        </svg>
+                        chamtoeic@gmail.com
+                    </span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center space-x-3">
+                <button class="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-5 py-2 rounded-full text-sm font-semibold hover:from-primary-700 hover:to-primary-800 transition-all duration-300 transform hover:scale-105 shadow-md">
+                    <svg class="w-5 h-5 mr-2 inline flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                    </svg>
+                    Test Online
+                </button>
+                <button class="border-2 border-primary-700 text-primary-700 hover:bg-primary-700 hover:text-white px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 transform hover:scale-105">
+                    <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    Đăng nhập
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Navigation -->
+        <div class="flex justify-center items-center h-16">
+            <nav class="hidden lg:flex space-x-8">
+                <div class="relative group">
+                    <a href="#about" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 flex items-center py-2 px-3 rounded-lg hover:bg-primary-50">
+                        Về chúng tôi
+                        <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180 duration-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="relative group">
+                    <a href="#team" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 flex items-center py-2 px-3 rounded-lg hover:bg-primary-50">
+                        Đội ngũ đào tạo
+                        <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180 duration-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="relative group">
+                    <a href="#students" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 flex items-center py-2 px-3 rounded-lg hover:bg-primary-50">
+                        Học viên
+                        <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180 duration-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </div>
+                <a href="#schedule" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 py-2 px-3 rounded-lg hover:bg-primary-50">Lịch khai giảng</a>
+                <div class="relative group">
+                    <a href="#courses" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 flex items-center py-2 px-3 rounded-lg hover:bg-primary-50">
+                        Khóa học
+                        <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180 duration-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </div>
+                <a href="#news" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 py-2 px-3 rounded-lg hover:bg-primary-50">Tin tức</a>
+                <a href="#resources" class="text-secondary-700 hover:text-primary-700 font-medium transition-all duration-300 py-2 px-3 rounded-lg hover:bg-primary-50">Tài liệu</a>
+            </nav>
+
+            <button class="lg:hidden p-2 hover:bg-secondary-50 rounded-xl transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</header>
+<!-- HERO SECTION WITH STATIC BACKGROUND -->
+<!-- HERO BANNER -->
+<section class="relative">
+    <img src="https://chamtoeic.edu.vn/wp-content/uploads/2023/11/ij-hero-bg.svg"
+         alt="CHAM TOEIC Banner"
+         class="w-full h-[180px] sm:h-[260px] md:h-[320px] lg:h-[400px] object-cover">
+</section>
+
+
+<!-- COURSES PAGE -->
+<section id="courses" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Intro / Support -->
+        <div class="text-center mb-12">
+            <h2 class="font-display text-xl md:text-2xl font-black tracking-tight text-secondary-900">
+                LUÔN LUÔN ĐỒNG HÀNH VÀ HỖ TRỢ
+            </h2>
+            <h3 class="mt-3 inline-block border-2 border-primary-700 text-primary-700 font-display font-bold rounded-full px-4 py-1">
+                Luyện Thi TOEIC Hiệu Quả Vượt Trội
+            </h3>
+            <p class="mt-4 text-secondary-700">
+                Học TOEIC sẽ hiệu quả hơn nhiều khi học viên của CHAM được kèm cặp sát sao 1:1 ngoài giờ học chính trên lớp.
+            </p>
+        </div>
+
+        <!-- Testimonial / Gallery style (2 items like Elementor) -->
+        <div class="grid md:grid-cols-2 gap-8 mb-16">
+            <!-- Item 1 -->
+            <div class="bg-secondary-50 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                <img loading="lazy" src="https://chamtoeic.edu.vn/wp-content/uploads/2024/05/screenshot_1712041799.png" alt="Học viên Liên - Lớp OT17" class="w-full h-auto">
+                <div class="p-6">
+                    <h4 class="font-bold text-secondary-900">Học viên Liên - Lớp OT17</h4>
+                    <p class="mt-2 text-secondary-700">“Đồng hành cùng bạn, em thấy Liên cần cải thiện part 5 TOEIC để có điểm số cao hơn.” – TG Dung.</p>
+                </div>
+            </div>
+            <!-- Item 2 -->
+            <div class="bg-secondary-50 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                <img loading="lazy" src="https://chamtoeic.edu.vn/wp-content/uploads/2024/05/Neutral-Minimalist-Photocentric-Study-Habits-Keynotes-Presentation.png" alt="Học viên Hiếu - Lớp T195" class="w-full h-auto">
+                <div class="p-6">
+                    <h4 class="font-bold text-secondary-900">Học viên Hiếu - Lớp T195</h4>
+                    <p class="mt-2 text-secondary-700">“Chỉ 3 công thức học đi học lại đến hôm nay bạn mới nhớ hơn được.” – GV Hạ.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Title -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h2 class="font-display text-2xl md:text-3xl font-black text-secondary-900">
+                    KHÓA HỌC TOEIC 2 KỸ NĂNG (NGHE + ĐỌC)
+                </h2>
+                <p class="text-secondary-600 mt-1">3 lớp học với mốc và mục tiêu khác nhau</p>
+            </div>
+        </div>
+
+        <!-- Comparison Table (responsive) -->
+        <!-- START: Comparison Table (Improved) -->
+        <div class="rounded-2xl border border-secondary-200 overflow-hidden">
+            <!-- Desktop / Tablet -->
+            <div class="hidden md:block overflow-x-auto">
+                <table class="min-w-full text-left">
+                    <colgroup>
+                        <col class="w-48">
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
+
+                    <thead class="bg-secondary-100/60">
+                    <tr class="text-secondary-900">
+                        <th class="p-4 font-semibold sticky left-0 bg-secondary-100/60 z-10">Hạng mục</th>
+                        <th class="p-4 font-semibold">Pre-Toeic</th>
+                        <th class="p-4 font-semibold">Toeic Level 1</th>
+                        <th class="p-4 font-semibold">Toeic Level 2</th>
+                    </tr>
+                    </thead>
+
+                    <tbody class="[&>tr:nth-child(odd)]:bg-white [&>tr:nth-child(even)]:bg-secondary-50">
+                    <!-- Mã lớp -->
+                    <tr class="border-t border-secondary-200 hover:bg-secondary-50/80">
+                        <td class="p-4 font-semibold text-secondary-900 sticky left-0 bg-inherit">Mã lớp</td>
+                        <td class="p-4">PT (ONLINE) &amp; OPT (OFFLINE)</td>
+                        <td class="p-4">T (ONLINE) &amp; OT (OFFLINE)</td>
+                        <td class="p-4">VIP (ONLINE) &amp; OVIP (OFFLINE)</td>
+                    </tr>
+
+                    <!-- Đối tượng -->
+                    <tr class="border-t border-secondary-200 hover:bg-secondary-50/80">
+                        <td class="p-4 font-semibold text-secondary-900 sticky left-0 bg-inherit">Đối tượng</td>
+                        <td class="p-4">Mất gốc, TOEIC &lt; 350</td>
+                        <td class="p-4">Cơ bản chưa vững (TOEIC 350+)</td>
+                        <td class="p-4">Nền tảng tương đối (TOEIC 500+)</td>
+                    </tr>
+
+                    <!-- Đầu vào -->
+                    <tr class="border-t border-secondary-200 hover:bg-secondary-50/80">
+                        <td class="p-4 font-semibold text-secondary-900 sticky left-0 bg-inherit">Đầu vào</td>
+                        <td class="p-4">Không cần test / test &lt; 350</td>
+                        <td class="p-4">Test đầu vào / IIG ≥ 350</td>
+                        <td class="p-4">Test đầu vào / IIG ≥ 500</td>
+                    </tr>
+
+                    <!-- Đầu ra -->
+                    <tr class="border-t border-secondary-200 hover:bg-secondary-50/80 align-top">
+                        <td class="p-4 font-semibold text-secondary-900 sticky left-0 bg-inherit">Đầu ra</td>
+                        <td class="p-4">
+            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-primary-100 text-primary-800">
+              TOEIC 350+
+            </span>
+                        </td>
+                        <td class="p-4">
+            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-primary-100 text-primary-800">
+              TOEIC 500+
+            </span>
+                        </td>
+                        <td class="p-4">
+            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-primary-100 text-primary-800">
+              TOEIC 650+
+            </span>
+                        </td>
+                    </tr>
+
+                    <!-- Chương trình học -->
+                    <tr class="border-t border-secondary-200 hover:bg-secondary-50/80 align-top">
+                        <td class="p-4 font-semibold text-secondary-900 sticky left-0 bg-inherit">Chương trình học</td>
+                        <td class="p-4">
+                            <ul class="list-disc ml-5 space-y-1 leading-relaxed">
+                                <li>Pronunciation (IPA, luyện âm)</li>
+                                <li>Listening: part 1 theo chủ đề</li>
+                                <li>Reading: 11 thì cơ bản</li>
+                                <li>Từ vựng: &gt; 400 từ</li>
+                            </ul>
+                        </td>
+                        <td class="p-4">
+                            <ul class="list-disc ml-5 space-y-1 leading-relaxed">
+                                <li>Listening: part 1–2–3–4 + quản lý thời gian</li>
+                                <li>Reading: ngữ pháp trọng tâm part 5–6</li>
+                                <li>Từ vựng: &gt; 1000 từ</li>
+                            </ul>
+                        </td>
+                        <td class="p-4">
+                            <ul class="list-disc ml-5 space-y-1 leading-relaxed">
+                                <li>Listening: luyện full test chuẩn format</li>
+                                <li>Reading nâng cao part 5–6 + Part 7 theo dạng</li>
+                                <li>1/4 khóa chữa đề FULL TEST 2h</li>
+                                <li>Từ vựng: &gt; 1200 từ</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+                    <!-- Học phí -->
+                    <tr class="border-t border-secondary-200 hover:bg-secondary-50/80 align-top">
+                        <td class="p-4 font-semibold text-secondary-900 sticky left-0 bg-inherit">Học phí</td>
+                        <td class="p-4">
+                            <div class="font-semibold">2.468k</div>
+                            <div class="text-sm text-secondary-600 mt-1 leading-relaxed">
+                                14 buổi với GV<br>4 buổi bổ trợ nhóm + 2 buổi 1:1
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-semibold">3.968k</div>
+                            <div class="text-sm text-secondary-600 mt-1 leading-relaxed">
+                                25 buổi với GV<br>6 buổi bổ trợ nhóm + 1 buổi 1:1
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-semibold">4.268k</div>
+                            <div class="text-sm text-secondary-600 mt-1 leading-relaxed">
+                                25 buổi với GV<br>6 buổi bổ trợ nhóm + 2 buổi 1:1
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- LỊCH HỌC — HÀNG NỔI BẬT -->
+                    <tr class="border-t border-secondary-200 bg-primary-50/70 hover:bg-primary-50">
+                        <td class="p-4 font-semibold text-secondary-900 sticky left-0 bg-primary-50/70 border-l-4 border-primary-600">
+                            Lịch học
+                        </td>
+                        <td class="p-4" colspan="3">
+                            <div class="grid sm:grid-cols-2 gap-6">
+                                <div class="p-4 rounded-xl bg-white/70 shadow-sm border border-secondary-200">
+                                    <p class="font-semibold text-secondary-900">ONLINE</p>
+                                    <p class="text-sm text-secondary-700 mt-1 leading-relaxed">
+                                        Thứ 2-5 · Thứ 3-6 · Thứ 4-Chủ nhật<br>
+                                        Ca 1: 19:30–21:00 · Ca 2: 21:30–23:00
+                                    </p>
+                                </div>
+                                <div class="p-4 rounded-xl bg-white/70 shadow-sm border border-secondary-200">
+                                    <p class="font-semibold text-secondary-900">OFFLINE</p>
+                                    <p class="text-sm text-secondary-700 mt-1 leading-relaxed">
+                                        Thứ 2-5 · Thứ 3-6 · Thứ 4-Chủ nhật<br>
+                                        Ca 1: 18:15–19:45 · Ca 2: 20:05–21:35
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- ĐIỂM ĐẶC BIỆT — HÀNG NỔI BẬT -->
+                    <tr class="border-t border-secondary-200 bg-secondary-100/60 hover:bg-secondary-100">
+                        <td class="p-4 font-semibold text-secondary-900 sticky left-0 bg-secondary-100/60 border-l-4 border-secondary-600">
+                            Điểm đặc biệt
+                        </td>
+                        <td class="p-4">
+                            <div class="flex items-start gap-3">
+                                <span class="mt-1 inline-block w-2.5 h-2.5 rounded-full bg-primary-600"></span>
+                                <p>Trợ giảng kiểm tra BTVN, hỗ trợ kết nối lớp, kèm nhóm nhỏ &amp; 1:1.</p>
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex items-start gap-3">
+                                <span class="mt-1 inline-block w-2.5 h-2.5 rounded-full bg-primary-600"></span>
+                                <p>Trợ giảng kiểm tra BTVN, hỗ trợ kết nối lớp, kèm nhóm nhỏ &amp; 1:1.</p>
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex items-start gap-3">
+                                <span class="mt-1 inline-block w-2.5 h-2.5 rounded-full bg-primary-600"></span>
+                                <p>Trợ giảng kiểm tra BTVN, hỗ trợ kết nối lớp, kèm nhóm nhỏ &amp; 1:1.</p>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mobile: Cards by course -->
+            <div class="md:hidden divide-y divide-secondary-200">
+                <!-- Helper: one functionally identical card per course -->
+                <div class="p-4">
+                    <h4 class="text-lg font-bold text-secondary-900">Pre-Toeic
+                        <span class="ml-2 align-middle inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-primary-100 text-primary-800">350+</span>
+                    </h4>
+                    <p class="text-sm text-secondary-600 mt-1">PT (ONLINE) · OPT (OFFLINE)</p>
+
+                    <dl class="mt-3 space-y-3 text-sm">
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Đối tượng</dt>
+                            <dd class="text-secondary-700">Mất gốc, TOEIC &lt; 350</dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Đầu vào</dt>
+                            <dd class="text-secondary-700">Không cần test / test &lt; 350</dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Chương trình</dt>
+                            <dd class="text-secondary-700 leading-relaxed">
+                                Pronunciation (IPA); Listening part 1; Reading 11 thì; &gt; 400 từ vựng.
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Học phí</dt>
+                            <dd class="text-secondary-700">2.468k · 14 buổi GV · 4 bổ trợ nhóm + 2 buổi 1:1</dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Điểm đặc biệt</dt>
+                            <dd class="text-secondary-700">Trợ giảng theo sát, kèm nhóm &amp; 1:1</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <div class="p-4">
+                    <h4 class="text-lg font-bold text-secondary-900">Toeic Level 1
+                        <span class="ml-2 align-middle inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-primary-100 text-primary-800">500+</span>
+                    </h4>
+                    <p class="text-sm text-secondary-600 mt-1">T (ONLINE) · OT (OFFLINE)</p>
+
+                    <dl class="mt-3 space-y-3 text-sm">
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Đối tượng</dt>
+                            <dd class="text-secondary-700">Cơ bản chưa vững (TOEIC 350+)</dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Đầu vào</dt>
+                            <dd class="text-secondary-700">Test đầu vào / IIG ≥ 350</dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Chương trình</dt>
+                            <dd class="text-secondary-700 leading-relaxed">
+                                Listening part 1–2–3–4; Reading part 5–6 trọng tâm; &gt; 1000 từ vựng.
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Học phí</dt>
+                            <dd class="text-secondary-700">3.968k · 25 buổi GV · 6 bổ trợ nhóm + 1 buổi 1:1</dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Điểm đặc biệt</dt>
+                            <dd class="text-secondary-700">Trợ giảng theo sát, kèm nhóm &amp; 1:1</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <div class="p-4">
+                    <h4 class="text-lg font-bold text-secondary-900">Toeic Level 2
+                        <span class="ml-2 align-middle inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-primary-100 text-primary-800">650+</span>
+                    </h4>
+                    <p class="text-sm text-secondary-600 mt-1">VIP (ONLINE) · OVIP (OFFLINE)</p>
+
+                    <dl class="mt-3 space-y-3 text-sm">
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Đối tượng</dt>
+                            <dd class="text-secondary-700">Nền tảng tương đối (TOEIC 500+)</dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Đầu vào</dt>
+                            <dd class="text-secondary-700">Test đầu vào / IIG ≥ 500</dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Chương trình</dt>
+                            <dd class="text-secondary-700 leading-relaxed">
+                                Listening full test; Reading nâng cao part 5–6 &amp; Part 7; chữa FULL TEST 2h; &gt; 1200 từ.
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Học phí</dt>
+                            <dd class="text-secondary-700">4.268k · 25 buổi GV · 6 bổ trợ nhóm + 2 buổi 1:1</dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-secondary-900">Điểm đặc biệt</dt>
+                            <dd class="text-secondary-700">Trợ giảng theo sát, kèm nhóm &amp; 1:1</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <!-- END: Comparison Table (Improved) -->
+
+
+        <!-- CTA row -->
+        </div>
+
+</section>
+
+<section class="py-12 bg-gradient-to-br from-primary-800 via-primary-900 to-primary-900 text-white relative overflow-hidden">
+    <!-- background pattern -->
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23FFFFFF" fill-opacity="0.03"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-10"></div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <!-- Tiêu đề -->
+        <div class="text-center mb-8">
+            <h2 class="font-display text-2xl md:text-3xl font-black mb-3">Chinh phục mục tiêu TOEIC</h2>
+            <p class="text-base md:text-lg mb-2">
+                Hơn <span class="font-black text-xl text-primary-200">8,000+</span> học viên đã thành công cán đích.
+            </p>
+            <p class="text-base font-semibold text-primary-100">Bạn có muốn trở thành người tiếp theo?</p>
+        </div>
+
+        <!-- Improved layout balance between image and form -->
+        <div class="grid lg:grid-cols-2 gap-8 items-center max-w-5xl mx-auto">
+            <!-- Hình ảnh - Made larger -->
+            <div class="relative order-2 lg:order-1">
+                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2023/12/Untitled-1-1-1-1024x1024.png"
+                     alt="CHAM TOEIC Success"
+                     class="relative w-full max-w-lg mx-auto rounded-2xl shadow-2xl border border-white/20">
+            </div>
+
+            <!-- Form - Better proportioned -->
+            <div class="relative order-1 lg:order-2">
+                <div class="relative bg-white rounded-2xl p-6 shadow-2xl">
+                    <h3 class="font-display text-lg font-bold text-secondary-900 text-center mb-3">🎯 Đăng ký tư vấn miễn phí</h3>
+                    <p class="text-secondary-600 text-sm text-center mb-6">Nhận lộ trình học phù hợp và ưu đãi đặc biệt</p>
+
+                    <form class="grid gap-4">
+                        <input type="text" placeholder="Họ và tên *" required
+                               class="w-full px-4 py-3 rounded-lg border border-secondary-200 focus:ring-2 focus:ring-primary-200 focus:border-primary-700 text-sm">
+                        <input type="tel" placeholder="Số điện thoại *" required
+                               class="w-full px-4 py-3 rounded-lg border border-secondary-200 focus:ring-2 focus:ring-primary-200 focus:border-primary-700 text-sm">
+                        <input type="email" placeholder="Email *" required
+                               class="w-full px-4 py-3 rounded-lg border border-secondary-200 focus:ring-2 focus:ring-primary-200 focus:border-primary-700 text-sm">
+                        <select class="w-full px-4 py-3 rounded-lg border border-secondary-200 focus:ring-2 focus:ring-primary-200 focus:border-primary-700 text-sm">
+                            <option value="">Chọn cơ sở</option>
+                            <option>Cơ sở 1: Tầng 6 số 16, Ngõ 304 Hồ Tùng Mậu</option>
+                            <option>Cơ sở 2: 58 Phố Văn Hội, Đức Thắng</option>
+                            <option>Cơ sở 3: Số 14 Ngõ. 66 Phường. Nguyễn Hoàng</option>
+                        </select>
+
+                        <button type="submit"
+                                class="bg-gradient-to-r from-primary-700 to-primary-800 text-white py-3 rounded-lg font-bold shadow-lg text-base">
+                            Đăng ký ngay - Nhận ưu đãi đặc biệt
+                        </button>
+                    </form>
+
+                    <!-- Ưu đãi -->
+                    <div class="mt-4 p-3 bg-gradient-to-r from-red-50 to-red-100 rounded-lg">
+                        <p class="text-sm text-secondary-700 flex items-center justify-center">
+                            <span class="text-base mr-2">🔥</span>
+                            <span><span class="font-bold text-red-700">Ưu đãi đặc biệt</span> cho 100 học viên đầu tiên - ⏰ Chỉ còn <span class="text-red-700 font-bold">15 suất</span>!</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /COURSES PAGE -->
+
+
+<!-- Modern Footer with Google Map Integration -->
+<footer class="bg-secondary-900 text-secondary-100 py-16 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-secondary-900 to-secondary-800"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div class="grid md:grid-cols-4 gap-10 mb-12">
+            <div class="space-y-4">
+                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2023/10/LOGO.png" alt="CHAM TOEIC" class="h-12 w-auto brightness-0 invert">
+                <h4 class="font-display font-bold text-xl text-white">Về CHAM TOEIC</h4>
+                <p class="text-secondary-300 leading-relaxed">
+                    CHAM TOEIC luôn nỗ lực trở thành đơn vị đào tạo TOEIC chuyên nghiệp và chất lượng nhất Việt Nam.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 bg-primary-700 rounded-full flex items-center justify-center hover:bg-primary-800 transition-colors">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="w-10 h-10 bg-primary-700 rounded-full flex items-center justify-center hover:bg-primary-800 transition-colors">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="font-display font-bold text-xl text-white">Liên hệ</h4>
+                <ul class="space-y-3 text-secondary-300">
+                    <li class="flex items-center">
+                        <svg class="w-4 h-4 mr-3 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                        </svg>
+                        <span><strong class="text-white">Hotline:</strong> 034 334 8239</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-4 h-4 mr-3 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                        </svg>
+                        <span><strong class="text-white">Email:</strong> chamtoeic@gmail.com</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-4 h-4 mr-3 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm5.5 3a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm0 2a4 4 0 00-3.465 6.002A1 1 0 006 16h5a1 1 0 00.965-.738A4 4 0 008.5 10z" clip-rule="evenodd"/>
+                        </svg>
+                        <span><strong class="text-white">Fanpage:</strong> CHAM Toeic</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="font-display font-bold text-xl text-white">Cơ sở Hà Nội</h4>
+                <ul class="space-y-2 text-secondary-300 text-sm">
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 6, Số 16, Ngõ 304 Hồ Tùng Mậu, Hà Nội')">
+                        <span class="flex items-center">
+                            <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                            </svg>
+                            Cơ sở 1: Tầng 6, Số 16, Ngõ 304 Hồ Tùng Mậu
+                        </span>
+                    </li>
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Số 62A, Ngõ 59 Dương Khuê, Hà Nội')">
+                        <span class="flex items-center">
+                            <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                            </svg>
+                            Cơ sở 2: Số 62A, Ngõ 59 Dương Khuê
+                        </span>
+                    </li>
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 3, Số 3 Dương Quảng Hàm, Hà Nội')">
+                        <span class="flex items-center">
+                            <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                            </svg>
+                            Cơ sở 3: Tầng 3, Số 3 Dương Quảng Hàm
+                        </span>
+                    </li>
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 3, số 60, Ngõ 41 Thái Hà, Hà Nội')">
+                        <span class="flex items-center">
+                            <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                            </svg>
+                            Cơ sở 4: Tầng 3, số 60, Ngõ 41 Thái Hà
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="space-y-4">
+                <h4 class="font-display font-bold text-xl text-white">Thêm cơ sở</h4>
+                <ul class="space-y-2 text-secondary-300 text-sm">
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 4, LK04 KĐT Bắc Hà, Hà Nội')">
+                        <span class="flex items-center">
+                            <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                            </svg>
+                            Cơ sở 5: Tầng 4, LK04 KĐT Bắc Hà
+                        </span>
+                    </li>
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 1, Số 15, Ngõ 11 Thái Hà, Hà Nội')">
+                        <span class="flex items-center">
+                            <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                            </svg>
+                            Cơ sở 6: Tầng 1, Số 15, Ngõ 11 Thái Hà
+                        </span>
+                    </li>
+                    <li class="cursor-pointer hover:text-primary-400 transition-colors" onclick="showMap('Tầng 5, Số 233 Trần Quốc Hoàn, Hà Nội')">
+                        <span class="flex items-center">
+                            <svg class="w-3 h-3 mr-2 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                            </svg>
+                            Cơ sở 7: Tầng 5, Số 233 Trần Quốc Hoàn
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-secondary-700 pt-6 text-center text-secondary-400">
+            <p>&copy; 2025 CHAM TOEIC. Tất cả quyền được bảo lưu.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Google Map Modal -->
+<div id="mapModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+        <div class="flex justify-between items-center p-6 border-b border-secondary-200">
+            <h3 class="text-xl font-bold text-secondary-900" id="mapTitle">Vị trí cơ sở</h3>
+            <button onclick="closeMap()" class="text-secondary-400 hover:text-secondary-600 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div class="h-96">
+            <iframe id="mapFrame"
+                    width="100%"
+                    height="100%"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+        <div class="p-4 bg-secondary-50 text-center">
+            <p class="text-sm text-secondary-600">Click vào địa chỉ để xem bản đồ chi tiết</p>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function showMap(address) {
+        const modal = document.getElementById('mapModal');
+        const mapFrame = document.getElementById('mapFrame');
+        const mapTitle = document.getElementById('mapTitle');
+        mapTitle.textContent = address;
+        const encodedAddress = encodeURIComponent(address);
+        const mapUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dO_BcqCGAOtEtE&q=${encodedAddress}&zoom=16`;
+        mapFrame.src = mapUrl;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMap() {
+        const modal = document.getElementById('mapModal');
+        const mapFrame = document.getElementById('mapFrame');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        mapFrame.src = '';
+    }
+
+    document.getElementById('mapModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeMap();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeMap();
+        }
+    });
+</script>
+</body>
+</html>
