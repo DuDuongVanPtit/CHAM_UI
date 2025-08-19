@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TipTap Editor - Trình soạn thảo nội dung</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #000;
+            overflow-x: hidden;
+        }
+
+        .editor-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            background: #f8f9fa;
+        }
+
+        .sidebar-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.9em;
+            color: #000;
+        }
+
+        .component-category {
+            padding: 15px 20px 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .category-title {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .component-item {
+            padding: 12px 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            cursor: grab;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .component-item:hover {
+            border-color: #007bff;
+            background: #f8f9ff;
+            transform: translateY(-1px);
+        }
+
+        .component-item:active {
+            cursor: grabbing;
+        }
+
+        .component-icon {
+            font-size: 1.2em;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .component-name {
+            font-size: 0.8em;
+            color: #000;
+            font-weight: 500;
+        }
+
+        /* Main Editor */
+        .main-editor {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .editor-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            background: white;
+            color: #000;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 10px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .toolbar-btn {
+            padding: 6px 8px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            background: transparent;
+            color: #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .toolbar-btn:hover {
+            background: #e9ecef;
+            border-color: #dee2e6;
+        }
+
+        .toolbar-btn.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .toolbar-separator {
+            width: 1px;
+            height: 20px;
+            background: #dee2e6;
+            margin: 0 5px;
+        }
+
+        .toolbar-select {
+            padding: 4px 8px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            background: white;
+            color: #000;
+            font-size: 0.9em;
+        }
+
+        .color-picker {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Editor Content */
+        .editor-content {
+            flex: 1;
+            display: flex;
+        }
+
+        .canvas-area {
+            flex: 1;
+            background: white;
+            margin: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .canvas-inner {
+            min-height: 600px;
+            padding: 40px;
+            outline: none;
+        }
+
+        .canvas-inner:empty:before {
+            content: "Kéo thả các thành phần từ sidebar hoặc bắt đầu nhập văn bản...";
+            color: #999;
+            font-style: italic;
+        }
+
+        .drop-zone {
+            border: 2px dashed #007bff;
+            background: #f8f9ff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            color: #007bff;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .drop-zone.active {
+            display: block;
+        }
+
+        /* Preview Panel */
+        .preview-panel {
+            width: 350px;
+            background: white;
+            border-left: 1px solid #e0e0e0;
+            display: none;
+        }
+
+        .preview-panel.active {
+            display: block;
+        }
+
+        .preview-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            background: #f8f9fa;
+        }
+
+        .preview-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .preview-content {
+            padding: 20px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 250px;
+            }
+            .preview-panel {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .editor-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: 200px;
+            }
+            .component-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Content Styles */
+        .canvas-inner h1, .canvas-inner h2, .canvas-inner h3 {
+            margin: 20px 0 10px;
+            color: #000;
+        }
+
+        .canvas-inner h1 { font-size: 2em; }
+        .canvas-inner h2 { font-size: 1.5em; }
+        .canvas-inner h3 { font-size: 1.2em; }
+
+        .canvas-inner p {
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #000;
+        }
+
+        .canvas-inner blockquote {
+            border-left: 4px solid #007bff;
+            padding-left: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #000;
+        }
+
+        .canvas-inner ul, .canvas-inner ol {
+            margin: 10px 0 10px 30px;
+            color: #000;
+        }
+
+        .canvas-inner img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .canvas-inner table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .canvas-inner table th,
+        .canvas-inner table td {
+            border: 1px solid #e0e0e0;
+            padding: 8px 12px;
+            text-align: left;
+            color: #000;
+        }
+
+        .canvas-inner table th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .inserted-component {
+            border: 1px dashed transparent;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .inserted-component:hover {
+            border-color: #007bff;
+        }
+
+        .component-controls {
+            position: absolute;
+            top: -30px;
+            right: 0;
+            display: none;
+            gap: 5px;
+        }
+
+        .inserted-component:hover .component-controls {
+            display: flex;
+        }
+
+        .control-btn {
+            padding: 4px 8px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+
+        .control-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="editor-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Thành phần</div>
+                <div class="sidebar-subtitle">Kéo thả để thêm vào nội dung</div>
+            </div>
+
+            <!-- Text Components -->
+            <div class="component-category">
+                <div class="category-title">Văn bản</div>
+                <div class="component-grid">
+                    <div class="component-item" draggable="true" data-type="heading">
+                        <span class="component-icon">📝</span>
+                        <div class="component-name">Tiêu đề</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="paragraph">
+                        <span class="component-icon">📄</span>
+                        <div class="component-name">Đoạn văn</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="quote">
+                        <span class="component-icon">💬</span>
+                        <div class="component-name">Trích dẫn</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="list">
+                        <span class="component-icon">📋</span>
+                        <div class="component-name">Danh sách</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Media Components -->
+            <div class="component-category">
+                <div class="category-title">Media</div>
+                <div class="component-grid">
+                    <div class="component-item" draggable="true" data-type="image">
+                        <span class="component-icon">🖼️</span>
+                        <div class="component-name">Hình ảnh</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="video">
+                        <span class="component-icon">🎥</span>
+                        <div class="component-name">Video</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="audio">
+                        <span class="component-icon">🎵</span>
+                        <div class="component-name">Audio</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="gallery">
+                        <span class="component-icon">🖼️</span>
+                        <div class="component-name">Thư viện</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layout Components -->
+            <div class="component-category">
+                <div class="category-title">Bố cục</div>
+                <div class="component-grid">
+                    <div class="component-item" draggable="true" data-type="columns">
+                        <span class="component-icon">📊</span>
+                        <div class="component-name">Cột</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="divider">
+                        <span class="component-icon">➖</span>
+                        <div class="component-name">Đường kẻ</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="spacer">
+                        <span class="component-icon">⬜</span>
+                        <div class="component-name">Khoảng trắng</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="container">
+                        <span class="component-icon">📦</span>
+                        <div class="component-name">Container</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Components -->
+            <div class="component-category">
+                <div class="category-title">Tương tác</div>
+                <div class="component-grid">
+                    <div class="component-item" draggable="true" data-type="button">
+                        <span class="component-icon">🔘</span>
+                        <div class="component-name">Nút bấm</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="form">
+                        <span class="component-icon">📝</span>
+                        <div class="component-name">Form</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="table">
+                        <span class="component-icon">📊</span>
+                        <div class="component-name">Bảng</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="link">
+                        <span class="component-icon">🔗</span>
+                        <div class="component-name">Liên kết</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Components -->
+            <div class="component-category">
+                <div class="category-title">Nâng cao</div>
+                <div class="component-grid">
+                    <div class="component-item" draggable="true" data-type="code">
+                        <span class="component-icon">💻</span>
+                        <div class="component-name">Code</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="embed">
+                        <span class="component-icon">🌐</span>
+                        <div class="component-name">Nhúng</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="accordion">
+                        <span class="component-icon">📁</span>
+                        <div class="component-name">Accordion</div>
+                    </div>
+                    <div class="component-item" draggable="true" data-type="tabs">
+                        <span class="component-icon">📑</span>
+                        <div class="component-name">Tabs</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Editor -->
+        <div class="main-editor">
+            <!-- Header -->
+            <div class="editor-header">
+                <div class="editor-title">Trình soạn thảo nội dung</div>
+                <div class="editor-actions">
+                    <button class="btn" onclick="togglePreview()">👁️ Xem trước</button>
+                    <button class="btn" onclick="saveContent()">💾 Lưu</button>
+                    <button class="btn btn-primary" onclick="publishContent()">🚀 Xuất bản</button>
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <!-- Undo/Redo -->
+                <button class="toolbar-btn" onclick="execCommand('undo')" title="Hoàn tác">↶</button>
+                <button class="toolbar-btn" onclick="execCommand('redo')" title="Làm lại">↷</button>
+                
+                <div class="toolbar-separator"></div>
+
+                <!-- Text Formatting -->
+                <button class="toolbar-btn" onclick="execCommand('bold')" title="In đậm">B</button>
+                <button class="toolbar-btn" onclick="execCommand('italic')" title="In nghiêng">I</button>
+                <button class="toolbar-btn" onclick="execCommand('underline')" title="Gạch chân">U</button>
+                <button class="toolbar-btn" onclick="execCommand('strikeThrough')" title="Gạch ngang">S</button>
+
+                <div class="toolbar-separator"></div>
+
+                <!-- Headings -->
+                <select class="toolbar-select" onchange="formatHeading(this.value)">
+                    <option value="">Đoạn văn</option>
+                    <option value="h1">Tiêu đề 1</option>
+                    <option value="h2">Tiêu đề 2</option>
+                    <option value="h3">Tiêu đề 3</option>
+                </select>
+
+                <div class="toolbar-separator"></div>
+
+                <!-- Alignment -->
+                <button class="toolbar-btn" onclick="execCommand('justifyLeft')" title="Căn trái">⬅️</button>
+                <button class="toolbar-btn" onclick="execCommand('justifyCenter')" title="Căn giữa">↔️</button>
+                <button class="toolbar-btn" onclick="execCommand('justifyRight')" title="Căn phải">➡️</button>
+
+                <div class="toolbar-separator"></div>
+
+                <!-- Lists -->
+                <button class="toolbar-btn" onclick="execCommand('insertUnorderedList')" title="Danh sách">• </button>
+                <button class="toolbar-btn" onclick="execCommand('insertOrderedList')" title="Danh sách số">1.</button>
+
+                <div class="toolbar-separator"></div>
+
+                <!-- Media -->
+                <button class="toolbar-btn" onclick="insertLink()" title="Thêm liên kết">🔗</button>
+                <button class="toolbar-btn" onclick="insertImage()" title="Thêm hình ảnh">🖼️</button>
+
+                <!-- Color -->
+                <input type="color" class="color-picker" onchange="execCommand('foreColor', this.value)" title="Màu chữ">
+            </div>
+
+            <!-- Editor Content -->
+            <div class="editor-content">
+                <div class="canvas-area">
+                    <div class="drop-zone" id="dropZone">
+                        <div>Thả thành phần vào đây</div>
+                    </div>
+                    <div class="canvas-inner" contenteditable="true" id="editor">
+                        <h1>Chào mừng đến với trình soạn thảo</h1>
+                        <p>Bắt đầu viết nội dung của bạn hoặc kéo thả các thành phần từ sidebar bên trái.</p>
+                    </div>
+                </div>
+
+                <!-- Preview Panel -->
+                <div class="preview-panel" id="previewPanel">
+                    <div class="preview-header">
+                        <div class="preview-title">Xem trước</div>
+                    </div>
+                    <div class="preview-content" id="previewContent">
+                        <!-- Preview content will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let draggedElement = null;
+        let isPreviewVisible = false;
+
+        // Initialize editor
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDragAndDrop();
+            updatePreview();
+            
+            // Auto-save every 30 seconds
+            setInterval(autoSave, 30000);
+        });
+
+        // Drag and Drop functionality
+        function initializeDragAndDrop() {
+            const componentItems = document.querySelectorAll('.component-item');
+            const dropZone = document.getElementById('dropZone');
+            const editor = document.getElementById('editor');
+
+            componentItems.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+            });
+
+            editor.addEventListener('dragover', handleDragOver);
+            editor.addEventListener('drop', handleDrop);
+            editor.addEventListener('dragenter', handleDragEnter);
+            editor.addEventListener('dragleave', handleDragLeave);
+        }
+
+        function handleDragStart(e) {
+            draggedElement = e.target.closest('.component-item');
+            e.dataTransfer.effectAllowed = 'copy';
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            document.getElementById('dropZone').classList.add('active');
+        }
+
+        function handleDragLeave(e) {
+            if (!e.currentTarget.contains(e.relatedTarget)) {
+                document.getElementById('dropZone').classList.remove('active');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            document.getElementById('dropZone').classList.remove('active');
+            
+            if (draggedElement) {
+                const componentType = draggedElement.getAttribute('data-type');
+                insertComponent(componentType);
+                draggedElement = null;
+            }
+        }
+
+        // Component insertion
+        function insertComponent(type) {
+            const editor = document.getElementById('editor');
+            const selection = window.getSelection();
+            const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+            
+            let html = '';
+            
+            switch(type) {
+                case 'heading':
+                    html = '<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="editComponent(this)">✏️</button><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><h2 contenteditable="true">Tiêu đề mới</h2></div>';
+                    break;
+                case 'paragraph':
+                    html = '<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="editComponent(this)">✏️</button><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><p contenteditable="true">Đoạn văn mới. Nhấp để chỉnh sửa nội dung.</p></div>';
+                    break;
+                case 'quote':
+                    html = '<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="editComponent(this)">✏️</button><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><blockquote contenteditable="true">Trích dẫn quan trọng</blockquote></div>';
+                    break;
+                case 'list':
+                    html = '<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="editComponent(this)">✏️</button><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><ul contenteditable="true"><li>Mục 1</li><li>Mục 2</li><li>Mục 3</li></ul></div>';
+                    break;
+                case 'image':
+                    const imageUrl = prompt('Nhập URL hình ảnh:') || 'https://via.placeholder.com/400x200?text=Hình+ảnh';
+                    html = `<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="editComponent(this)">✏️</button><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><img src="${imageUrl}" alt="Hình ảnh" style="max-width: 100%; height: auto;"></div>`;
+                    break;
+                case 'video':
+                    const videoUrl = prompt('Nhập URL video (YouTube, Vimeo):') || '';
+                    html = `<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="editComponent(this)">✏️</button><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"><iframe src="${videoUrl}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowfullscreen></iframe></div></div>`;
+                    break;
+                case 'button':
+                    html = '<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="editComponent(this)">✏️</button><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><button style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;" contenteditable="true">Nút bấm</button></div>';
+                    break;
+                case 'table':
+                    html = '<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="editComponent(this)">✏️</button><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><table><thead><tr><th contenteditable="true">Cột 1</th><th contenteditable="true">Cột 2</th></tr></thead><tbody><tr><td contenteditable="true">Dữ liệu 1</td><td contenteditable="true">Dữ liệu 2</td></tr></tbody></table></div>';
+                    break;
+                case 'divider':
+                    html = '<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;"></div>';
+                    break;
+                case 'spacer':
+                    html = '<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="editComponent(this)">✏️</button><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><div style="height: 40px; background: transparent;"></div></div>';
+                    break;
+                case 'code':
+                    html = '<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="editComponent(this)">✏️</button><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><pre style="background: #f8f9fa; padding: 15px; border-radius: 4px; overflow-x: auto;"><code contenteditable="true">// Nhập code của bạn\nconsole.log("Hello World!");</code></pre></div>';
+                    break;
+                default:
+                    html = `<div class="inserted-component"><div class="component-controls"><button class="control-btn" onclick="editComponent(this)">✏️</button><button class="control-btn" onclick="deleteComponent(this)">🗑️</button></div><p contenteditable="true">Thành phần ${type}</p></div>`;
+            }
+            
+            if (range) {
+                range.deleteContents();
+                const div = document.createElement('div');
+                div.innerHTML = html;
+                range.insertNode(div.firstChild);
+            } else {
+                editor.innerHTML += html;
+            }
+            
+            updatePreview();
+        }
+
+        // Toolbar functions
+        function execCommand(command, value = null) {
+            document.execCommand(command, false, value);
+            updatePreview();
+        }
+
+        function formatHeading(tag) {
+            if (tag) {
+                execCommand('formatBlock', tag);
+            } else {
+                execCommand('formatBlock', 'p');
+            }
+        }
+
+        function insertLink() {
+            const url = prompt('Nhập URL liên kết:');
+            if (url) {
+                execCommand('createLink', url);
+            }
+        }
+
+        function insertImage() {
+            const url = prompt('Nhập URL hình ảnh:');
+            if (url) {
+                execCommand('insertImage', url);
+            }
+        }
+
+        // Component controls
+        function editComponent(btn) {
+            const component = btn.closest('.inserted-component');
+            const editableElement = component.querySelector('[contenteditable="true"]');
+            if (editableElement) {
+                editableElement.focus();
+            }
+        }
+
+        function deleteComponent(btn) {
+            if (confirm('Bạn có chắc chắn muốn xóa thành phần này?')) {
+                btn.closest('.inserted-component').remove();
+                updatePreview();
+            }
+        }
+
+        // Preview functionality
+        function togglePreview() {
+            const previewPanel = document.getElementById('previewPanel');
+            isPreviewVisible = !isPreviewVisible;
+            
+            if (isPreviewVisible) {
+                previewPanel.classList.add('active');
+                updatePreview();
+            } else {
+                previewPanel.classList.remove('active');
+            }
+        }
+
+        function updatePreview() {
+            if (isPreviewVisible) {
+                const editor = document.getElementById('editor');
+                const previewContent = document.getElementById('previewContent');
+                
+                // Clone content and remove controls
+                const clonedContent = editor.cloneNode(true);
+                const controls = clonedContent.querySelectorAll('.component-controls');
+                controls.forEach(control => control.remove());
+                
+                previewContent.innerHTML = clonedContent.innerHTML;
+            }
+        }
+
+        // Save functionality
+        function saveContent() {
+            const editor = document.getElementById('editor');
+            const content = editor.innerHTML;
+            
+            // In a real application, this would send to server
+            localStorage.setItem('editorContent', content);
+            alert('Nội dung đã được lưu!');
+        }
+
+        function autoSave() {
+            const editor = document.getElementById('editor');
+            const content = editor.innerHTML;
+            localStorage.setItem('editorAutoSave', content);
+            console.log('Auto-saved at', new Date().toLocaleTimeString());
+        }
+
+        function publishContent() {
+            const editor = document.getElementById('editor');
+            const content = editor.innerHTML;
+            
+            // Clean up content for publishing
+            const cleanContent = content.replace(/<div class="component-controls">.*?<\/div>/g, '');
+            
+            console.log('Publishing content:', cleanContent);
+            alert('Nội dung đã được xuất bản!');
+        }
+
+        // Load saved content on page load
+        window.addEventListener('load', function() {
+            const savedContent = localStorage.getItem('editorContent');
+            if (savedContent) {
+                document.getElementById('editor').innerHTML = savedContent;
+            }
+        });
+
+        // Update preview when content changes
+        document.getElementById('editor').addEventListener('input', function() {
+            updatePreview();
+        });
+    </script>
+</body>
+</html>

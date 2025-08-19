@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý cấu hình trang chủ - CHAM TOEIC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #000;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #000;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            color: #000;
+            font-size: 0.9em;
+        }
+
+        .breadcrumb a {
+            color: #000; /* Changed breadcrumb links from blue to black */
+            text-decoration: none;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #000;
+            font-size: 0.9em;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-danger {
+            background-color: #fd1b31;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc3545;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 0.8em;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #000;
+            font-size: 0.9em;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .data-table th:hover {
+            background-color: #e9ecef;
+        }
+
+        .data-table td {
+            font-size: 0.9em;
+        }
+
+        .data-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .config-title {
+            font-weight: bold;
+            color: #000; /* Changed config titles from blue to black */
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .type-tag {
+            background-color: #e9ecef;
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+
+        .type-banner {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+
+        .type-article {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .type-promotion {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .position-badge {
+            background-color: #007bff;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 50%;
+            font-size: 0.8em;
+            font-weight: bold;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .pagination {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .pagination-info {
+            color: #000;
+            font-size: 0.9em;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .page-btn {
+            padding: 6px 12px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            color: #000; /* Changed pagination buttons from blue to black */
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .page-btn:hover {
+            background-color: #e9ecef;
+        }
+
+        .page-btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .page-btn:disabled {
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-actions {
+                justify-content: stretch;
+            }
+            
+            .filter-actions .btn {
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .data-table {
+                font-size: 0.8em;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 4px;
+            }
+            
+            .config-title {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Quản lý cấu hình trang chủ</h1>
+            <div class="breadcrumb">
+                <a href="#">Trang chủ</a> / <a href="#">Quản lý nội dung</a> / Cấu hình trang chủ
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label>Tìm kiếm</label>
+                    <input type="text" id="searchInput" placeholder="Tìm theo tiêu đề...">
+                </div>
+                <div class="filter-group">
+                    <label>Loại nội dung</label>
+                    <select id="typeFilter">
+                        <option value="">Tất cả loại</option>
+                        <option value="banner">Banner</option>
+                        <option value="article">Bài viết</option>
+                        <option value="promotion">Khuyến mãi</option>
+                        <option value="course">Khóa học</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Trạng thái</label>
+                    <select id="statusFilter">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="active">Hoạt động</option>
+                        <option value="inactive">Tạm dừng</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Vị trí</label>
+                    <select id="positionFilter">
+                        <option value="">Tất cả vị trí</option>
+                        <option value="1">Vị trí 1</option>
+                        <option value="2">Vị trí 2</option>
+                        <option value="3">Vị trí 3</option>
+                        <option value="4">Vị trí 4</option>
+                        <option value="5">Vị trí 5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button class="btn btn-secondary" onclick="clearFilters()">Xóa bộ lọc</button>
+                <button class="btn btn-primary" onclick="applyFilters()">Áp dụng</button>
+            </div>
+        </div>
+
+        <!-- Content Table -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-title">Danh sách cấu hình trang chủ</div>
+                <a href="#" class="btn btn-success">
+                    <span>+</span> Thêm cấu hình mới
+                </a>
+            </div>
+            
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('thumbnail')">Ảnh</th>
+                            <th onclick="sortTable('title')">Tiêu đề ↕</th>
+                            <th onclick="sortTable('type')">Loại ↕</th>
+                            <th onclick="sortTable('position')">Vị trí ↕</th>
+                            <th onclick="sortTable('status')">Trạng thái ↕</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="configTableBody">
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2025/08/banner-web-1-1536x544-1.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="config-title">Banner chính - Khóa học TOEIC 2025</div>
+                            </td>
+                            <td><span class="type-tag type-banner">Banner</span></td>
+                            <td><span class="position-badge">1</span></td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editConfig(1)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteConfig(1)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2023/12/Untitled-1-1.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="config-title">Banner khuyến mãi học phí</div>
+                            </td>
+                            <td><span class="type-tag type-promotion">Khuyến mãi</span></td>
+                            <td><span class="position-badge">2</span></td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editConfig(2)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteConfig(2)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2024/06/Red-and-Black-Graphic-Dynamic-Sports-Football-Team-Banner-2.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="config-title">Bài viết nổi bật - 10 bí quyết TOEIC</div>
+                            </td>
+                            <td><span class="type-tag type-article">Bài viết</span></td>
+                            <td><span class="position-badge">3</span></td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editConfig(3)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteConfig(3)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2023/12/banner-10-chamtoeic.edu_.vn_.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="config-title">Banner giới thiệu phương pháp học</div>
+                            </td>
+                            <td><span class="type-tag type-banner">Banner</span></td>
+                            <td><span class="position-badge">4</span></td>
+                            <td><span class="status-badge status-inactive">Inactive</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editConfig(4)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteConfig(4)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2023/12/Lo-trinh-TOEIC-2-ky-nang-CHAM-1024x576.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="config-title">Lộ trình TOEIC 2 kỹ năng</div>
+                            </td>
+                            <td><span class="type-tag type-banner">Banner</span></td>
+                            <td><span class="position-badge">5</span></td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editConfig(5)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteConfig(5)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2023/12/Lo-trinh-TOEIC-4-ky-nang-CHAM-1024x576.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="config-title">Lộ trình TOEIC 4 kỹ năng</div>
+                            </td>
+                            <td><span class="type-tag type-banner">Banner</span></td>
+                            <td><span class="position-badge">6</span></td>
+                            <td><span class="status-badge status-inactive">Inactive</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editConfig(6)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteConfig(6)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2023/12/Hinh-thuc-hoc-tai-CHAM-TOEIC-1-768x768.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="config-title">Hình thức học tại CHAM TOEIC</div>
+                            </td>
+                            <td><span class="type-tag type-banner">Banner</span></td>
+                            <td><span class="position-badge">7</span></td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editConfig(7)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteConfig(7)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <div class="pagination-info">
+                    Hiển thị 1-7 trong tổng số 17 cấu hình
+                </div>
+                <div class="pagination-controls">
+                    <button class="page-btn" disabled>« Trước</button>
+                    <a href="#" class="page-btn active">1</a>
+                    <a href="#" class="page-btn">2</a>
+                    <a href="#" class="page-btn">3</a>
+                    <a href="#" class="page-btn">4</a>
+                    <a href="#" class="page-btn">Sau »</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data structure for home config
+        const configData = [
+            {
+                id: 1,
+                title: "Banner chính - Khóa học TOEIC 2025",
+                type: "banner",
+                thumbnail: "https://chamtoeic.edu.vn/wp-content/uploads/2025/08/banner-web-1-1536x544-1.png",
+                position: 1,
+                status: "active",
+                created_at: "2025-01-10T10:00:00Z",
+                updated_at: "2025-01-15T14:30:00Z"
+            }
+            // More configs...
+        ];
+
+        // Filter functions
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('positionFilter').value = '';
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const type = document.getElementById('typeFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const position = document.getElementById('positionFilter').value;
+            
+            console.log('[v0] Applying filters:', { search, type, status, position });
+            // Filter logic would be implemented here
+        }
+
+        // Table sorting
+        function sortTable(column) {
+            console.log('[v0] Sorting by column:', column);
+            // Sorting logic would be implemented here
+        }
+
+        // CRUD operations
+        function editConfig(id) {
+            console.log('[v0] Editing config:', id);
+            // Redirect to edit form or open modal
+        }
+
+        function deleteConfig(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa cấu hình này?')) {
+                console.log('[v0] Deleting config:', id);
+                // Delete logic would be implemented here
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[v0] Home config management page loaded');
+            
+            // Add event listeners for real-time search
+            document.getElementById('searchInput').addEventListener('input', function() {
+                // Debounced search implementation
+            });
+        });
+    </script>
+</body>
+</html>

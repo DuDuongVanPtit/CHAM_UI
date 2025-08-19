@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý bài viết - CHAM TOEIC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #000; /* changed text color to black */
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #000; /* changed header color to black */
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            color: #000; /* changed breadcrumb color to black */
+            font-size: 0.9em;
+        }
+
+        .breadcrumb a {
+            color: #000; /* changed breadcrumb links from blue to black */
+            text-decoration: none;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #000; /* changed label color to black */
+            font-size: 0.9em;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-danger {
+            background-color: #fd1b31;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc3545;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 0.8em;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #000; /* changed section title color to black */
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #000; /* changed table header color to black */
+            font-size: 0.9em;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .data-table th:hover {
+            background-color: #e9ecef;
+        }
+
+        .data-table td {
+            font-size: 0.9em;
+        }
+
+        .data-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .thumbnail {
+            width: 60px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .article-title {
+            font-weight: bold;
+            color: #000; /* changed article title color from blue to black */
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .article-excerpt {
+            color: #000; /* changed excerpt color to black */
+            font-size: 0.8em;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-published {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-draft {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-archived {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .category-tag {
+            background-color: #e9ecef;
+            color: #000; /* changed category tag color to black */
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+
+        .featured-star {
+            color: #ffc107;
+            font-size: 1.2em;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .pagination {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .pagination-info {
+            color: #000; /* changed pagination info color to black */
+            font-size: 0.9em;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .page-btn {
+            padding: 6px 12px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            color: #000; /* changed pagination button color from blue to black */
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .page-btn:hover {
+            background-color: #e9ecef;
+        }
+
+        .page-btn.active {
+            background-color: #000; /* changed active page button background from blue to black */
+            color: white;
+            border-color: #000; /* changed active page button border from blue to black */
+        }
+
+        .page-btn:disabled {
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-actions {
+                justify-content: stretch;
+            }
+            
+            .filter-actions .btn {
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .data-table {
+                font-size: 0.8em;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 4px;
+            }
+            
+            .article-title {
+                max-width: 150px;
+            }
+            
+            .article-excerpt {
+                max-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Quản lý bài viết</h1>
+            <div class="breadcrumb">
+                <a href="#">Trang chủ</a> / <a href="#">Quản lý nội dung</a> / Bài viết
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label>Tìm kiếm</label>
+                    <input type="text" id="searchInput" placeholder="Tìm theo tiêu đề, tác giả...">
+                </div>
+                <div class="filter-group">
+                    <label>Danh mục</label>
+                    <select id="categoryFilter">
+                        <option value="">Tất cả danh mục</option>
+                        <option value="toeic-tips">TOEIC Tips</option>
+                        <option value="grammar">Ngữ pháp</option>
+                        <option value="vocabulary">Từ vựng</option>
+                        <option value="listening">Luyện nghe</option>
+                        <option value="reading">Luyện đọc</option>
+                        <option value="news">Tin tức</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Trạng thái</label>
+                    <select id="statusFilter">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="published">Đã xuất bản</option>
+                        <option value="draft">Bản nháp</option>
+                        <option value="archived">Đã lưu trữ</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Tác giả</label>
+                    <select id="authorFilter">
+                        <option value="">Tất cả tác giả</option>
+                        <option value="admin">Admin</option>
+                        <option value="editor1">Biên tập viên 1</option>
+                        <option value="editor2">Biên tập viên 2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button class="btn btn-secondary" onclick="clearFilters()">Xóa bộ lọc</button>
+                <button class="btn btn-primary" onclick="applyFilters()">Áp dụng</button>
+            </div>
+        </div>
+
+        <!-- Content Table -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-title">Danh sách bài viết</div>
+                <a href="#" class="btn btn-success">
+                    <span>+</span> Thêm bài viết mới
+                </a>
+            </div>
+            
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('thumbnail')">Ảnh</th>
+                            <th onclick="sortTable('title')">Tiêu đề ↕</th>
+                            <th onclick="sortTable('author')">Tác giả ↕</th>
+                            <th onclick="sortTable('category')">Danh mục ↕</th>
+                            <th onclick="sortTable('status')">Trạng thái ↕</th>
+                            <th onclick="sortTable('published_at')">Ngày xuất bản ↕</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="articleTableBody">
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2025/04/Anh-bia-1-768x384.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="article-title">★ 10 Bí quyết chinh phục TOEIC 900+ trong 3 tháng</div>
+                                <div class="article-excerpt">Hướng dẫn chi tiết các phương pháp học hiệu quả để đạt điểm cao TOEIC...</div>
+                            </td>
+                            <td>Admin</td>
+                            <td><span class="category-tag">TOEIC Tips</span></td>
+                            <td><span class="status-badge status-published">Published</span></td>
+                            <td>15/01/2025</td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editArticle(1)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteArticle(1)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2025/04/Anh-bia-768x384.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="article-title">Ngữ pháp tiếng Anh cơ bản cho người mới bắt đầu</div>
+                                <div class="article-excerpt">Tổng hợp các cấu trúc ngữ pháp quan trọng nhất mà người học cần nắm vững...</div>
+                            </td>
+                            <td>Biên tập viên 1</td>
+                            <td><span class="category-tag">Ngữ pháp</span></td>
+                            <td><span class="status-badge status-published">Published</span></td>
+                            <td>12/01/2025</td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editArticle(2)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteArticle(2)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2024/06/Blue-Red-Comic-Creative-Versus-YouTube-thumbnail-1-768x432.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="article-title">Phương pháp học từ vựng hiệu quả với flashcard</div>
+                                <div class="article-excerpt">Cách sử dụng flashcard và các ứng dụng hỗ trợ để ghi nhớ từ vựng lâu dài...</div>
+                            </td>
+                            <td>Biên tập viên 2</td>
+                            <td><span class="category-tag">Từ vựng</span></td>
+                            <td><span class="status-badge status-draft">Draft</span></td>
+                            <td>-</td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editArticle(3)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteArticle(3)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2024/06/Blue-Red-Comic-Creative-Versus-YouTube-thumbnail-768x432.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="article-title">★ Luyện nghe TOEIC Part 1: Mô tả hình ảnh</div>
+                                <div class="article-excerpt">Chiến lược và bài tập thực hành cho phần mô tả hình ảnh trong TOEIC...</div>
+                            </td>
+                            <td>Admin</td>
+                            <td><span class="category-tag">Luyện nghe</span></td>
+                            <td><span class="status-badge status-published">Published</span></td>
+                            <td>08/01/2025</td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editArticle(4)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteArticle(4)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://chamtoeic.edu.vn/wp-content/uploads/2025/04/Anh-bia-1-768x384.png" alt="Thumbnail" class="thumbnail">
+                            </td>
+                            <td>
+                                <div class="article-title">Kỹ thuật đọc hiểu TOEIC Reading Part 7</div>
+                                <div class="article-excerpt">Hướng dẫn cách tiếp cận và giải quyết các dạng bài đọc hiểu khó...</div>
+                            </td>
+                            <td>Biên tập viên 1</td>
+                            <td><span class="category-tag">Luyện đọc</span></td>
+                            <td><span class="status-badge status-archived">Archived</span></td>
+                            <td>05/01/2025</td>
+                            <td>
+                                <div class="actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editArticle(5)">Sửa</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteArticle(5)">Xóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <div class="pagination-info">
+                    Hiển thị 1-5 trong tổng số 156 bài viết
+                </div>
+                <div class="pagination-controls">
+                    <button class="page-btn" disabled>« Trước</button>
+                    <a href="#" class="page-btn active">1</a>
+                    <a href="#" class="page-btn">2</a>
+                    <a href="#" class="page-btn">3</a>
+                    <span>...</span>
+                    <a href="#" class="page-btn">32</a>
+                    <a href="#" class="page-btn">Sau »</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data structure for articles
+        const articleData = [
+            {
+                id: 1,
+                title: "10 Bí quyết chinh phục TOEIC 900+ trong 3 tháng",
+                slug: "10-bi-quyet-chinh-phuc-toeic-900-trong-3-thang",
+                thumbnail: "https://chamtoeic.edu.vn/wp-content/uploads/2025/04/Anh-bia-1-768x384.png",
+                excerpt: "Hướng dẫn chi tiết các phương pháp học hiệu quả để đạt điểm cao TOEIC...",
+                content: "<p>Full HTML content from TipTap editor...</p>",
+                author: "Admin",
+                category: "toeic-tips",
+                tags: ["toeic", "tips", "study"],
+                status: "published",
+                featured: true,
+                views: 2456, // kept views in data structure but removed from display
+                created_at: "2025-01-10T10:00:00Z",
+                updated_at: "2025-01-15T14:30:00Z",
+                published_at: "2025-01-15T09:00:00Z"
+            }
+            // More articles...
+        ];
+
+        // Filter functions
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('authorFilter').value = '';
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const author = document.getElementById('authorFilter').value;
+            
+            console.log('[v0] Applying filters:', { search, category, status, author });
+            // Filter logic would be implemented here
+        }
+
+        // Table sorting
+        function sortTable(column) {
+            console.log('[v0] Sorting by column:', column);
+            // Sorting logic would be implemented here
+        }
+
+        // CRUD operations
+        function editArticle(id) {
+            console.log('[v0] Editing article:', id);
+            // Redirect to edit form or open modal
+        }
+
+        function deleteArticle(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
+                console.log('[v0] Deleting article:', id);
+                // Delete logic would be implemented here
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[v0] Article management page loaded');
+            
+            // Add event listeners for real-time search
+            document.getElementById('searchInput').addEventListener('input', function() {
+                // Debounced search implementation
+            });
+        });
+    </script>
+</body>
+</html>
