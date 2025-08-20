@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Quản lý Cấu hình Hệ thống</title>
+    <style>
+        /* ==== Base & Layout (giống phong cách trang Article) ==== */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: Arial, sans-serif; background:#f8f9fa; color:#000; line-height:1.6; }
+        .container { max-width:1200px; margin:0 auto; padding:20px; }
+
+        .header {
+            background:#fff; padding:20px; border-radius:8px; margin-bottom:20px;
+            box-shadow:0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header h1 { font-size:1.8em; margin-bottom:10px; }
+        .breadcrumb { font-size:.9em; color:#000; }
+        .breadcrumb a { color:#000; text-decoration:none; }
+
+        .content-section {
+            background:#fff; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1);
+            overflow:hidden;
+        }
+        .section-header {
+            padding:15px 20px; border-bottom:1px solid #e0e0e0; display:flex;
+            justify-content:space-between; align-items:center;
+        }
+        .section-title { font-size:1.2em; font-weight:bold; color:#000; }
+
+        .settings-layout {
+            display:grid; grid-template-columns: 280px 1fr; gap:0; min-height: 520px;
+        }
+        .settings-sidebar {
+            border-right:1px solid #e0e0e0; padding:16px; background:#fafafa;
+        }
+        .settings-main { padding:20px; }
+
+        .card {
+            background:#fff; border:1px solid #e0e0e0; border-radius:8px;
+            box-shadow:0 1px 2px rgba(0,0,0,.04);
+        }
+        .card + .card { margin-top:16px; }
+        .card-header {
+            padding:12px 16px; border-bottom:1px solid #e0e0e0; font-weight:bold;
+            display:flex; align-items:center; justify-content:space-between;
+        }
+        .card-body { padding:16px; }
+        .card-footer {
+            padding:12px 16px; border-top:1px solid #e0e0e0; display:flex; gap:8px; justify-content:flex-end;
+        }
+
+        /* Sidebar items */
+        .group-list { display:flex; flex-direction:column; gap:8px; }
+        .group-item {
+            padding:10px 12px; border:1px solid #e0e0e0; background:#fff; border-radius:6px;
+            cursor:pointer; transition:all .2s ease;
+        }
+        .group-item:hover { background:#f3f4f6; }
+        .group-item.active { background:#000; color:#fff; border-color:#000; }
+
+        /* Form controls */
+        .form-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:12px; }
+        .form-row { display:grid; grid-template-columns: 1fr 2fr; gap:12px; margin-bottom:10px; align-items:center; }
+        .form-row.stacked { grid-template-columns: 1fr; }
+        label { font-weight:bold; font-size:.9em; }
+        input[type="text"], input[type="number"], textarea, select {
+            width:100%; padding:8px 10px; border:1px solid #e0e0e0; border-radius:4px; font-size:.95em; background:#fff;
+        }
+        textarea { min-height:90px; resize:vertical; }
+
+        .muted { color:#555; font-size:.9em; }
+        .hint { font-size:.85em; color:#666; }
+
+        .btn {
+            padding:8px 14px; border:none; border-radius:4px; cursor:pointer; font-size:.9em;
+            display:inline-flex; align-items:center; gap:6px; transition:all .2s ease; text-decoration:none;
+        }
+        .btn-primary { background:#007bff; color:#fff; }
+        .btn-primary:hover { background:#0056b3; }
+        .btn-secondary { background:#6c757d; color:#fff; }
+        .btn-secondary:hover { background:#545b62; }
+        .btn-danger { background:#fd1b31; color:#fff; }
+        .btn-danger:hover { background:#dc3545; }
+        .btn-outline { background:#fff; color:#000; border:1px solid #e0e0e0; }
+        .btn-outline:hover { background:#f3f4f6; }
+
+        .actions-inline { display:flex; gap:6px; flex-wrap:wrap; }
+
+        /* Repeaters */
+        .repeater { display:flex; flex-direction:column; gap:10px; }
+        .rep-item {
+            border:1px solid #e0e0e0; border-radius:6px; padding:10px; background:#fff;
+        }
+        .rep-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-weight:bold; }
+        .rep-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:8px; }
+        .mini { font-size:.85em; color:#666; }
+
+        /* Toast (mock) */
+        .toast {
+            position:fixed; right:20px; bottom:20px; background:#111; color:#fff; padding:10px 14px; border-radius:8px;
+            box-shadow:0 8px 30px rgba(0,0,0,.2); opacity:0; transform:translateY(8px); transition:all .25s ease;
+        }
+        .toast.show { opacity:1; transform:translateY(0); }
+        .toast.success { background:#16a34a; }
+        .toast.error { background:#dc2626; }
+        .toast.neutral { background:#111; }
+
+        @media (max-width: 900px) {
+            .settings-layout { grid-template-columns: 1fr; }
+            .settings-sidebar { border-right:none; border-bottom:1px solid #e0e0e0; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1>Quản lý Cấu hình Hệ thống</h1>
+        <div class="breadcrumb">
+            <a href="#">Trang chủ</a> / <a href="#">Hệ thống</a> / Cấu hình
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content-section">
+        <div class="section-header">
+            <div class="section-title">Nhóm cấu hình</div>
+            <div class="actions-inline">
+                <button id="btnExport" class="btn btn-outline">Xuất JSON</button>
+                <label class="btn btn-outline" for="fileImport" style="cursor:pointer">Nhập JSON</label>
+                <input id="fileImport" type="file" accept="application/json" style="display:none"/>
+            </div>
+        </div>
+
+        <div class="settings-layout">
+            <!-- Sidebar: group list -->
+            <aside class="settings-sidebar">
+                <div class="group-list">
+                    <div class="group-item active" data-group="footer" title="Chứa cả branding + footer">
+                        Footer (branding + footer)
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main: group form -->
+            <main class="settings-main">
+                <!-- Branding -->
+                <div class="card">
+                    <div class="card-header">
+                        <span>Branding</span>
+                        <span class="mini muted">Logo & Favicon</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <label for="logoUrl">Logo URL</label>
+                            <input id="logoUrl" type="text" placeholder="https://.../logo.png"/>
+                        </div>
+                        <div class="form-row">
+                            <label for="logoAlt">Logo Alt</label>
+                            <input id="logoAlt" type="text" placeholder="CHAM TOEIC"/>
+                        </div>
+                        <div class="form-row">
+                            <label for="logoHeight">Logo Height (px)</label>
+                            <input id="logoHeight" type="number" min="16" max="256" placeholder="40"/>
+                        </div>
+                        <div class="form-row">
+                            <label for="faviconUrl">Favicon URL</label>
+                            <input id="faviconUrl" type="text" placeholder="https://.../favicon.ico"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Description & Contacts -->
+                <div class="card">
+                    <div class="card-header">
+                        <span>Footer</span>
+                        <span class="mini muted">Mô tả & Liên hệ</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-row stacked">
+                            <label for="footerDesc">Mô tả</label>
+                            <textarea id="footerDesc" placeholder="CHAM TOEIC luôn nỗ lực..."></textarea>
+                        </div>
+
+                        <div class="form-grid">
+                            <div>
+                                <label for="hotline">Hotline</label>
+                                <input id="hotline" type="text" placeholder="034 334 8239"/>
+                            </div>
+                            <div>
+                                <label for="email">Email</label>
+                                <input id="email" type="text" placeholder="chamtoeic@gmail.com"/>
+                            </div>
+                            <div>
+                                <label for="fanpage">Fanpage</label>
+                                <input id="fanpage" type="text" placeholder="CHAM Toeic"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Socials Repeater -->
+                <div class="card">
+                    <div class="card-header">
+                        <span>Mạng xã hội</span>
+                        <button id="addSocial" class="btn btn-secondary btn-sm">+ Thêm</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="socials" class="repeater"></div>
+                    </div>
+                </div>
+
+                <!-- Campuses Repeater -->
+                <div class="card">
+                    <div class="card-header">
+                        <span>Cơ sở</span>
+                        <button id="addCampus" class="btn btn-secondary btn-sm">+ Thêm</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="campuses" class="repeater"></div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <span>Hành động</span>
+                        <span class="mini muted">Lưu cấu hình footer</span>
+                    </div>
+                    <div class="card-footer">
+                        <button id="btnReset" class="btn btn-outline">Khôi phục</button>
+                        <button id="btnSave" class="btn btn-primary">Lưu cấu hình</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast neutral">Đã lưu!</div>
+
+<script>
+    // ====== State mẫu (có thể load từ API sau) ======
+    const DEFAULT_STATE = {
+        branding: {
+            logoUrl: "https://chamtoeic.edu.vn/wp-content/uploads/2023/10/LOGO.png",
+            logoAlt: "CHAM TOEIC",
+            logoHeight: 40,
+            faviconUrl: "https://chamtoeic.edu.vn/favicon.ico"
+        },
+        footer: {
+            description: "CHAM TOEIC luôn nỗ lực trở thành đơn vị đào tạo TOEIC chuyên nghiệp và chất lượng nhất Việt Nam.",
+            contacts: {
+                hotline: "034 334 8239",
+                email: "chamtoeic@gmail.com",
+                fanpage: "CHAM Toeic"
+            },
+            socials: [
+                { type: "facebook", url: "https://facebook.com/chamtoeic" },
+                { type: "tiktok",   url: "https://tiktok.com/@chamtoeic" }
+            ],
+            campuses: [
+                { name: "Cơ sở 1", address: "Tầng 6, Số 16, Ngõ 304 Hồ Tùng Mậu, Hà Nội" },
+                { name: "Cơ sở 2", address: "Số 62A, Ngõ 59 Dương Khuê, Hà Nội" }
+            ],
+            copyrightText: "© 2025 CHAM TOEIC. Tất cả quyền được bảo lưu."
+        }
+    };
+
+    let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+    // ====== Helpers UI ======
+    const $ = (s, root=document) => root.querySelector(s);
+    const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
+
+    function toast(msg, type="neutral") {
+        const t = $('#toast');
+        t.textContent = msg;
+        t.classList.remove('success', 'error', 'neutral', 'show');
+        t.classList.add(type);
+        requestAnimationFrame(() => {
+            t.classList.add('show');
+            setTimeout(()=> t.classList.remove('show'), 2000);
+        });
+    }
+
+    // ====== Bind Branding ======
+    function bindBranding() {
+        $('#logoUrl').value = state.branding.logoUrl || '';
+        $('#logoAlt').value = state.branding.logoAlt || '';
+        $('#logoHeight').value = state.branding.logoHeight ?? 40;
+        $('#faviconUrl').value = state.branding.faviconUrl || '';
+
+        $('#logoUrl').addEventListener('input', e => { state.branding.logoUrl = e.target.value; });
+        $('#logoAlt').addEventListener('input', e => { state.branding.logoAlt = e.target.value; });
+        $('#logoHeight').addEventListener('input', e => { state.branding.logoHeight = Number(e.target.value || 0); });
+        $('#faviconUrl').addEventListener('input', e => { state.branding.faviconUrl = e.target.value; });
+    }
+
+    // ====== Bind Footer basic ======
+    function bindFooterBasics() {
+        $('#footerDesc').value = state.footer.description || '';
+        $('#hotline').value = state.footer.contacts?.hotline || '';
+        $('#email').value = state.footer.contacts?.email || '';
+        $('#fanpage').value = state.footer.contacts?.fanpage || '';
+
+        $('#footerDesc').addEventListener('input', e => { state.footer.description = e.target.value; });
+        $('#hotline').addEventListener('input', e => { state.footer.contacts.hotline = e.target.value; });
+        $('#email').addEventListener('input', e => { state.footer.contacts.email = e.target.value; });
+        $('#fanpage').addEventListener('input', e => { state.footer.contacts.fanpage = e.target.value; });
+    }
+
+    // ====== Repeaters ======
+    function renderSocials() {
+        const wrap = $('#socials');
+        wrap.innerHTML = '';
+        (state.footer.socials || []).forEach((item, idx) => {
+            const box = document.createElement('div');
+            box.className = 'rep-item';
+            box.innerHTML = `
+          <div class="rep-header">
+            <span>#${idx+1} - ${item.type || 'social'}</span>
+            <div class="actions-inline">
+              <button class="btn btn-outline" data-action="up">↑</button>
+              <button class="btn btn-outline" data-action="down">↓</button>
+              <button class="btn btn-danger" data-action="remove">Xóa</button>
+            </div>
+          </div>
+          <div class="rep-grid">
+            <div>
+              <label>Type</label>
+              <input type="text" value="${item.type || ''}" placeholder="facebook / tiktok / youtube"/>
+            </div>
+            <div>
+              <label>URL</label>
+              <input type="text" value="${item.url || ''}" placeholder="https://..."/>
+            </div>
+          </div>
+        `;
+            const [typeInput, urlInput] = $$('input', box);
+            typeInput.addEventListener('input', e => {
+                item.type = e.target.value;
+                box.querySelector('.rep-header span').textContent = `#${idx+1} - ${item.type||'social'}`;
+            });
+            urlInput.addEventListener('input', e => { item.url = e.target.value; });
+
+            box.querySelector('[data-action="remove"]').addEventListener('click', () => {
+                state.footer.socials.splice(idx, 1); renderSocials();
+            });
+            box.querySelector('[data-action="up"]').addEventListener('click', () => {
+                if (idx > 0) { const arr = state.footer.socials; [arr[idx-1], arr[idx]] = [arr[idx], arr[idx-1]]; renderSocials(); }
+            });
+            box.querySelector('[data-action="down"]').addEventListener('click', () => {
+                const arr = state.footer.socials; if (idx < arr.length-1) { [arr[idx+1], arr[idx]] = [arr[idx], arr[idx+1]]; renderSocials(); }
+            });
+
+            wrap.appendChild(box);
+        });
+    }
+
+    function renderCampuses() {
+        const wrap = $('#campuses');
+        wrap.innerHTML = '';
+        (state.footer.campuses || []).forEach((item, idx) => {
+            const box = document.createElement('div');
+            box.className = 'rep-item';
+            box.innerHTML = `
+          <div class="rep-header">
+            <span>#${idx+1} - ${item.name || 'Cơ sở'}</span>
+            <div class="actions-inline">
+              <button class="btn btn-outline" data-action="up">↑</button>
+              <button class="btn btn-outline" data-action="down">↓</button>
+              <button class="btn btn-danger" data-action="remove">Xóa</button>
+            </div>
+          </div>
+          <div class="rep-grid">
+            <div>
+              <label>Tên cơ sở</label>
+              <input type="text" value="${item.name || ''}" placeholder="Cơ sở 1"/>
+            </div>
+            <div>
+              <label>Địa chỉ</label>
+              <input type="text" value="${item.address || ''}" placeholder="Địa chỉ chi tiết"/>
+            </div>
+          </div>
+        `;
+            const [nameInput, addrInput] = $$('input', box);
+            nameInput.addEventListener('input', e => {
+                item.name = e.target.value;
+                box.querySelector('.rep-header span').textContent = `#${idx+1} - ${item.name||'Cơ sở'}`;
+            });
+            addrInput.addEventListener('input', e => { item.address = e.target.value; });
+
+            box.querySelector('[data-action="remove"]').addEventListener('click', () => {
+                state.footer.campuses.splice(idx, 1); renderCampuses();
+            });
+            box.querySelector('[data-action="up"]').addEventListener('click', () => {
+                if (idx > 0) { const arr = state.footer.campuses; [arr[idx-1], arr[idx]] = [arr[idx], arr[idx-1]]; renderCampuses(); }
+            });
+            box.querySelector('[data-action="down"]').addEventListener('click', () => {
+                const arr = state.footer.campuses; if (idx < arr.length-1) { [arr[idx+1], arr[idx]] = [arr[idx], arr[idx+1]]; renderCampuses(); }
+            });
+
+            wrap.appendChild(box);
+        });
+    }
+
+    // ====== Export / Import ======
+    $('#btnExport').addEventListener('click', () => {
+        const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'system_settings_footer.json'; a.click();
+        URL.revokeObjectURL(url);
+    });
+
+    $('#fileImport').addEventListener('change', (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            try {
+                const data = JSON.parse(reader.result);
+                if (!data?.branding || !data?.footer) throw new Error('Sai cấu trúc JSON');
+                state = data;
+                bindAll();
+                toast('Đã nhập JSON', 'success');
+            } catch (err) {
+                console.error(err);
+                toast('Không thể đọc JSON', 'error');
+            }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+    });
+
+    // ====== Save / Reset (mock) ======
+    $('#btnSave').addEventListener('click', () => {
+        // TODO: Gọi API PUT /api/admin/settings/footer với payload = state
+        console.log('[SAVE_PAYLOAD]', state);
+        toast('Đã lưu cấu hình (mock). Gắn API để lưu thật.', 'success');
+    });
+    $('#btnReset').addEventListener('click', () => {
+        state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+        bindAll();
+        toast('Đã khôi phục mặc định', 'neutral');
+    });
+
+    function bindAll() {
+        bindBranding();
+        bindFooterBasics();
+        renderSocials();
+        renderCampuses();
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', bindAll);
+</script>
+</body>
+</html>
